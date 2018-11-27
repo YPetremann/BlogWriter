@@ -4,9 +4,10 @@ export_on_save:
 markdown:
   image_dir: /doc/img
   path: /README.md
-  ignore_from_front_matter: true
+  ignore_from_front_matter: false
   absolute_image_path: true
 ---
+
 # Créez un blog pour un écrivain
 
 ## Quoi ?
@@ -15,12 +16,7 @@ Jean Forteroche, acteur et écrivain, travaille actuellement sur son prochain ro
 
 Jean souhaite avoir son propre outil de blog, offrant des fonctionnalités plus simples.
 
-Elle doit fournir une interface frontend (lecture des billets) et une interface backend (administration des billets pour l'écriture). On doit y retrouver tous les éléments d'un CRUD :
-
-Create : création de billets
-Read : lecture de billets
-Update : mise à jour de billets
-Delete : suppression de billets
+Elle doit fournir une interface frontend (lecture des billets) et une interface backend (administration des billets pour l'écriture). On doit y retrouver tous les éléments d'un CRUD.
 
 Chaque billet doit permettre l'ajout de commentaires, qui pourront être modérés dans l'interface d'administration au besoin, et être "signaler" par les lecteurs pour que ceux-ci remontent plus facilement dans l'interface d'administration pour être modérés.
 
@@ -33,8 +29,9 @@ Fichiers à fournir
 -   Code HTML, CSS, PHP et JavaScript
 -   Export de la base de données MySQL
 -   Lien vers la page GitHub contenant l'historique des commits
-    ## Soutenance
-    Vous vous positionnerez comme un développeur présentant pendant 25 minutes son travail à son collègue plus senior dans l’agence web afin de vérifier que le projet peut être présenté tel quel à Jean Forteroche. Cette étape sera suivie de 5 minutes de questions/réponses.
+
+## Soutenance
+Vous vous positionnerez comme un développeur présentant pendant 25 minutes son travail à son collègue plus senior dans l’agence web afin de vérifier que le projet peut être présenté tel quel à Jean Forteroche. Cette étape sera suivie de 5 minutes de questions/réponses.
 
 ## Comment ?
 
