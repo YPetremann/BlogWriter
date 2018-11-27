@@ -6,11 +6,17 @@ markdown:
   path: /README.md
   ignore_from_front_matter: false
   absolute_image_path: true
+toc:
+  depth_from: 2
+  depth_to: 6
+  ordered: false
 ---
 
 # Créez un blog pour un écrivain
 
-## Quoi ?
+[TOC]
+## Besoin
+### Quoi ?
 
 Jean Forteroche, acteur et écrivain, travaille actuellement sur son prochain roman, "Billet simple pour l'Alaska". Il souhaite le publier par épisode en ligne sur son propre site.
 
@@ -22,7 +28,7 @@ Chaque billet doit permettre l'ajout de commentaires, qui pourront être modér�
 
 L'interface d'administration sera protégée par mot de passe. La rédaction de billets se fera dans une interface WYSIWYG basée sur TinyMCE.
 
-## Livrable
+### Livrable
 
 Fichiers à fournir
 
@@ -30,15 +36,15 @@ Fichiers à fournir
 -   Export de la base de données MySQL
 -   Lien vers la page GitHub contenant l'historique des commits
 
-## Soutenance
+### Soutenance
 Vous vous positionnerez comme un développeur présentant pendant 25 minutes son travail à son collègue plus senior dans l’agence web afin de vérifier que le projet peut être présenté tel quel à Jean Forteroche. Cette étape sera suivie de 5 minutes de questions/réponses.
 
-## Comment ?
+### Comment ?
 
 Vous allez donc devoir développer un moteur de blog en PHP et MySQL.
 Vous développerez sur une architecture MVC orienté objet sans utiliser de framework.
 
-## Representation du projet
+## Étude du projet
 
 ### Utilisateurs
 
@@ -322,3 +328,16 @@ Comments "post_id" --> "id" Posts : ""
 
 @enduml
 ```
+
+## Documentation
+### Structure
+Le projet utilise la hierarchie suivante
+
+- **cfg** : contient la configuration
+- **mod** : contient les modules (partie exécutive)
+  - **Router** : coordonne les actions
+  - **Controller** : traite les actions
+  - **Manager** : traite les données
+- **dat** : contient les données (nécessite vérification ou modification)
+  - **vue** : contient les vues
+- **res** : contient les ressources (servis en l'état)
