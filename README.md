@@ -14,20 +14,20 @@ toc:
 # Créez un blog pour un écrivain
   
   
-* [Créez un blog pour un écrivain](/doc/#créez-un-blog-pour-un-écrivain )
-	* [Besoin](/doc/#besoin )
-		* [Quoi ?](/doc/#quoi )
-		* [Livrable](/doc/#livrable )
-		* [Soutenance](/doc/#soutenance )
-		* [Comment ?](/doc/#comment )
-	* [Étude du projet](/doc/#étude-du-projet )
-		* [Utilisateurs](/doc/#utilisateurs )
-		* [Interfaces](/doc/#interfaces )
-		* [Cas d'utilisation](/doc/#cas-dutilisation )
-		* [Classes](/doc/#classes )
-		* [Base de données](/doc/#base-de-données )
-	* [Documentation](/doc/#documentation )
-		* [Structure](/doc/#structure )
+* [Créez un blog pour un écrivain](/#créez-un-blog-pour-un-écrivain )
+	* [Besoin](/#besoin )
+		* [Quoi ?](/#quoi )
+		* [Livrable](/#livrable )
+		* [Soutenance](/#soutenance )
+		* [Comment ?](/#comment )
+	* [Étude du projet](/#étude-du-projet )
+		* [Utilisateurs](/#utilisateurs )
+		* [Interfaces](/#interfaces )
+		* [Cas d'utilisation](/#cas-dutilisation )
+		* [Classes](/#classes )
+		* [Base de données](/#base-de-données )
+	* [Documentation](/#documentation )
+		* [Structure](/#structure )
   
 ## Besoin
   
