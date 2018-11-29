@@ -1,0 +1,21 @@
+<?php $title = 'Mon blog'; ?>
+<?php ob_start(); ?>
+<main class="fixer">
+	<?php foreach ($posts as $post) { ?>
+		<article>
+			<header>
+				<>
+				<?= htmlspecialchars($post['title']); ?>
+			</header>
+			<p>
+				<?= nl2br(htmlspecialchars($post['content'])); ?><br />
+				<em></em>
+			</p>
+			<footer>
+				<span class="left">Publié le <?= $post['post_date_fr']; ?></span>
+				<span class="right"><a class="btn" href="<?= url("/posts/".$post['id']);?>">Commentaires</a></span>
+			</footer>
+		</article>
+	<?php } ?>
+</main>
+<?php return ob_get_clean(); ?>
