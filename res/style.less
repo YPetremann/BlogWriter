@@ -1,7 +1,7 @@
 // out: style.css
 @import url("reset.css");
-@import url("flex.less");
-/** General Classes **/
+@import url("flex.less"); /** General Classes **/
+
 .hidden {
 	/* Hide it, keep it */
 	visibility: hidden !important;
@@ -19,6 +19,7 @@
 	margin-right: auto;
 }
 /** Fix footer to bottom **/
+
 body,
 html {
 	@flex-direction: column;
@@ -32,7 +33,6 @@ html {
 	}
 }
 /** multi alignement bar **/
-
 .multibar {
 	display: flex;
 
@@ -59,12 +59,13 @@ html {
 	}
 }
 /** multi alignement bar **/
+
 .btn {
-	background:gray;
-	padding:5px 10px;
-	border-radius:5px;
+	background: gray;
+	padding: 5px 10px;
+	border-radius: 5px;
 	text-decoration: none;
-	color:white;
+	color: white;
 }
 
 body {
@@ -75,11 +76,13 @@ body {
 	& > header {
 		background: #0d1f34;
 		color: #d7deff;
-		nav>ul {
-			display:flex;
-			a{
-				padding:10px;
-				color:#fff;
+
+		nav > ul {
+			display: flex;
+
+			a {
+				padding: 10px;
+				color: #fff;
 				text-decoration: none;
 			}
 		}
@@ -123,5 +126,33 @@ article {
 	& > :last-child {
 		margin-bottom: -10px;
 		padding-bottom: 10px;
+	}
+}
+
+fieldset {
+	border-top: 1px solid silver;
+	padding: 10px 0 10px 10px;
+	margin: 5px 10px;
+
+	legend {
+		padding: 0 10px;
+	}
+}
+
+form {
+	display: grid;
+	grid-template-columns: 100px auto;
+	grid-template-rows: auto;
+	grid-auto-flow: row;
+	grid-gap: 5px;
+
+	label {
+		grid-column: 0 / 1;
+		text-align: right;
+	}
+
+	.line {
+		grid-column: auto / span 2;
+		text-align: right;
 	}
 }

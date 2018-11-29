@@ -1,45 +1,36 @@
 <?php $title = 'Mon blog'; ?>
 <?php ob_start(); ?>
 <main>
-	<section class="fixer" id="comments">
-		<h2>S'identifier</h2>
-		<fieldset>
+	<section class="fixer" id="login">
+		<fieldset class="h2">
 			<legend>S'identifier</legend>
 			<form action="" method="post">
-				<div>
-					<label for="email">Email</label>
-					<input type="email" id="email" name="email" required/>
-				</div>
-				<div>
-					<label for="password">Mot de passe</label>
-					<input type="password" id="password" name="password" required/>
-				</div>
-				<div>
-					<input type="submit" value="S'identifier"/>
+				<label for="email">Email</label>
+				<input type="email" id="email" name="email" required />
+				<label for="password">Mot de passe</label>
+				<input type="password" id="password" name="password" required />
+				<div class="line">
+					<input type="submit" value="S'identifier" />
 				</div>
 			</form>
 		</fieldset>
 		<fieldset>
 			<legend>Créer compte</legend>
 			<form action="" method="post">
-				<div>
-					<label for="email">Email</label>
-					<input type="email" id="email" name="email" required/>
-				</div>
-				<div>
-					<input type="submit" value="Créer compte"/>
+				<label for="email">Email</label>
+				<input type="email" id="email" name="email" required />
+				<div class="line">
+					<input type="submit" value="Créer compte" />
 				</div>
 			</form>
 		</fieldset>
 		<fieldset>
 			<legend>Mot de passe oublié</legend>
 			<form action="" method="post">
-				<div>
-					<label for="email">Email</label>
-					<input type="email" id="email" name="email" required/>
-				</div>
-				<div>
-					<input type="submit" value="Mot de pass oublié"/>
+				<label for="email">Email</label>
+				<input type="email" id="email" name="email" required />
+				<div class="line">
+					<input type="submit" value="Mot de pass oublié" />
 				</div>
 			</form>
 		</fieldset>

@@ -12,15 +12,15 @@
 	<section class="fixer" id="comments">
 		<h2>Commentaires</h2>
 		<form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
-			<div>
+			<div class="line">
 				<label for="author">Auteur</label>
 				<input type="text" id="author" name="author" />
 			</div>
-			<div>
+			<div class="line">
 				<label for="comment">Commentaire</label>
 				<textarea id="comment" name="comment"></textarea>
 			</div>
-			<div>
+			<div class="line">
 				<input type="submit" />
 			</div>
 		</form>
