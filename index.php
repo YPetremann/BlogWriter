@@ -30,6 +30,30 @@ $router->all('/posts/:id', function($id){
             "author" => "Anon",
             "comment_date_fr"=>"20/11/2018",
             "content"=>"Voici du contenu",
+        ],
+        [
+            "id"=>1,
+            "author" => "Anon",
+            "comment_date_fr"=>"20/11/2018",
+            "content"=>"Voici du contenu",
+        ],
+        [
+            "id"=>1,
+            "author" => "Anon",
+            "comment_date_fr"=>"20/11/2018",
+            "content"=>"Voici du contenu",
+        ],
+        [
+            "id"=>1,
+            "author" => "Anon",
+            "comment_date_fr"=>"20/11/2018",
+            "content"=>"Voici du contenu",
+        ],
+        [
+            "id"=>1,
+            "author" => "Anon",
+            "comment_date_fr"=>"20/11/2018",
+            "content"=>"Voici du contenu",
         ]
     ];
     // */

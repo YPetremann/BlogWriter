@@ -1,12 +1,12 @@
 <?php ob_start(); ?>
 <header>
-    <div class="fixer">
-        <h1>Billet Simple pour l'alaska</h1>
-        <nav>
+    <div class="fixer multibar">
+        <h1 class="left">Billet Simple pour l'alaska</h1>
+        <nav class="right">
             <h2 class="hidden">Navigation</h2>
             <ul>
-                <li><a href="#home" class="active">Accueil</a></li>
-                <li><a href="#contact">Conexion</a></li>
+                <li><a href="<?= url("/");?>" class="active">Accueil</a></li>
+                <li><a href="<?= url("/login");?>">Conexion</a></li>
             </ul>
         </nav>
     </div>

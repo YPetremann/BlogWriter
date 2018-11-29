@@ -1,19 +1,13 @@
 <?php $title = 'Mon blog'; ?>
 <?php ob_start(); ?>
-<main class="fixer">
+<main>
 	<?php foreach ($posts as $post) { ?>
-		<article>
-			<header>
-				<>
-				<?= htmlspecialchars($post['title']); ?>
-			</header>
-			<p>
-				<?= nl2br(htmlspecialchars($post['content'])); ?><br />
-				<em></em>
-			</p>
-			<footer>
+		<article class="fixer">
+			<header><?= $post['title']; ?></header>
+			<?= $post['content']; ?>
+			<footer class="multibar">
 				<span class="left">Publié le <?= $post['post_date_fr']; ?></span>
-				<span class="right"><a class="btn" href="<?= url("/posts/".$post['id']);?>">Commentaires</a></span>
+				<span class="right"><a class="btn" href="<?= url("/posts/".$post['id']);?>">Lire plus...</a></span>
 			</footer>
 		</article>
 	<?php } ?>

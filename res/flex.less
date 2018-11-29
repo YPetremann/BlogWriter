@@ -1,0 +1,72 @@
+// "out": false
+// Usage :
+// .your.selector {
+// 	#flex.default();
+// 	@flex-direction: row | row-reverse | column | column-reverse | ... ;
+// 	@flex-wrap: nowrap | wrap | wrap-reverse | ... ;
+// 	@flex-align-horizontal: left | center | right | stretch | space-between | space-around | space-evenly | ... ;
+// 	@flex-align-vertical: top | center | bottom | stretch | space-between | space-around | space-evenly | ... ;
+// 	@flex-align-items: flex-start | flex-end | center | baseline | stretch;
+// 	#flex.apply();
+// }
+
+@flex-direction: none;
+@flex-wrap: none;
+@flex-align-vertical: none;
+@flex-align-horizontal: none;
+@flex-align-items: none;
+
+#flex() {
+	.apply() {
+		.flex-step1() when not(@flex-direction = column-reverse)
+		                or not(@flex-direction = column)
+		                or not(@flex-direction = row-reverse) { @dir: row; @way: nor; }
+		.flex-step1() when (@flex-direction = column)         { @dir: col; @way: nor; }
+		.flex-step1() when (@flex-direction = column-reverse) { @dir: col; @way: rev; }
+		.flex-step1() when (@flex-direction = row-reverse)    { @dir: row; @way: rev; }
+		.flex-step1() when not(@flex-wrap = wrap-reverse)     { @wra: nor;            }
+		.flex-step1() when (@flex-wrap = wrap-reverse)        { @wra: rev;            }
+		.flex-step1();
+
+		display: flex;
+		& when not(@flex-wrap = none)           { flex-wrap: @flex-wrap;                   }
+		& when not(@flex-direction = none)      { flex-direction: @flex-direction;         }
+		& when (@flex-align-vertical = top) {
+			& when (@dir = row) and (@wra = nor) { align-content: flex-start;               }
+			& when (@dir = row) and (@wra = rev) { align-content: flex-end;                 }
+			& when (@dir = col) and (@way = nor) { justify-content: flex-start;             }
+			& when (@dir = col) and (@way = rev) { justify-content: flex-end;               }
+		}
+		& when not (@flex-align-vertical = top)
+		   and not (@flex-align-vertical = bottom)
+			and not (@flex-align-vertical = none) {
+			& when (@dir = row)                  { align-content: @flex-align-vertical;     }
+			& when (@dir = col)                  { justify-content: @flex-align-vertical;   }
+		}
+		& when (@flex-align-vertical = bottom) {
+			& when (@dir = row) and (@wra = nor) { align-content: flex-end;                 }
+			& when (@dir = row) and (@wra = rev) { align-content: flex-start;               }
+			& when (@dir = col) and (@way = nor) { justify-content: flex-end;               }
+			& when (@dir = col) and (@way = rev) { justify-content: flex-start;             }
+		}
+		& when (@flex-align-horizontal = left) {
+			& when (@dir = row) and (@way = nor) { justify-content: flex-start;             }
+			& when (@dir = row) and (@way = rev) { justify-content: flex-end;               }
+			& when (@dir = col) and (@wra = nor) { align-content: flex-start;               }
+			& when (@dir = col) and (@wra = rev) { align-content: flex-end;                 }
+		}
+		& when not (@flex-align-horizontal = left)
+		   and not (@flex-align-horizontal = right)
+			and not (@flex-align-horizontal = none) {
+			& when (@dir = col)                  { align-content: @flex-align-horizontal;   }
+			& when (@dir = row)                  { justify-content: @flex-align-horizontal; }
+		}
+		& when (@flex-align-horizontal = right) {
+			& when (@dir = row) and (@way = nor) { justify-content: flex-end;               }
+			& when (@dir = row) and (@way = rev) { justify-content: flex-start;             }
+			& when (@dir = col) and (@wra = nor) { align-content: flex-end;                 }
+			& when (@dir = col) and (@wra = rev) { align-content: flex-start;               }
+		}
+		& when not (@flex-align-items = none)   { align-items: @flex-align-items;          }
+	}
+}

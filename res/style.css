@@ -1,23 +1,109 @@
 @import url("reset.css");
+/** General Classes **/
+.hidden {
+  /* Hide it, keep it */
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 .fixer {
+  /* element size fixed to a maximum*/
   max-width: 960px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+/** Fix footer to bottom **/
+body,
+html {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+body > main,
+html > main {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+/** multi alignement bar **/
+.multibar {
+  display: flex;
+}
+.multibar:before {
+  order: -1;
+  content: "";
+  display: block;
+  flex-grow: 1;
+}
+.multibar:after {
+  order: 1;
+  content: "";
+  display: block;
+  flex-grow: 1;
+}
+.multibar .left {
+  order: -2;
+}
+.multibar .right {
+  order: 2;
+}
+/** multi alignement bar **/
+.btn {
+  background: gray;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+}
+body > * {
+  padding: 20px;
 }
 body > header {
   background: #0d1f34;
   color: #d7deff;
 }
+body > header nav > ul {
+  display: flex;
+}
+body > header nav > ul a {
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+}
 body > footer {
+  text-align: center;
   background: #0d1f34;
   color: #d7deff;
+  padding: 20px;
 }
 article {
-  margin: 20px 0;
-  border: 1px solid silver;
-  border-radius: 2px;
+  border: 1px solid #c0c0c0;
+  border-radius: 3px;
+  padding: 10px;
+  margin: 20px;
 }
-article > footer {
-  border-top: 1px solid silver;
+article > header {
+  margin: 10px -10px;
+  border-bottom: 1px solid #c0c0c0;
+  background: #ffffff;
   padding: 10px;
   display: flex;
+}
+article > footer {
+  margin: 10px -10px;
+  border-top: 1px solid #c0c0c0;
+  background: #d7d7d7;
+  padding: 10px;
+  display: flex;
+}
+article > :first-child {
+  margin-top: -10px;
+  padding-top: 10px;
+}
+article > :last-child {
+  margin-bottom: -10px;
+  padding-bottom: 10px;
 }
