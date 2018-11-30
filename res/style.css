@@ -63,12 +63,14 @@ body > header {
   background: #0d1f34;
   color: #d7deff;
 }
-body > header h1 {
+body > header h1 > a {
+  color: inherit;
+  text-decoration: none;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-body > header h1 p {
+body > header h1 > a p {
   padding: 10px;
 }
 body > header nav {
