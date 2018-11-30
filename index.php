@@ -13,31 +13,33 @@ $header  = include "dat/view/header.phtml";
 $footer  = include "dat/view/footer.phtml";
 $router = new Router($_GET["url"]);
 
+// Login page, Display login form
 $router->all('/login', function () {
-    global $header, $footer;
+    global $header, $footer, $content;
+
     $content = include "dat/view/UserLogin.phtml";
-    include "dat/view/main.phtml";
 });
 
+// Post page, Display post and comments
 $router->all('/posts/:id', function ($id) {
-    global $header, $footer;
+    global $header, $footer, $content;
 
     $blog = new Blog\Controller();
     $post = $blog->post($id);
 
     $content = include "dat/view/BlogPost.phtml";
-    include "dat/view/main.phtml";
 });
 
+// Home page, display blog post list
 $default = function () {
-    global $header, $footer;
+    global $header, $footer, $content;
 
     $blog = new Blog\Controller();
     $posts = $blog->lists();
 
     $content = include "dat/view/BlogList.phtml";
-    include "dat/view/main.phtml";
 };
 
 $router->all('/posts', $default);
 $router->default($default);
+include "dat/view/main.phtml";
