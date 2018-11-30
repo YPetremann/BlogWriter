@@ -21,11 +21,20 @@ $router->all('/login', function () {
 });
 
 // Post page, Display post and comments
+$router->post('/posts/:id', function ($id) {
+    global $header, $footer, $content, $title;
+
+    $blog = new Blog\Controller();
+    $post = $blog->createComment($id, $_POST);
+    $post = $blog->readPost($id);
+
+    $content = include "dat/view/BlogPost.phtml";
+});
 $router->all('/posts/:id', function ($id) {
     global $header, $footer, $content, $title;
 
     $blog = new Blog\Controller();
-    $post = $blog->post($id);
+    $post = $blog->readPost($id);
 
     $content = include "dat/view/BlogPost.phtml";
 });
