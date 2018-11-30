@@ -1,6 +1,6 @@
 // out: style.css
 @import url("reset.css");
-@import url("flex.less"); /** General Classes **/
+@import url("flex.less"); /* General Classes */
 
 .hidden {
 	/* Hide it, keep it */
@@ -18,7 +18,7 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-/** Fix footer to bottom **/
+/* Fix footer to bottom */
 
 body,
 html {
@@ -32,33 +32,32 @@ html {
 		flex-basis: auto;
 	}
 }
-/** multi alignement bar **/
+/* multi alignement bar */
+
 .multibar {
 	display: flex;
 
 	&:before {
 		order: -1;
 		content: "";
-		display: block;
 		flex-grow: 1;
 	}
 
 	&:after {
 		order: 1;
 		content: "";
-		display: block;
 		flex-grow: 1;
 	}
 
-	.left {
+	& > .left {
 		order: -2;
 	}
 
-	.right {
+	& > .right {
 		order: 2;
 	}
 }
-/** multi alignement bar **/
+/* buttons */
 
 .btn {
 	background: gray;
@@ -76,14 +75,27 @@ body {
 	& > header {
 		background: #0d1f34;
 		color: #d7deff;
-
-		nav > ul {
+		h1 {
 			display: flex;
+			flex-direction: row;
+			align-items: center;
+			p {
+				padding:10px;
+			}
+		}
 
-			a {
-				padding: 10px;
-				color: #fff;
-				text-decoration: none;
+		nav {
+			display: flex;
+			align-items: center;
+			&> ul {
+				display: flex;
+				align-items: center;
+
+				a {
+					padding: 10px;
+					color: #fff;
+					text-decoration: none;
+				}
 			}
 		}
 	}

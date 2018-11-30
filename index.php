@@ -1,8 +1,11 @@
 <?php
 require('mod/ClassAutoload.php');
 ClassAutoload::register();
-function url($url){
-    return "/BlogWriter".$url;
+function url($url, $unique=false){
+    $prefix = "/BlogWriter";
+    $url = $prefix . $url;
+    (!$unique)?: $url .= "?v=".uniqid('',true);
+    return $url;
 }
 
 $header  = include "dat/view/header.phtml";

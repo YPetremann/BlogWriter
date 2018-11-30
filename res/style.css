@@ -1,5 +1,5 @@
 @import url("reset.css");
-/** General Classes **/
+/* General Classes */
 .hidden {
   /* Hide it, keep it */
   visibility: hidden !important;
@@ -15,7 +15,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-/** Fix footer to bottom **/
+/* Fix footer to bottom */
 body,
 html {
   display: flex;
@@ -28,29 +28,27 @@ html > main {
   flex-shrink: 0;
   flex-basis: auto;
 }
-/** multi alignement bar **/
+/* multi alignement bar */
 .multibar {
   display: flex;
 }
 .multibar:before {
   order: -1;
   content: "";
-  display: block;
   flex-grow: 1;
 }
 .multibar:after {
   order: 1;
   content: "";
-  display: block;
   flex-grow: 1;
 }
-.multibar .left {
+.multibar > .left {
   order: -2;
 }
-.multibar .right {
+.multibar > .right {
   order: 2;
 }
-/** multi alignement bar **/
+/* buttons */
 .btn {
   background: gray;
   padding: 5px 10px;
@@ -65,8 +63,21 @@ body > header {
   background: #0d1f34;
   color: #d7deff;
 }
+body > header h1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+body > header h1 p {
+  padding: 10px;
+}
+body > header nav {
+  display: flex;
+  align-items: center;
+}
 body > header nav > ul {
   display: flex;
+  align-items: center;
 }
 body > header nav > ul a {
   padding: 10px;
