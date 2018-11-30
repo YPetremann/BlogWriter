@@ -5,7 +5,7 @@
 		<header class="multibar">
 			<span class="left"><?= $post['id']; ?></span>
 			<span><?= $post['title']; ?></span>
-			<span class="right">Publié le <?= $post['post_date_fr']; ?></span>
+			<span class="right">Publié le <?= $post['post_date']; ?></span>
 		</header>
 		<div><?= $post['content']; ?></div>
 	</article>
@@ -24,7 +24,7 @@
 		<article>
 			<header class="multibar">
 				<span class="left"><?= $comment['author']; ?> </span>
-				<span>le <?= $comment['comment_date_fr']; ?></span>
+				<span>le <?= $comment['post_date']; ?></span>
 				<span class="right"><a class="btn warning" href="?action=modComment&id=<?= $comment['id']; ?>">signaler</a></span>
 			</header>
 			<div><?= $comment['content']; ?></div>
