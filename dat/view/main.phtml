@@ -1,14 +1,16 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title><?= $title; ?></title>
+	<title><?= $view->title; ?></title>
 	<link href="<?= url("/res/style.css",true);?>" rel="stylesheet" />
-<?= $head; ?>
+<?= $view->head; ?>
 </head>
 <body>
-	<?= $header; ?>
-	<?= $content; ?>
-	<?= $footer; ?>
+	<?= $view->header; ?>
+	<?= $view->content; ?>
+	<?= $view->footer; ?>
 </body>
 </html>
+<?php return ob_get_clean(); ?>
