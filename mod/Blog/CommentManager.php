@@ -2,13 +2,16 @@
 namespace Blog;
 
 use \DBManager;
-
-class CommentManager extends DBManager
+use \USer\User;
+class CommentManager
 {
+    public function __construct($as){
+        $this->db = DBManager::get();
+        $this->user = $as;
+    }
     public function get_comments($id) {}
     public function create($id,$author,$comment) {
-        $db = $this->db_connect();
-        $query = $db->prepare("INSERT INTO comments(post_id, author_id, content)
+        $query = $this->db->prepare("INSERT INTO comments(post_id, author_id, content)
 	                           VALUES (?, ?, ?)");
         $answer = $query->execute([$id,0,$comment]);
         return $answer;
@@ -18,8 +21,7 @@ class CommentManager extends DBManager
     public function delete($id) {}
     public function list($id)
     {
-        $db = $this->db_connect();
-        $query = $db->prepare('SELECT
+        $query = $this->db->prepare('SELECT
                                c.id id,
                                c.content content,
                                c.post_date post_date,

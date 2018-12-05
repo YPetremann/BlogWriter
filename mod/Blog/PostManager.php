@@ -5,6 +5,10 @@ use \DBManager;
 
 class PostManager extends DBManager
 {
+    public function __construct($as){
+        $this->db = DBManager::get();
+        $this->user = $as;
+    }
     public function get_comments($id)
     {
     }
@@ -13,8 +17,7 @@ class PostManager extends DBManager
     }
     public function read($id)
     {
-        $db = $this->db_connect();
-        $query = $db->prepare('SELECT
+        $query = $this->db->prepare('SELECT
                                  p.id id,
                                  p.title title,
                                  p.content content,
@@ -37,8 +40,7 @@ class PostManager extends DBManager
     }
     public function list()
     {
-        $db = $this->db_connect();
-        $query = $db->query('SELECT
+        $query = $this->db->query('SELECT
                                p.id id,
                                p.title title,
                                p.content content,
