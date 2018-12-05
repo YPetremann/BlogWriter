@@ -2,6 +2,7 @@
 require('mod/ClassAutoload.php');
 ClassAutoload::register();
 session_start();
+
 $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 
 function url($url, $unique=false)
@@ -18,62 +19,77 @@ $view->header = include "dat/view/header.phtml";
 $view->footer = include "dat/view/footer.phtml";
 
 // Login page, Display login form
+$router->post('/login', function () {
+    $blog = new User\Controller($_SESSION["user"]);
+    return $blog->login($_POST);
+});
 $router->all('/login', function () {
-    global $view;
-    $blog = new Blog\Controller();
-    $view->content = include "dat/view/UserLogin.phtml";
+    $blog = new User\Controller($_SESSION["user"]);
+    return $blog->login();
+});
+
+// Logout, Display logout message
+$router->all('/logout', function () {
+    $blog = new User\Controller($_SESSION["user"]);
+    return $blog->logout();
+});
+
+// Create post page, Permit to edit post
+$router->post('/posts/create', function ($id) {
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->createPost($_POST);
+});
+$router->all('/posts/create', function ($id) {
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->createPost();
 });
 
 // Edit post page, Permit to edit post
-$router->post('/posts/:id/edit', function ($id) {
-    global $view;
-    if($_SESSION["user"]->post_can_create)
-    $blog = new Blog\Controller();
-    $post = $blog->readPost($id);
-
-    $view->content = include "dat/view/BlogPostEdit.phtml";
+$router->post('/posts/update/:id', function ($id) {
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->editPost($id, $_POST);
+});
+$router->all('/posts/update/:id', function ($id) {
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->editPost($id);
 });
 
-$router->all('/posts/:id/edit', function ($id) {
-    global $view;
-    if($_SESSION["user"]->post_can_create)
-    $blog = new Blog\Controller();
-    $post = $blog->readPost($id);
+// Post page, Display post and comments
+$router->all('/posts/:post_id/report/:comment_id', function ($post_id, $comment_id) {
+    global $router;
+    $blog = new Blog\Controller($_SESSION["user"]);
+    $blog->reportComment($post_id, $comment_id);
 
-    $view->content = include "dat/view/BlogPostEdit.phtml";
+    $router->url('/posts/'.$post_id);
+    return true;
 });
 
 // Post page, Display post and comments
 $router->post('/posts/:id', function ($id) {
-    global $view;
-
-    $blog = new Blog\Controller();
-    $post = $blog->createComment($id, $_POST);
-    $post = $blog->readPost($id);
-
-    $view->content = include "dat/view/BlogPost.phtml";
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->createComment($id, $_POST);
 });
 $router->all('/posts/:id', function ($id) {
-    # TODO gerer cas ou router
-    global $view;
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->readPost($id);
+});
 
-    $blog = new Blog\Controller();
-    $post = $blog->readPost($id);
-
-    $view->content = include "dat/view/BlogPost.phtml";
+// Post page, Display post and comments
+$router->all('/posts/delete/:id', function ($id) {
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->deletePost($id);
 });
 
 // Home page, display blog post list
 $default = function () {
-    global $view;
-
-    $blog = new Blog\Controller();
-    $posts = $blog->listPost();
-
-    $view->content = include "dat/view/BlogList.phtml";
+    $blog = new Blog\Controller($_SESSION["user"]);
+    return $blog->listPost();
 };
-
 $router->all('/posts', $default);
 $router->default($default);
+$router->default(function () {
+    global $view;
+    $view->content = include "dat/view/MainError.phtml";
+});
 
 echo include "dat/view/main.phtml";

@@ -9,6 +9,10 @@ class Router
         $this->url = trim($url, '/');
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
+    public function url($url)
+    {
+        $this->url = trim($url, '/');
+    }
     public function get($path, $function)
     {
         return $this->run("GET", $path, $function);
@@ -27,12 +31,16 @@ class Router
     }
     public function run($method, $path, $function)
     {
+        global $view;
         ($path === null) ?: $path = trim($path, '/');
         if ($this->continue and ($method == null or $this->method == $method)) {
             $args = ($path === null) ? [] : $this->match($path);
             if ($args !== false) {
                 $return = call_user_func_array($function, $args);
-                ($return !== null) ?: $this->continue = false;
+                //$view->message .= '<div class="neutral"><div class="fixer">'.($path===null?"default":$path).'</div></div>';
+                if ($return === null) {
+                    $this->continue = false;
+                }
                 return $this->continue;
             }
         }
