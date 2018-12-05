@@ -38,16 +38,24 @@ class Controller {
             return false;
         }
     }
+    public function reportComment($post_id, $comment_id) {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+            $comment_id = (int) $comment_id;
 
-        $commentManager = new CommentManager($_SESSION["user"]);
-        $affectedLines = $commentManager->create($id, $author, $comment);
+            $commentManager = new CommentManager($this->user);
+            $affectedLines = $commentManager->report($comment_id);
 
-        if (!$affectedLines) {
-            return new Exception("Impossible d'ajouter le commentaire !");
-        } else {
-            header('Location: '.$_SERVER['REQUEST_URI']);
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez signaler ce commentaire !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été signalé !</div></div>';
+            }
+        } catch(\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            return false;
         }
-        return true;
     }
     public function readPost($id) {
         global $view;

@@ -25,7 +25,11 @@
 			<header class="multibar">
 				<span class="left"><?= $comment['author']; ?> </span>
 				<span>le <?= $comment['post_date']; ?></span>
-				<span class="right"><a class="btn warning" href="?action=modComment&id=<?= $comment['id']; ?>">signaler</a></span>
+				<?php if($comment["reported"]) { ?>
+					<span class="right"><a class="btn error" href="#">signalé</a></span>
+				<?php }else{ ?>
+					<span class="right"><a class="btn warning" href="<?=url('/posts/'.$post['id'].'/report/'.$comment['id']); ?>">signaler</a></span>
+				<?php } ?>
 			</header>
 			<div><?= $comment['content']; ?></div>
 		</article>
