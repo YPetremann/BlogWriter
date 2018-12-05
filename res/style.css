@@ -48,14 +48,6 @@ html > main {
 .multibar > .right {
   order: 2;
 }
-/* buttons */
-.btn {
-  background: gray;
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-decoration: none;
-  color: white;
-}
 body > * {
   padding: 20px;
 }
@@ -142,4 +134,40 @@ form label {
 form .line {
   grid-column: auto / span 2;
   text-align: right;
+}
+/* buttons */
+.btn {
+  background: #CCCCCC;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 900;
+  color: black;
+}
+.neutral {
+  background: #CCCCCC;
+}
+.error {
+  background: #EE9999;
+}
+.error.btn {
+  color: #550000;
+}
+.warning {
+  background: #EEEE99;
+}
+.warning.btn {
+  color: #555500;
+}
+.success {
+  background: #99EE99;
+}
+.success.btn {
+  color: #005500;
+}
+.info {
+  background: #9999EE;
+}
+.info.btn {
+  color: #000055;
 }
