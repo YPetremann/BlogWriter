@@ -1,4 +1,5 @@
 <?php
+namespace Blog;
 class Post
 {
     public $id;
