@@ -3,7 +3,7 @@ namespace Blog;
 
 use \DBManager;
 
-class PostManager extends DBManager
+class PostManager
 {
     public function __construct($as){
         $this->db = DBManager::get();
