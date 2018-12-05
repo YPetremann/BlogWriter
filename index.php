@@ -1,6 +1,8 @@
 <?php
 require('mod/ClassAutoload.php');
 ClassAutoload::register();
+session_start();
+$_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 
 function url($url, $unique=false)
 {

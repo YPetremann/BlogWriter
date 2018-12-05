@@ -1,4 +1,5 @@
 <?php
+namespace User;
 class UserManager
 {
     public function add()
