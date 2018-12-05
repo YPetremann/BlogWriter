@@ -17,6 +17,13 @@ class PostManager
     }
     public function read($id)
     {
+        $cond = [];
+        $id = (int) $id;
+        if ( $this->user->post_can_read & (UserBlogI::PUBLIC)){ array_push($cond, "p.visibility = 1"); }
+        if ( $this->user->post_can_read & (UserBlogI::PRIVATE)){ array_push($cond, "p.visibility = 0"); }
+        if ( $this->user->post_can_read & (UserBlogI::SELF)){ array_push($cond, "p.author_id = ".$this->user->id); }
+        if ( $this->user->post_can_read & (UserBlogI::OTHER)){ array_push($cond, "p.author_id != ".$this->user->id); }
+        if ( !empty($cond) ){ $cond = " AND (".join(" OR ",$cond).")"; }
         $query = $this->db->prepare('SELECT
                                  p.id id,
                                  p.title title,
@@ -26,11 +33,15 @@ class PostManager
                                FROM posts p
                                INNER JOIN users u
                                ON p.author_id = u.id
-                               WHERE p.id = ?');
+                               WHERE p.id = ?'.$cond);
         $query->execute([$id]);
-        $data = $query->fetch();
+        $posts = $query->fetchAll();
         $query->closeCursor();
-        return $data;
+        if(count($posts) == 1){
+            return $posts[0];
+        }else{
+            throw new \Exception("Article inexistant");
+        }
     }
     public function update($id)
     {
