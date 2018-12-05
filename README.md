@@ -86,9 +86,10 @@ Vous développerez sur une architecture MVC orienté objet sans utiliser de fram
   
 ### Classes
   
-  
 
 ![](/doc/img/classes.png)  
+
+![](/doc/img/classes_detail.png)  
   
 ### Base de données
   
