@@ -66,6 +66,16 @@ $router->all('/posts/:post_id/comment/:comment_id/report', function ($post_id, $
 });
 
 // Post page, Display post and comments
+$router->all('/posts/:post_id/comment/:comment_id/delete', function ($post_id, $comment_id) {
+    global $router;
+    $blog = new Blog\Controller($_SESSION["user"]);
+    $blog->deleteComment($post_id, $comment_id);
+
+    $router->url('/posts/'.$post_id);
+    return true;
+});
+
+// Post page, Display post and comments
 $router->post('/posts/:id', function ($id) {
     $blog = new Blog\Controller($_SESSION["user"]);
     return $blog->createComment($id, $_POST);

@@ -39,7 +39,18 @@ class CommentManager
     }
     public function read($id) {}
     public function update($id) {}
-    public function delete($id) {}
+    public function delete($id) {
+        $id = (int) $id;
+
+        $cond = [];
+        $cond = $this->sql_permission($this->user->comment_can_delete, $cond);
+        if ( !empty($cond) ){ $cond = " AND (".join(" OR ",$cond).")"; }
+        $query = $this->db->prepare('DELETE FROM comments WHERE id = :id'.$cond);
+        $query->execute(["id"=>$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+        return $answer;
+    }
     public function list($id)
     {
         $query = $this->db->prepare('SELECT

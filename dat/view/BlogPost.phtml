@@ -26,7 +26,7 @@
 				<span class="left"><?= $comment['author']; ?> </span>
 				<span>le <?= $comment['post_date']; ?></span>
 				<?php if($comment['comment_can_delete']) { ?>
-					<span class="right"><a class="btn error" href="<?=url('/posts/'.$post['id'].'/delete/'.$comment['id']); ?>">suprimer</a></span>
+					<span class="right"><a class="btn error" href="<?=url('/posts/'.$post['id'].'/comment/'.$comment['id'].'/delete'); ?>">suprimer</a></span>
 				<?php } ?>
 				<?php if($comment["reported"]) { ?>
 					<span class="right"><a class="btn error" >signalé</a></span>
