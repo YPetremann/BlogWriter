@@ -3,11 +3,13 @@
 <main>
 	<article id="post" class="fixer">
 		<header class="multibar">
-			<span class="left"><?= $post['id']; ?></span>
-			<span><?= $post['title']; ?></span>
-			<span class="right">Publié le <?= $post['post_date']; ?></span>
+			<span class="left"><?= $post['title']; ?></span>
 		</header>
 		<div><?= $post['content']; ?></div>
+		<footer class="multibar">
+			<span class="left">Publié le <?= $post['post_date']; ?></span>
+			<span class="right"></span>
+		</footer>
 	</article>
 	<section class="fixer" id="comments">
 		<h2>Commentaires</h2>
