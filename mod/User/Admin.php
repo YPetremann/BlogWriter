@@ -3,8 +3,9 @@ namespace User;
 
 class Admin extends User
 {
-    public function __construct()
+    public function __construct($data=[])
     {
+        parent::__construct($data);
         $this->post_can_create    = self::ALL;
         $this->post_can_read      = self::ALL;
         $this->post_can_update    = self::ALL;

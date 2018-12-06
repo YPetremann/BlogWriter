@@ -33,9 +33,13 @@ try{
         $blog = new User\Controller($_SESSION["user"]);
         return $blog->logout();
     };
+    $userAsk = function () {
+        $blog = new User\Controller($_SESSION["user"]);
+        return $blog->ask($_POST);
+    };
 
     $router->post('/user/login', $userLogin);
-    $router->all('/user/login', $userLogin);
+    $router->all('/user/login', $userAsk);
     $router->all('/user/logout', $userLogout);
 
     // Blog related functions
@@ -122,13 +126,18 @@ try{
     $router->all('/posts/list', $postList);
     $router->default($postList);
     $router->default($errorPage);
-} catch(Exception $e){
-    $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-    $router->default($errorPage);
-} catch(Error $e){
+}
+ catch(Exception $e){
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
     $router->default($errorPage);
 }
+/*
+
+catch(Error $e){
+    $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+    $router->default($errorPage);
+}
+*/
 // general functions
 
 echo include "dat/view/main.phtml";
