@@ -13,9 +13,9 @@
 		<h2>Commentaires</h2>
 		<form action="" method="post">
 			<label for="author">Auteur</label>
-			<input type="text" id="author" name="author" />
+			<input type="text" disabled value="<?= $view->user->name; ?>" />
 			<label for="comment">Commentaire</label>
-			<textarea id="comment" name="comment"></textarea>
+			<textarea id="comment" name="comment" <?=$post['comment_can_create']?"":"disabled";?>></textarea>
 			<div class="line">
 				<input type="submit" />
 			</div>
@@ -25,10 +25,13 @@
 			<header class="multibar">
 				<span class="left"><?= $comment['author']; ?> </span>
 				<span>le <?= $comment['post_date']; ?></span>
+				<?php if($comment['comment_can_delete']) { ?>
+					<span class="right"><a class="btn error" href="<?=url('/posts/'.$post['id'].'/delete/'.$comment['id']); ?>">suprimer</a></span>
+				<?php } ?>
 				<?php if($comment["reported"]) { ?>
-					<span class="right"><a class="btn error" href="#">signalé</a></span>
+					<span class="right"><a class="btn error" >signalé</a></span>
 				<?php }else{ ?>
-					<span class="right"><a class="btn warning" href="<?=url('/posts/'.$post['id'].'/report/'.$comment['id']); ?>">signaler</a></span>
+					<span class="right"><a class="btn warning" href="<?=url('/posts/'.$post['id'].'/comment/'.$comment['id'].'/report'); ?>">signaler</a></span>
 				<?php } ?>
 			</header>
 			<div><?= $comment['content']; ?></div>

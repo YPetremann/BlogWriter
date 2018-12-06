@@ -11,10 +11,10 @@ class Guest extends User
         $this->post_can_delete    = self::NONE;
         $this->post_can_publish   = self::NONE;
 
-        $this->comment_can_create = self::ALL;
+        $this->comment_can_create = self::NONE;
         $this->comment_can_read   = self::PUBLIC;
         $this->comment_can_update = self::NONE;
         $this->comment_can_delete = self::NONE;
-        $this->comment_can_report = self::ALL;
+        $this->comment_can_report = self::NONE;
     }
 }

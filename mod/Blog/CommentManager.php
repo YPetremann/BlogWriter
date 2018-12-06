@@ -9,11 +9,32 @@ class CommentManager
         $this->db = DBManager::get();
         $this->user = $as;
     }
+    private function permission($perm, $entry){
+        $result = false;
+        if ( ($perm & UserBlogI::PUBLIC ) && $entry["visibility"] == 1 ){ $result = true; }
+        if ( ($perm & UserBlogI::PRIVATE) && $entry["visibility"] != 1 ){ $result = true; }
+        if ( ($perm & UserBlogI::SELF   ) && $entry["author_id"] == $this->user->id ){ $result = true; }
+        if ( ($perm & UserBlogI::OTHER  ) && $entry["author_id"] != $this->user->id ){ $result = true; }
+        return $result;
+    }
+    private function sql_permission($perm, $cond){
+        if ( $perm & UserBlogI::PUBLIC  ){ array_push($cond, "visibility = 1"); }
+        if ( $perm & UserBlogI::PRIVATE ){ array_push($cond, "visibility = 0"); }
+        if ( $perm & UserBlogI::SELF    ){ array_push($cond, "author_id = ".$this->user->id); }
+        if ( $perm & UserBlogI::OTHER   ){ array_push($cond, "author_id != ".$this->user->id); }
+        return $cond;
+    }
     public function get_comments($id) {}
-    public function create($id,$author,$comment) {
+    public function create($id,$comment) {
+        $id = (int) $id;
+
+        $postManager = new PostManager($this->user);
+        $post = $postManager->read($id);
+        if(!$post['comment_can_create']) throw new \Exception("Vous ne pouvez poster de commentaires ici !");
+
         $query = $this->db->prepare("INSERT INTO comments(post_id, author_id, content)
 	                           VALUES (?, ?, ?)");
-        $answer = $query->execute([$id,0,$comment]);
+        $answer = $query->execute([$id,$this->user->id,$comment]);
         return $answer;
     }
     public function read($id) {}
@@ -24,7 +45,9 @@ class CommentManager
         $query = $this->db->prepare('SELECT
                                c.id id,
                                c.content content,
+                               c.author_id author_id,
                                c.post_date post_date,
+                               c.visibility visibility,
                                u.name author,
                                c.reported reported
                              FROM comments c
@@ -34,17 +57,20 @@ class CommentManager
                              ORDER BY c.id DESC');
         $query->execute([$id]);
         $data = $query->fetchAll();
+        foreach($data as &$entry){
+            $entry["comment_can_delete"]=$this->permission($this->user->comment_can_delete, $entry);
+            $entry["comment_can_report"]=$this->permission($this->user->comment_can_report, $entry);
+        }
         $query->closeCursor();
         return $data;
     }
     public function report($id) {
-        $cond = [];
         $id = (int) $id;
-        if ( $this->user->comment_can_report & (UserBlogI::PUBLIC)){ array_push($cond, "visibility = 1"); }
-        if ( $this->user->comment_can_report & (UserBlogI::PRIVATE)){ array_push($cond, "visibility = 0"); }
-        if ( $this->user->comment_can_report & (UserBlogI::SELF)){ array_push($cond, "author_id = ".$this->user->id); }
-        if ( $this->user->comment_can_report & (UserBlogI::OTHER)){ array_push($cond, "author_id != ".$this->user->id); }
+
+        $cond = [];
+        $cond = $this->sql_permission($this->user->comment_can_report, $cond);
         if ( !empty($cond) ){ $cond = " AND (".join(" OR ",$cond).")"; }
+
         $query = $this->db->prepare('UPDATE comments SET reported = 1 WHERE reported = 0 AND id = :id'.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();

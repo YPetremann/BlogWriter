@@ -15,6 +15,7 @@ function url($url, $unique=false)
 
 $router = new Router($_GET["url"]);
 $view = new View();
+$view->user = $_SESSION["user"];
 $view->header = include "dat/view/header.phtml";
 $view->footer = include "dat/view/footer.phtml";
 
@@ -55,7 +56,7 @@ $router->all('/posts/update/:id', function ($id) {
 });
 
 // Post page, Display post and comments
-$router->all('/posts/:post_id/report/:comment_id', function ($post_id, $comment_id) {
+$router->all('/posts/:post_id/comment/:comment_id/report', function ($post_id, $comment_id) {
     global $router;
     $blog = new Blog\Controller($_SESSION["user"]);
     $blog->reportComment($post_id, $comment_id);
