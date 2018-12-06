@@ -66,15 +66,14 @@ class PostManager
     public function list()
     {
         $cond = [];
-        if ( $this->user->post_can_read & (UserBlogI::PUBLIC)){ array_push($cond, "p.visibility = 1"); }
-        if ( $this->user->post_can_read & (UserBlogI::PRIVATE)){ array_push($cond, "p.visibility = 0"); }
-        if ( $this->user->post_can_read & (UserBlogI::SELF)){ array_push($cond, "p.author_id = ".$this->user->id); }
-        if ( $this->user->post_can_read & (UserBlogI::OTHER)){ array_push($cond, "p.author_id != ".$this->user->id); }
+        $cond = $this->sql_permission($this->user->post_can_read, $cond);
         if ( !empty($cond) ){ $cond = 'WHERE '.join(' OR ',$cond); }
         $query = $this->db->query('SELECT
                                p.id id,
                                p.title title,
                                p.content content,
+                               p.visibility visibility,
+                               p.author_id author_id,
                                p.post_date post_date,
                                u.name author
                              FROM posts p
@@ -83,6 +82,11 @@ class PostManager
                              '.$cond.'
                              ORDER BY p.id DESC');
         $data = $query->fetchAll();
+        foreach($data as &$entry){
+            $entry["post_can_update"] = $this->sql_permission($this->user->post_can_update, $entry);
+            $entry["post_can_publish"] = $this->sql_permission($this->user->post_can_publish, $entry);
+            $entry["post_can_delete"] = $this->sql_permission($this->user->post_can_delete, $entry);
+        }
         $query->closeCursor();
         return $data;
     }
