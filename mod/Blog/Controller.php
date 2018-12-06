@@ -76,6 +76,24 @@ class Controller {
             return false;
         }
     }
+    public function publishPost($post_id) {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+
+            $postManager = new PostManager($this->user);
+            $affectedLines = $postManager->set_visibility($post_id,true);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+            }
+        } catch(\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            return false;
+        }
+    }
     public function readPost($id) {
         global $view;
         try {
