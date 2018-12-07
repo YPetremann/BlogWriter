@@ -55,6 +55,26 @@ class Controller {
             return false;
         }
     }
+
+    public function unreportComment($post_id, $comment_id) {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+            $comment_id = (int) $comment_id;
+
+            $commentManager = new CommentManager($this->user);
+            $affectedLines = $commentManager->unreport($comment_id);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez désignaler ce commentaire !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été désignalé !</div></div>';
+            }
+        } catch(\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            return false;
+        }
+    }
     public function deleteComment($post_id, $comment_id) {
         global $view;
         try {
