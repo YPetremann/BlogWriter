@@ -71,6 +71,7 @@ class CommentManager
         foreach($data as &$entry){
             $entry["comment_can_delete"]=$this->permission($this->user->comment_can_delete, $entry);
             $entry["comment_can_report"]=$this->permission($this->user->comment_can_report, $entry);
+            $entry["comment_can_unreport"]=$this->permission($this->user->comment_can_unreport, $entry);
         }
         $query->closeCursor();
         return $data;
@@ -83,6 +84,19 @@ class CommentManager
         if ( !empty($cond) ){ $cond = " AND (".join(" OR ",$cond).")"; }
 
         $query = $this->db->prepare('UPDATE comments SET reported = 1 WHERE reported = 0 AND id = :id'.$cond);
+        $query->execute(["id"=>$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+        return $answer;
+    }
+    public function unreport($id) {
+        $id = (int) $id;
+
+        $cond = [];
+        $cond = $this->sql_permission($this->user->comment_can_unreport, $cond);
+        if ( !empty($cond) ){ $cond = " AND (".join(" OR ",$cond).")"; }
+
+        $query = $this->db->prepare('UPDATE comments SET reported = 0 WHERE reported = 1 AND id = :id'.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();
         $query->closeCursor();

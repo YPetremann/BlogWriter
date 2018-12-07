@@ -17,5 +17,6 @@ class Member extends User
         $this->comment_can_update = self::SELF;
         $this->comment_can_delete = self::SELF;
         $this->comment_can_report = self::ALL;
+        $this->comment_can_unreport = self::NONE;
     }
 }

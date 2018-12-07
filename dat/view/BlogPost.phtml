@@ -30,13 +30,13 @@
 				<?php if($comment['comment_can_delete']) { ?>
 					<span class="right"><a class="btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a></span>
 				<?php } ?>
-				<?php if(!$comment["reported"]) { ?>
+				<?php if($comment["reported"]) { ?>
+					<span class="right"><a class="btn error" >signalé</a></span>
+					<?php if($comment['comment_can_unreport']) { ?>
+						<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
+					<?php } ?>
+				<?php } elseif($comment['comment_can_report']){ ?>
 					<span class="right"><a class="btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a></span>
-				<?php }elseif($comment['comment_can_delete']){ ?>
-					<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
-					<span class="right"><a class="btn error" >signalé</a></span>
-				<?php }else{ ?>
-					<span class="right"><a class="btn error" >signalé</a></span>
 				<?php } ?>
 			</header>
 			<div><?= $comment['content']; ?></div>

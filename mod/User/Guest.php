@@ -17,5 +17,6 @@ class Guest extends User
         $this->comment_can_update = self::NONE;
         $this->comment_can_delete = self::NONE;
         $this->comment_can_report = self::NONE;
+        $this->comment_can_unreport = self::NONE;
     }
 }

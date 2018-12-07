@@ -17,5 +17,6 @@ class Admin extends User
         $this->comment_can_update = self::ALL;
         $this->comment_can_delete = self::ALL;
         $this->comment_can_report = self::ALL;
+        $this->comment_can_unreport = self::ALL;
     }
 }
