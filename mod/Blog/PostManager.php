@@ -83,9 +83,9 @@ class PostManager
                              ORDER BY p.id DESC');
         $data = $query->fetchAll();
         foreach($data as &$entry){
-            $entry["post_can_update"] = $this->sql_permission($this->user->post_can_update, $entry);
-            $entry["post_can_publish"] = $this->sql_permission($this->user->post_can_publish, $entry);
-            $entry["post_can_delete"] = $this->sql_permission($this->user->post_can_delete, $entry);
+            $entry["post_can_update"] = $this->permission($this->user->post_can_update, $entry);
+            $entry["post_can_publish"] = $this->permission($this->user->post_can_publish, $entry);
+            $entry["post_can_delete"] = $this->permission($this->user->post_can_delete, $entry);
         }
         $query->closeCursor();
         return $data;
