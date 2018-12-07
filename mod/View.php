@@ -18,4 +18,8 @@ class View
     {
         unset($this->data[$name]);
     }
+    public function __call($name, $args)
+    {
+        return $this->data[$name](...$args);
+    }
 }

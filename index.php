@@ -16,14 +16,12 @@ function url($url, $unique=false)
 $router = new Router($_GET["url"]);
 $view = new View();
 $view->user = $_SESSION["user"];
-$view->header = include "dat/view/header.phtml";
-$view->footer = include "dat/view/footer.phtml";
 
 $errorPage = function () {
     global $view;
     $view->content = include "dat/view/MainError.phtml";
 };
-try{
+try {
     // User related functions
     $userLogin = function () {
         $blog = new User\Controller($_SESSION["user"]);
@@ -37,10 +35,6 @@ try{
         $blog = new User\Controller($_SESSION["user"]);
         return $blog->ask($_POST);
     };
-
-    $router->post('/user/login', $userLogin);
-    $router->all('/user/login', $userAsk);
-    $router->all('/user/logout', $userLogout);
 
     // Blog related functions
     $postCreate = function () {
@@ -73,8 +67,12 @@ try{
     };
 
     $commentCreate   = function ($post_id) {
+        global $router;
         $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->createComment($id, $_POST);
+        $blog->createComment($post_id, $_POST);
+
+        $router->url('/posts/'.$post_id.'/read');
+        return true;
     };
     $commentUpdate   = function ($post_id, $comment_id) {
         global $router;
@@ -109,28 +107,37 @@ try{
         return true;
     };
 
-    $router->post('/posts/:id/comment/create', $commentCreate);
-    $router->all('/posts/:post_id/comment/:comment_id/update', $commentUpdate);
-    $router->all('/posts/:post_id/comment/:comment_id/delete', $commentDelete);
-    $router->all('/posts/:post_id/comment/:comment_id/report', $commentReport);
-    $router->all('/posts/:post_id/comment/:comment_id/unreport', $commentUnreport);
+    $view->urlUserLoginPOST   = $router->post('/user/login', $userLogin);
+    $view->urlUserCreatePOST = $view->urlUserLoginPOST;
+    $view->urlUserForgetPOST = $view->urlUserLoginPOST;
+    $view->urlUserLogin       = $router->all('/user/login', $userAsk);
+    $view->urlUserLogout      = $router->all('/user/logout', $userLogout);
 
-    $router->post('/posts/create', $postCreate);
-    $router->all('/posts/create', $postCreate);
-    $router->all('/posts/:id/read', $postRead);
-    $router->post('/posts/:id/update', $postUpdate);
-    $router->all('/posts/:id/update', $postUpdate);
-    $router->all('/posts/:id/delete', $postDelete);
-    $router->all('/posts/:id/publish', $postPublish);
-    $router->all('/posts/:id/unpublish', $postUnpublish);
-    $router->all('/posts/list', $postList);
+    $view->urlCommentCreate   = $router->post('/posts/:id/comment/create', $commentCreate);
+    $view->urlCommentUpdate   = $router->all('/posts/:post_id/comment/:comment_id/update', $commentUpdate);
+    $view->urlCommentDelete   = $router->all('/posts/:post_id/comment/:comment_id/delete', $commentDelete);
+    $view->urlCommentReport   = $router->all('/posts/:post_id/comment/:comment_id/report', $commentReport);
+    $view->urlCommentUnreport = $router->all('/posts/:post_id/comment/:comment_id/unreport', $commentUnreport);
+
+    $view->urlPostCreatePOST  = $router->post('/posts/create', $postCreate);
+    $view->urlPostCreate      = $router->all('/posts/create', $postCreate);
+    $view->urlPostRead        = $router->all('/posts/:id/read', $postRead);
+    $view->urlPostUpdatePOST  = $router->post('/posts/:id/update', $postUpdate);
+    $view->urlPostUpdate      = $router->all('/posts/:id/update', $postUpdate);
+    $view->urlPostDelete      = $router->all('/posts/:id/delete', $postDelete);
+    $view->urlPostPublish     = $router->all('/posts/:id/publish', $postPublish);
+    $view->urlPostUnpublish   = $router->all('/posts/:id/unpublish', $postUnpublish);
+    $view->urlPostList        = $router->all('/posts/list', $postList);
     $router->default($postList);
     $router->default($errorPage);
-}
- catch(Exception $e){
+
+} catch (Exception $e) {
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
     $router->default($errorPage);
 }
+$router->process();
+$view->header = include "dat/view/header.phtml";
+$view->footer = include "dat/view/footer.phtml";
 /*
 
 catch(Error $e){

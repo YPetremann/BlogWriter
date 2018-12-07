@@ -2,7 +2,7 @@
 <header>
 	<div class="fixer multibar">
 		<h1 class="left">
-			<a href="<?= url('/');?>">
+			<a href="<?= url($view->urlPostList()); ?>">
 				<img src="<?= url('/res/logo.png');?>" height="48px" alt="Logo" />
 				<p>Billet Simple pour l'alaska</p>
 			</a>
@@ -10,7 +10,11 @@
 		<nav class="right">
 			<h2 class="hidden">Navigation</h2>
 			<ul>
-				<li><a href="<?= url('/user/login');?>">Connexion </a> </li>
+				<?php if($view->user->type == "Guest") { ?>
+					<li><a href="<?= url($view->urlUserLogin()); ?>">Connexion</a> </li>
+				<?php } else {?>
+					<li><a href="<?= url($view->urlUserLogout()); ?>">Déconnexion</a> </li>
+				<?php } ?>
 			</ul>
 		</nav>
 	</div>

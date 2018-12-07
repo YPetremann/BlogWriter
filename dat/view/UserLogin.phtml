@@ -4,7 +4,7 @@
 	<section class="fixer" id="login">
 		<fieldset class="h2">
 			<legend>S'identifier</legend>
-			<form action="" method="post">
+			<form action="<?= url($view->urlUserLoginPOST()); ?>" method="post">
 				<label for="email">Email</label><input type="email" id="email" name="email" required />
 				<label for="password">Mot de passe</label><input type="password" id="password" name="password" required />
 				<div class="line">
@@ -14,6 +14,7 @@
 		</fieldset>
 		<fieldset>
 			<legend>Créer compte</legend>
+			<form action="<?= url($view->urlUserCreatePOST()); ?>" method="post">
 			<form action="" method="post">
 				<label for="email">Email</label>
 				<input type="email" id="email" name="email" required />
@@ -24,6 +25,7 @@
 		</fieldset>
 		<fieldset>
 			<legend>Mot de passe oublié</legend>
+			<form action="<?= url($view->urlUserForgetPOST()); ?>" method="post">
 			<form action="" method="post">
 				<label for="email">Email</label>
 				<input type="email" id="email" name="email" required />

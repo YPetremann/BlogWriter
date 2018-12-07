@@ -13,7 +13,7 @@
 	</article>
 	<section class="fixer" id="comments">
 		<h2>Commentaires</h2>
-		<form action="" method="post">
+		<form action="<?= url($view->urlCommentCreate($post['id'])); ?>" method="post">
 			<label for="author">Auteur</label>
 			<input type="text" disabled value="<?= $view->user->name; ?>" />
 			<label for="comment">Commentaire</label>
@@ -28,12 +28,15 @@
 				<span class="left"><?= $comment['author']; ?> </span>
 				<span>le <?= $comment['post_date']; ?></span>
 				<?php if($comment['comment_can_delete']) { ?>
-					<span class="right"><a class="btn error" href="<?=url('/posts/'.$post['id'].'/comment/'.$comment['id'].'/delete'); ?>">suprimer</a></span>
+					<span class="right"><a class="btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a></span>
 				<?php } ?>
-				<?php if($comment["reported"]) { ?>
+				<?php if(!$comment["reported"]) { ?>
+					<span class="right"><a class="btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a></span>
+				<?php }elseif($comment['comment_can_delete']){ ?>
+					<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
 					<span class="right"><a class="btn error" >signalé</a></span>
 				<?php }else{ ?>
-					<span class="right"><a class="btn warning" href="<?=url('/posts/'.$post['id'].'/comment/'.$comment['id'].'/report'); ?>">signaler</a></span>
+					<span class="right"><a class="btn error" >signalé</a></span>
 				<?php } ?>
 			</header>
 			<div><?= $comment['content']; ?></div>

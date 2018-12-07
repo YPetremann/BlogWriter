@@ -5,7 +5,7 @@
 	<article class="fixer">
 		<footer class="multibar">
 			<?php if($view->user->post_can_create) { ?>
-				<span class="right"><a class="btn warning" href="<?=url('/posts/create'); ?>">Créer</a></span>
+				<span class="right"><a class="btn warning" href="<?= url($view->urlPostCreate()); ?>">Créer</a></span>
 			<?php } ?>
 		</footer>
 	</article>
@@ -20,19 +20,19 @@
 					<span class="left"><a class="btn warning">Non visible</a></span>
 				<?php } ?>
 				<?php if($post['post_can_delete']) { ?>
-					<span class="right"><a class="btn error" href="<?=url('/posts/'.$post['id'].'/delete'); ?>">Suprimer</a></span>
+					<span class="right"><a class="btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a></span>
 				<?php } ?>
 				<?php if($post['post_can_publish']) { ?>
 					<?php if(!$post['visibility']) { ?>
-						<span class="right"><a class="btn" href="<?= url('/posts/'.$post['id']).'/publish';?>">Publier</a></span>
+						<span class="right"><a class="btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a></span>
 					<?php } else {?>
-						<span class="right"><a class="btn" href="<?= url('/posts/'.$post['id']).'/unpublish';?>">Dépublier</a></span>
+						<span class="right"><a class="btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a></span>
 					<?php } ?>
 				<?php } ?>
 				<?php if($post['post_can_update']) { ?>
-					<span class="right"><a class="btn" href="<?= url('/posts/'.$post['id'].'/update');?>">Editer</a></span>
+					<span class="right"><a class="btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a></span>
 				<?php } ?>
-				<span class="right"><a class="btn" href="<?= url('/posts/'.$post['id']).'/read';?>">Lire plus...</a></span>
+				<span class="right"><a class="btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a></span>
 			</footer>
 		</article>
 	<?php } ?>

@@ -3,10 +3,11 @@ class Router
 {
     private $url;
     private $method;
+    private $process = [];
     private $continue = true;
     public function __construct($url)
     {
-        $this->url = trim($url, '/');
+        $this->url($url);
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
     public function url($url)
@@ -31,20 +32,25 @@ class Router
     }
     public function run($method, $path, $function)
     {
+        array_push($this->process, ["method"=>$method, "path"=>$path, "function"=>$function]);
+        return new Path($path);
+    }
+    public function process()
+    {
         global $view;
-        ($path === null) ?: $path = trim($path, '/');
-        if ($this->continue and ($method == null or $this->method == $method)) {
-            $args = ($path === null) ? [] : $this->match($path);
-            if ($args !== false) {
-                $return = call_user_func_array($function, $args);
-                //$view->message .= '<div class="neutral"><div class="fixer">'.($path===null?"default":$path).'</div></div>';
-                if ($return === null) {
-                    $this->continue = false;
+        foreach($this->process as $case){
+            ($case["path"] === null) ?: $case["path"] = trim($case["path"], '/');
+            if ($this->continue and ($case["method"] == null or $this->method == $case["method"])) {
+                $args = ($case["path"] === null) ? [] : $this->match($case["path"]);
+                if ($args !== false) {
+                    $return = call_user_func_array($case["function"], $args);
+                    $view->message .= '<div class="neutral"><div class="fixer">'.($case["method"]===null?"ALL":$case["method"]).' /'.($case["path"]===null?"default":$case["path"]).'</div></div>';
+                    if ($return === null) {
+                        $this->continue = false;
+                    }
                 }
-                return $this->continue;
             }
         }
-        return false;
     }
     public function match($path)
     {
