@@ -23,96 +23,53 @@ $errorPage = function () {
 };
 try {
     // User related functions
-    $userLogin = function () {
-        $blog = new User\Controller($_SESSION["user"]);
-        return $blog->login($_POST);
-    };
-    $userLogout = function () {
-        $blog = new User\Controller($_SESSION["user"]);
-        return $blog->logout();
-    };
-    $userAsk = function () {
-        $blog = new User\Controller($_SESSION["user"]);
-        return $blog->ask($_POST);
-    };
+    $userLogout      = function ()         { return (new User\Controller($_SESSION["user"]) )->logout(); };
+    $userLogin       = function ()         { return (new User\Controller($_SESSION["user"]) )->login($_POST); };
+    $userAsk         = function ()         { return (new User\Controller($_SESSION["user"]) )->ask($_POST); };
 
     // Blog related functions
-    $postCreate = function () {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->createPost($_POST);
-    };
-    $postRead = function ($id) {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->readPost($id);
-    };
-    $postUpdate = function ($id) {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->updatePost($id);
-    };
-    $postDelete = function ($id) {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->deletePost($id);
-    };
-    $postPublish = function ($id) {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->publishPost($id);
-    };
-    $postUnpublish = function ($id) {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->unpublishPost($id);
-    };
-    $postList = function () {
-        $blog = new Blog\Controller($_SESSION["user"]);
-        return $blog->listPost();
-    };
+    $postCreate      = function ()         { return (new Blog\Controller($_SESSION["user"]) )->createPost($_POST); };
+    $postRead        = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->readPost($post_id); };
+    $postUpdate      = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->updatePost($post_id); };
+    $postDelete      = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->deletePost($post_id); };
+    $postPublish     = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->publishPost($post_id); };
+    $postUnpublish   = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->unpublishPost($post_id); };
+    $postList        = function ()         { return (new Blog\Controller($_SESSION["user"]) )->listPost(); };
 
     $commentCreate   = function ($post_id) {
         global $router;
-        $blog = new Blog\Controller($_SESSION["user"]);
-        $blog->createComment($post_id, $_POST);
-
         $router->url('/posts/'.$post_id.'/read');
-        return true;
+        return (new Blog\Controller($_SESSION["user"]) )->createComment($post_id, $_POST);
     };
     $commentUpdate   = function ($post_id, $comment_id) {
         global $router;
-        $blog = new Blog\Controller($_SESSION["user"]);
-        $blog->updateComment($post_id, $comment_id);
-
         $router->url('/posts/'.$post_id);
-        return true;
+        return (new Blog\Controller($_SESSION["user"]) )->updateComment($post_id, $comment_id);
     };
     $commentReport   = function ($post_id, $comment_id) {
         global $router;
-        $blog = new Blog\Controller($_SESSION["user"]);
-        $blog->reportComment($post_id, $comment_id);
-
         $router->url('/posts/'.$post_id.'/read');
-        return true;
+        return (new Blog\Controller($_SESSION["user"]) )->reportComment($post_id, $comment_id);
     };
     $commentUnreport = function ($post_id, $comment_id) {
         global $router;
-        $blog = new Blog\Controller($_SESSION["user"]);
-        $blog->unreportComment($post_id, $comment_id);
-
         $router->url('/posts/'.$post_id.'/read');
-        return true;
+        return (new Blog\Controller($_SESSION["user"]) )->unreportComment($post_id, $comment_id);
     };
     $commentDelete   = function ($post_id, $comment_id) {
         global $router;
-        $blog = new Blog\Controller($_SESSION["user"]);
-        $blog->deleteComment($post_id, $comment_id);
-
         $router->url('/posts/'.$post_id.'/read');
-        return true;
+        return (new Blog\Controller($_SESSION["user"]) )->deleteComment($post_id, $comment_id);
     };
 
+    // User related url bindinds
     $view->urlUserLoginPOST   = $router->post('/user/login', $userLogin);
-    $view->urlUserCreatePOST = $view->urlUserLoginPOST;
-    $view->urlUserForgetPOST = $view->urlUserLoginPOST;
+    $view->urlUserCreatePOST  = $view->urlUserLoginPOST;
+    $view->urlUserForgetPOST  = $view->urlUserLoginPOST;
     $view->urlUserLogin       = $router->all('/user/login', $userAsk);
     $view->urlUserLogout      = $router->all('/user/logout', $userLogout);
 
+    // Blog related url bindinds
     $view->urlCommentCreate   = $router->post('/posts/:id/comment/create', $commentCreate);
     $view->urlCommentUpdate   = $router->all('/posts/:post_id/comment/:comment_id/update', $commentUpdate);
     $view->urlCommentDelete   = $router->all('/posts/:post_id/comment/:comment_id/delete', $commentDelete);
@@ -130,7 +87,6 @@ try {
     $view->urlPostList        = $router->all('/posts/list', $postList);
     $router->default($postList);
     $router->default($errorPage);
-
 } catch (Exception $e) {
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
     $router->default($errorPage);

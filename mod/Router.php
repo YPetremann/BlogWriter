@@ -10,26 +10,11 @@ class Router
         $this->url($url);
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
-    public function url($url)
-    {
-        $this->url = trim($url, '/');
-    }
-    public function get($path, $function)
-    {
-        return $this->run("GET", $path, $function);
-    }
-    public function post($path, $function)
-    {
-        return $this->run("POST", $path, $function);
-    }
-    public function all($path, $function)
-    {
-        return $this->run(null, $path, $function);
-    }
-    public function default($function)
-    {
-        return $this->run(null, null, $function);
-    }
+    public function url($url) { $this->url = trim($url, '/'); }
+    public function get($path, $function) { return $this->run("GET", $path, $function); }
+    public function post($path, $function) { return $this->run("POST", $path, $function); }
+    public function all($path, $function) { return $this->run(null, $path, $function); }
+    public function default($function) { return $this->run(null, null, $function); }
     public function run($method, $path, $function)
     {
         array_push($this->process, ["method"=>$method, "path"=>$path, "function"=>$function]);
@@ -38,7 +23,7 @@ class Router
     public function process()
     {
         global $view;
-        foreach($this->process as $case){
+        foreach ($this->process as $case) {
             ($case["path"] === null) ?: $case["path"] = trim($case["path"], '/');
             if ($this->continue and ($case["method"] == null or $this->method == $case["method"])) {
                 $args = ($case["path"] === null) ? [] : $this->match($case["path"]);

@@ -1,7 +1,9 @@
 <?php
-class ClassAutoload {
-    public static function register() {
-        spl_autoload_register(function($class) {
+class ClassAutoload
+{
+    public static function register()
+    {
+        spl_autoload_register(function ($class) {
             switch (substr($class, -1)) {
                 case 'I':
                 case 'T':

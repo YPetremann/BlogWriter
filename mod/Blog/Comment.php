@@ -1,5 +1,6 @@
 <?php
 namespace Blog;
+
 class Comment
 {
     public $id;

@@ -3,20 +3,16 @@ namespace User;
 
 class Member extends User
 {
-    public function __construct($data=[])
-    {
-        parent::__construct($data);
-        $this->post_can_create    = self::NONE;
-        $this->post_can_read      = self::PUBLIC | self::SELF;
-        $this->post_can_update    = self::SELF;
-        $this->post_can_delete    = self::NONE;
-        $this->post_can_publish   = self::NONE;
+    protected $post_can_create      = self::NONE;
+    protected $post_can_read        = self::PUBLIC | self::SELF;
+    protected $post_can_update      = self::SELF;
+    protected $post_can_delete      = self::NONE;
+    protected $post_can_publish     = self::NONE;
 
-        $this->comment_can_create = self::ALL;
-        $this->comment_can_read   = self::PUBLIC | self::SELF;
-        $this->comment_can_update = self::SELF;
-        $this->comment_can_delete = self::SELF;
-        $this->comment_can_report = self::ALL;
-        $this->comment_can_unreport = self::NONE;
-    }
+    protected $comment_can_create   = self::ALL;
+    protected $comment_can_read     = self::PUBLIC | self::SELF;
+    protected $comment_can_update   = self::SELF;
+    protected $comment_can_delete   = self::SELF;
+    protected $comment_can_report   = self::ALL;
+    protected $comment_can_unreport = self::NONE;
 }

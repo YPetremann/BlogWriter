@@ -1,173 +1,210 @@
 @import url("reset.css");
+
 /* General Classes */
 .hidden {
-  /* Hide it, keep it */
-  visibility: hidden !important;
-  width: 0 !important;
-  height: 0 !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+	/* Hide it, keep it */
+	visibility: hidden !important;
+	width: 0 !important;
+	height: 0 !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
+
 .fixer {
-  /* element size fixed to a maximum*/
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+	/* element size fixed to a maximum*/
+	max-width: 960px;
+	margin-left: auto;
+	margin-right: auto;
 }
+
 /* Fix footer to bottom */
 body,
 html {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
-body > main,
-html > main {
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: auto;
+
+body>main,
+html>main {
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: auto;
 }
+
 /* multi alignement bar */
 .multibar {
-  display: flex;
+	display: flex;
 }
+
 .multibar:before {
-  order: -1;
-  content: "";
-  flex-grow: 1;
+	order: -1;
+	content: "";
+	flex-grow: 1;
 }
+
 .multibar:after {
-  order: 1;
-  content: "";
-  flex-grow: 1;
+	order: 1;
+	content: "";
+	flex-grow: 1;
 }
-.multibar > .left {
-  order: -2;
+
+.multibar>.left {
+	order: -2;
 }
-.multibar > .right {
-  order: 2;
+
+.multibar>.right {
+	order: 2;
 }
-body > * {
-  padding: 20px;
+
+body>* {
+	padding: 20px;
 }
-body > header {
-  background: #0d1f34;
-  color: #d7deff;
+
+body>header {
+	background: #0d1f34;
+	color: #d7deff;
 }
-body > header h1 > a {
-  color: inherit;
-  text-decoration: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
+body>header h1>a {
+	color: inherit;
+	text-decoration: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
-body > header h1 > a p {
-  padding: 10px;
+
+body>header h1>a p {
+	padding: 10px;
 }
-body > header nav {
-  display: flex;
-  align-items: center;
+
+body>header nav {
+	display: flex;
+	align-items: center;
 }
-body > header nav > ul {
-  display: flex;
-  align-items: center;
+
+body>header nav>ul {
+	display: flex;
+	align-items: center;
 }
-body > header nav > ul a {
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
+
+body>header nav>ul a {
+	padding: 10px;
+	color: #fff;
+	text-decoration: none;
 }
-body > footer {
-  text-align: center;
-  background: #0d1f34;
-  color: #d7deff;
-  padding: 20px;
+
+body>footer {
+	text-align: center;
+	background: #0d1f34;
+	color: #d7deff;
+	padding: 20px;
 }
+
 article {
-  border: 1px solid #c0c0c0;
-  border-radius: 3px;
-  padding: 10px;
-  margin: 20px;
+	border: 1px solid #c0c0c0;
+	border-radius: 3px;
+	padding: 10px;
+	margin: 20px;
 }
-article > header {
-  margin: 10px -10px;
-  border-bottom: 1px solid #c0c0c0;
-  background: #ffffff;
-  padding: 10px;
-  display: flex;
+
+article>header {
+	margin: 10px -10px;
+	border-bottom: 1px solid #c0c0c0;
+	background: #ffffff;
+	padding: 10px;
+	display: flex;
 }
-article > footer {
-  margin: 10px -10px;
-  border-top: 1px solid #c0c0c0;
-  background: #d7d7d7;
-  padding: 10px;
-  display: flex;
+
+article>footer {
+	margin: 10px -10px;
+	border-top: 1px solid #c0c0c0;
+	background: #d7d7d7;
+	padding: 10px;
+	display: flex;
 }
-article > :first-child {
-  margin-top: -10px;
-  padding-top: 10px;
+
+article> :first-child {
+	margin-top: -10px;
+	padding-top: 10px;
 }
-article > :last-child {
-  margin-bottom: -10px;
-  padding-bottom: 10px;
+
+article> :last-child {
+	margin-bottom: -10px;
+	padding-bottom: 10px;
 }
+
 fieldset {
-  border-top: 1px solid silver;
-  padding: 10px 0 10px 10px;
-  margin: 5px 10px;
+	border-top: 1px solid silver;
+	padding: 10px 0 10px 10px;
+	margin: 5px 10px;
 }
+
 fieldset legend {
-  padding: 0 10px;
+	padding: 0 10px;
 }
+
 form {
-  display: grid;
-  grid-template-columns: 100px auto;
-  grid-template-rows: auto;
-  grid-auto-flow: row;
-  grid-gap: 5px;
+	display: grid;
+	grid-template-columns: 100px auto;
+	grid-template-rows: auto;
+	grid-auto-flow: row;
+	grid-gap: 5px;
 }
+
 form label {
-  grid-column: 0;
-  text-align: right;
+	grid-column: 0;
+	text-align: right;
 }
+
 form .line {
-  grid-column: auto / span 2;
-  text-align: right;
+	grid-column: auto / span 2;
+	text-align: right;
 }
+
 /* buttons */
 .btn {
-  background: #CCCCCC;
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: 900;
-  color: black;
+	background: #CCCCCC;
+	padding: 5px 10px;
+	border-radius: 5px;
+	text-decoration: none;
+	font-weight: 900;
+	color: black;
 }
+
 .neutral {
-  background: #CCCCCC;
+	background: #CCCCCC;
 }
+
 .error {
-  background: #EE9999;
+	background: #EE9999;
 }
+
 .error.btn {
-  color: #550000;
+	color: #550000;
 }
+
 .warning {
-  background: #EEEE99;
+	background: #EEEE99;
 }
+
 .warning.btn {
-  color: #555500;
+	color: #555500;
 }
+
 .success {
-  background: #99EE99;
+	background: #99EE99;
 }
+
 .success.btn {
-  color: #005500;
+	color: #005500;
 }
+
 .info {
-  background: #9999EE;
+	background: #9999EE;
 }
+
 .info.btn {
-  color: #000055;
+	color: #000055;
 }
