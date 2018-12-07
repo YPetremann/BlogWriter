@@ -26,12 +26,10 @@ class Controller {
             }
 
             $commentManager = new CommentManager($this->user);
-            $affectedLines = $commentManager->create($id, $this->user->id, $comment);
+            $affectedLines = $commentManager->create($id, $comment);
 
             if (!$affectedLines) {
                 return new \Exception("Impossible d'ajouter le commentaire !");
-            } else {
-                header('Location: '.$_SERVER['REQUEST_URI']);
             }
         } catch(\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
