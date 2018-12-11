@@ -5,8 +5,8 @@
 		<fieldset class="h2">
 			<legend>S'identifier</legend>
 			<form action="<?= url($view->urlUserLoginPOST()); ?>" method="post" class="grid">
-				<label for="email">Email</label><input type="email" id="email" name="email" required />
-				<label for="password">Mot de passe</label><input type="password" id="password" name="password" required />
+				<label for="email">Email</label><input type="email" id="email" name="email" />
+				<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
 				<div class="line">
 					<input type="submit" value="S'identifier" />
 				</div>
@@ -16,19 +16,20 @@
 			<legend>Créer compte</legend>
 			<form action="<?= url($view->urlUserCreatePOST()); ?>" method="post" class="grid">
 			<form action="" method="post">
-				<label for="email">Email</label>
-				<input type="email" id="email" name="email" required />
+				<label for="name">Pseudonyme</label><input type="name" id="name" name="name" />
+				<label for="email">Email</label><input type="email" id="email" name="email" />
+				<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
 				<div class="line">
 					<input type="submit" value="Créer compte" />
 				</div>
 			</form>
 		</fieldset>
-		<fieldset>
+		<fieldset style="display:none;">
 			<legend>Mot de passe oublié</legend>
 			<form action="<?= url($view->urlUserForgetPOST()); ?>" method="post" class="grid">
 			<form action="" method="post">
 				<label for="email">Email</label>
-				<input type="email" id="email" name="email" required />
+				<input type="email" id="email" name="email" />
 				<div class="line">
 					<input type="submit" value="Mot de pass oublié" />
 				</div>

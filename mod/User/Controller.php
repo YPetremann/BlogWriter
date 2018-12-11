@@ -33,6 +33,25 @@ class Controller
         $view->message .= '<div class="success"><div class="fixer">Déconnexion !</div></div>';
         return false;
     }
-    public function remember() {}
-    public function password() {}
+    public function create($post) {
+        global $view;
+        try {
+            $name = nl2br(htmlspecialchars((string) $post['name'] ?: ""));
+            if (!filter_var($post["email"], FILTER_VALIDATE_EMAIL) || empty($post["name"]) || empty($post["password"])) {
+                throw new \Exception("Informations invalides !");
+            }
+            $emailhash = crypt($post["email"], "_J9..rasm");
+            $passwordhash = crypt($post["email"]." ".$post["password"], "_J9..rasm");
+            $userManager = new UserManager($this->user);
+            $_SESSION["user"] = $view->user = $userManager->create($name, $emailhash, $passwordhash);
+
+            $view->message .= '<div class="success"><div class="fixer">Création du compte '.$view->user->name.'</div></div>';
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
+    public function remember($post) {
+
+    }
 }

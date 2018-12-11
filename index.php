@@ -25,6 +25,14 @@ try {
     // User related functions
     $userLogout      = function ()         { return (new User\Controller($_SESSION["user"]) )->logout(); };
     $userLogin       = function ()         { return (new User\Controller($_SESSION["user"]) )->login($_POST); };
+    $userCreate      = function ()         {
+        global $router; $router->url('/user/login');
+        return (new User\Controller($_SESSION["user"]) )->create($_POST);
+    };
+    $userRemeber     = function ()         {
+        global $router; $router->url('/user/login');
+        return (new User\Controller($_SESSION["user"]) )->remember($_POST);
+    };
     $userAsk         = function ()         { return (new User\Controller($_SESSION["user"]) )->ask($_POST); };
 
     // Blog related functions
@@ -86,8 +94,8 @@ try {
 
     // User related url bindinds
     $view->urlUserLoginPOST   = $router->post('/user/login', $userLogin);
-    $view->urlUserCreatePOST  = $view->urlUserLoginPOST;
-    $view->urlUserForgetPOST  = $view->urlUserLoginPOST;
+    $view->urlUserCreatePOST  = $router->post('/user/create', $userCreate);
+    $view->urlUserForgetPOST  = $router->post('/user/remember', $userRemeber);
     $view->urlUserLogin       = $router->all('/user/login', $userAsk);
     $view->urlUserLogout      = $router->all('/user/logout', $userLogout);
 

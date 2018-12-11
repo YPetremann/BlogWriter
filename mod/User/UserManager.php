@@ -30,5 +30,19 @@ class UserManager
         $user = $this->subtype($users[0]);
         return $user;
     }
+    public function create(string $name, string $emailhash, string $passwordhash)
+    {
+        $query = $this->db->prepare('SELECT COUNT(*) count FROM users WHERE name LIKE ? OR emailhash LIKE ?');
+        $query->execute([$name, $emailhash]);
+        $found = $query->fetchColumn();
+        if($found) {
+            throw new \Exception("Utilisateur déjà enregistré !");
+        }
+        $query = $this->db->prepare("
+            INSERT INTO users(name, emailhash, passwordhash)
+            VALUES (?, ?, ?)");
+        $answer = $query->execute([$name, $emailhash, $passwordhash]);
+        return $this->login($emailhash, $passwordhash);
+    }
     public function disconnect() {}
 }
