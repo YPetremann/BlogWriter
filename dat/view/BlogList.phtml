@@ -5,34 +5,34 @@
 	<article class="fixer">
 		<footer class="multibar">
 			<?php if($view->user->post_can_create) { ?>
-				<span class="right"><a class="btn warning" href="<?= url($view->urlPostCreate()); ?>">Créer</a></span>
+				<a class="right btn success" href="<?= url($view->urlPostCreate()); ?>">Créer</a>
 			<?php } ?>
 		</footer>
 	</article>
 	<?php } ?>
 	<?php foreach ($posts as $post) { ?>
-		<article class="fixer">
+		<article class="fixer <?=$post['visibility']?:'warning';?>">
 			<header><?= $post['title']; ?></header>
 			<?= $post['content']; ?>
 			<footer class="multibar">
 				<span class="left">Publié le <?= $post['post_date']; ?></span>
 				<?php if(!$post['visibility']) { ?>
-					<span class="left"><a class="btn warning">Non visible</a></span>
+					<a class="left btn warning">Non visible</a>
 				<?php } ?>
 				<?php if($post['post_can_delete']) { ?>
-					<span class="right"><a class="btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a></span>
+					<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
 				<?php } ?>
 				<?php if($post['post_can_publish']) { ?>
 					<?php if(!$post['visibility']) { ?>
-						<span class="right"><a class="btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a></span>
+						<a class="right btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a>
 					<?php } else {?>
-						<span class="right"><a class="btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a></span>
+						<a class="right btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a>
 					<?php } ?>
 				<?php } ?>
 				<?php if($post['post_can_update']) { ?>
-					<span class="right"><a class="btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a></span>
+					<a class="right btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a>
 				<?php } ?>
-				<span class="right"><a class="btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a></span>
+				<a class="right btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a>
 			</footer>
 		</article>
 	<?php } ?>

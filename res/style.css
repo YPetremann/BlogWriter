@@ -31,6 +31,7 @@ html > main {
 /* multi alignement bar */
 .multibar {
   display: flex;
+  align-items: center;
 }
 .multibar:before {
   order: -1;
@@ -93,14 +94,14 @@ article {
 article > header {
   margin: 10px -10px;
   border-bottom: 1px solid #c0c0c0;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.5);
   padding: 10px;
   display: flex;
 }
 article > footer {
   margin: 10px -10px;
   border-top: 1px solid #c0c0c0;
-  background: #d7d7d7;
+  background: rgba(0, 0, 0, 0.2);
   padding: 10px;
   display: flex;
 }
@@ -137,12 +138,14 @@ form.grid .line {
 }
 /* buttons */
 .btn {
-  background: #CCCCCC;
+  background: #EEEEEE;
+  margin: 2px;
   padding: 5px 10px;
   border-radius: 5px;
   text-decoration: none;
   font-weight: 900;
   color: black;
+  border: none;
 }
 .neutral {
   background: #CCCCCC;
@@ -171,14 +174,12 @@ form.grid .line {
 .info.btn {
   color: #000055;
 }
-input.header {
+header input {
   display: block;
   width: 100%;
   margin-left: 1px;
   box-sizing: border-box;
   border: 1px solid #c0c0c0;
-  border-bottom: none;
   background: #ffffff;
   padding: 10px;
-  display: flex;
 }

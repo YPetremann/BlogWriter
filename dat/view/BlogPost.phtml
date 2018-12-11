@@ -1,7 +1,12 @@
 <?php $title = $post['title']." - Billet Simple pour l'Alaska"; ?>
 <?php ob_start(); ?>
 <main>
-	<article id="post" class="fixer">
+	<article class="fixer">
+		<footer class="multibar">
+			<a class="left btn" href="<?= url($view->urlPostList()); ?>">Retour</a>
+		</footer>
+	</article>
+	<article id="post" class="fixer <?=$post['visibility']?:'warning';?>">
 		<header class="multibar">
 			<span class="left"><?= $post['title']; ?></span>
 		</header>
@@ -9,22 +14,22 @@
 		<footer class="multibar">
 			<span class="left">Publié le <?= $post['post_date']; ?></span>
 			<?php if(!$post['visibility']) { ?>
-				<span class="left"><a class="btn warning">Non visible</a></span>
+				<a class="left btn warning">Non visible</a>
 			<?php } ?>
 			<?php if($post['post_can_delete']) { ?>
-				<span class="right"><a class="btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a></span>
+				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
 			<?php } ?>
 			<?php if($post['post_can_publish']) { ?>
 				<?php if(!$post['visibility']) { ?>
-					<span class="right"><a class="btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a></span>
+					<a class="right btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a>
 				<?php } else {?>
-					<span class="right"><a class="btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a></span>
+					<a class="right btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a>
 				<?php } ?>
 			<?php } ?>
 			<?php if($post['post_can_update']) { ?>
-				<span class="right"><a class="btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a></span>
+				<a class="right btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a>
 			<?php } ?>
-			<span class="right"><a class="btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a></span>
+			<a class="right btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a>
 		</footer>
 	</article>
 	<section class="fixer" id="comments">
@@ -39,23 +44,33 @@
 			</div>
 		</form>
 		<?php foreach ($post["comments"] as $comment) { ?>
-			<article>
+			<article <?=$comment['visibility']?:'class="warning"';?>>
 				<header class="multibar">
 					<span class="left"><?= $comment['author']; ?> </span>
-					<span>le <?= $comment['post_date']; ?></span>
-					<?php if($comment['comment_can_delete']) { ?>
-						<span class="right"><a class="btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a></span>
-					<?php } ?>
-					<?php if($comment["reported"]) { ?>
-						<span class="right"><a class="btn error">signalé</a></span>
-						<?php if($comment['comment_can_unreport']) { ?>
-							<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
-						<?php } ?>
-					<?php } elseif($comment['comment_can_report']){ ?>
-						<span class="right"><a class="btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a></span>
-					<?php } ?>
+					<span class="right">le <?= $comment['post_date']; ?></span>
 				</header>
 				<div><?= $comment['content']; ?></div>
+				<footer class="multibar">
+					<?php if($comment['comment_can_delete']) { ?>
+						<a class="right btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a>
+					<?php } ?>
+					<?php if(!$comment['visibility']) { ?>
+						<a class="left btn warning">non visible</a>
+						<?php if($comment['comment_can_publish']) { ?>
+							<a class="right btn warning" href="<?= url($view->urlCommentPublish($post['id'],$comment['id'])); ?>">Publier</a>
+						<?php } ?>
+					<?php } elseif($comment['comment_can_unpublish']){ ?>
+						<a class="right btn warning" href="<?= url($view->urlCommentUnpublish($post['id'],$comment['id'])); ?>">Dépublier</a>
+					<?php } ?>
+					<?php if($comment["reported"]) { ?>
+						<a class="left btn error">signalé</a>
+						<?php if($comment['comment_can_unreport']) { ?>
+							<a class="right btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a>
+						<?php } ?>
+					<?php } elseif($comment['comment_can_report']){ ?>
+						<a class="right btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a>
+					<?php } ?>
+				</footer>
 			</article>
 		<?php } ?>
 	</section>
