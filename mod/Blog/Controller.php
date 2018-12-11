@@ -142,7 +142,7 @@ class Controller
         try {
             // preformating content
             preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
-            $post["content"] = $content[1];
+            if(isset($content[1])) $post["content"] = $content[1];
             // verify empty content
             if (empty($post["content"]) || empty($post["title"])) {
                 throw new \Exception('Tous les champs ne sont pas remplis !');
@@ -166,7 +166,7 @@ class Controller
         try {
             // preformating content
             preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
-            $post["content"] = $content[1];
+            if(isset($content[1])) $post["content"] = $content[1];
             // verify empty content
             if (empty($post["content"]) || empty($post["title"])) {
                 throw new \Exception('Tous les champs ne sont pas remplis !');
@@ -202,6 +202,10 @@ class Controller
                     'post_date'=>null,
                     'title'=>"",
                     'content'=>"",
+                    'visibility'=>0,
+                    'post_can_delete'=>0,
+                    'post_can_publish'=>0,
+                    'post_can_unpublish'=>0,
                 ];
             }
             $view->content = include "dat/view/BlogPostEdit.phtml";

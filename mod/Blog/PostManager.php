@@ -35,7 +35,7 @@ class PostManager
             INSERT INTO posts(title, author_id, content)
             VALUES (?, ?, ?)");
         $answer = $query->execute([$title, $this->user->id, $content]);
-        return $answer;
+        return $this->db->lastInsertId();
     }
     public function read($id)
     {

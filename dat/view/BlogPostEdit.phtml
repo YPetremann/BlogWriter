@@ -42,9 +42,35 @@
 <?php $view->head .= ob_get_clean(); ?>
 <?php ob_start(); ?>
 <main>
-	<form action="" method="POST" class="fixer">
-		<input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>">
+	<article class="fixer">
+		<footer class="multibar">
+			<a class="left btn" href="<?= url($view->urlPostList()); ?>">Retour</a>
+		</footer>
+	</article>
+	<form action="" method="POST">
+	<article id="post" class="fixer <?=$post['visibility']?'info':'warning';?>">
+		<header class="multibar">
+			<span class="left"><input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>"></span>
+		</header>
 		<textarea name="content" placeholder="Test"><?= $post['content']; ?></textarea>
+		<footer class="multibar">
+			<span class="left">Publié le <?= $post['post_date']; ?></span>
+			<?php if(!$post['visibility']) { ?>
+				<a class="left btn warning">Non visible</a>
+			<?php } ?>
+			<?php if($post['post_can_delete']) { ?>
+				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
+			<?php } ?>
+			<?php if($post['post_can_publish']) { ?>
+				<?php if(!$post['visibility']) { ?>
+					<input class="right btn" type="submit" formaction="<?= url($view->urlPostPublish($post['id'])); ?>" value="Publier"/>
+				<?php } else {?>
+					<input class="right btn" type="submit" formaction="<?= url($view->urlPostUnpublish($post['id'])); ?>" value="Dépublier"/>
+				<?php } ?>
+			<?php } ?>
+			<input class="right btn success" type="submit" value="Enregistrer" />
+		</footer>
+	</article>
 	</form>
 </main>
 <?php return ob_get_clean(); ?>
