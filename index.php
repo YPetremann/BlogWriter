@@ -28,8 +28,15 @@ try {
     $userAsk         = function ()         { return (new User\Controller($_SESSION["user"]) )->ask($_POST); };
 
     // Blog related functions
-    $postCreate      = function ()         { return (new Blog\Controller($_SESSION["user"]) )->createPost($_POST); };
-    $postUpdate      = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->updatePost($post_id,$_POST); };
+    $postCreate      = function ()         {
+        $post_id = (new Blog\Controller($_SESSION["user"]) )->createPost($_POST);
+        global $router; $router->method('GET'); $router->url('/posts/'.$post_id.'/update');
+        return false;
+    };
+    $postUpdate      = function ($post_id) {
+        global $router; $router->method('GET'); $router->url('/posts/'.$post_id.'/update');
+        return (new Blog\Controller($_SESSION["user"]) )->updatePost($post_id,$_POST);
+    };
     $postEdit        = function ($post_id = null) {
         global $router; $router->url('/posts/'.$post_id.'/read');
         return (new Blog\Controller($_SESSION["user"]) )->editPost($post_id);
@@ -40,11 +47,9 @@ try {
         return (new Blog\Controller($_SESSION["user"]) )->deletePost($post_id);
     };
     $postPublish     = function ($post_id) {
-        global $router; $router->url('/posts/'.$post_id.'/read');
         return (new Blog\Controller($_SESSION["user"]) )->publishPost($post_id);
     };
     $postUnpublish   = function ($post_id) {
-        global $router; $router->url('/posts/'.$post_id.'/read');
         return (new Blog\Controller($_SESSION["user"]) )->unpublishPost($post_id);
     };
     $postList        = function ()         { return (new Blog\Controller($_SESSION["user"]) )->listPost(); };
@@ -59,12 +64,21 @@ try {
     };
     $commentReport   = function ($post_id, $comment_id) {
         global $router; $router->url('/posts/'.$post_id.'/read');
-        return (new Blog\Controller($_SESSION["user"]) )->reportComment($post_id, $comment_id);
+        return (new Blog\Controller($_SESSION["user"]) )->reportComment($comment_id);
     };
     $commentUnreport = function ($post_id, $comment_id) {
         global $router; $router->url('/posts/'.$post_id.'/read');
-        return (new Blog\Controller($_SESSION["user"]) )->unreportComment($post_id, $comment_id);
+        return (new Blog\Controller($_SESSION["user"]) )->unreportComment($comment_id);
     };
+    $commentPublish     = function ($post_id, $comment_id) {
+        global $router; $router->url('/posts/'.$post_id.'/read');
+        return (new Blog\Controller($_SESSION["user"]) )->publishComment($comment_id);
+    };
+    $commentUnpublish   = function ($post_id, $comment_id) {
+        global $router; $router->url('/posts/'.$post_id.'/read');
+        return (new Blog\Controller($_SESSION["user"]) )->unpublishComment($comment_id);
+    };
+
     $commentDelete   = function ($post_id, $comment_id) {
         global $router; $router->url('/posts/'.$post_id.'/read');
         return (new Blog\Controller($_SESSION["user"]) )->deleteComment($post_id, $comment_id);
@@ -83,14 +97,18 @@ try {
     $view->urlCommentDelete   = $router->all('/posts/:post_id/comment/:comment_id/delete', $commentDelete);
     $view->urlCommentReport   = $router->all('/posts/:post_id/comment/:comment_id/report', $commentReport);
     $view->urlCommentUnreport = $router->all('/posts/:post_id/comment/:comment_id/unreport', $commentUnreport);
+    $view->urlCommentPublish   = $router->all('/posts/:post_id/comment/:comment_id/publish', $commentPublish);
+    $view->urlCommentUnpublish = $router->all('/posts/:post_id/comment/:comment_id/unpublish', $commentUnpublish);
 
     $view->urlPostCreatePOST  = $router->post('/posts/create', $postCreate);
     $view->urlPostCreate      = $router->all('/posts/create', $postEdit);
+    $view->urlPostPublish     = $router->all('/posts/:id/publish', $postPublish);
+    $view->urlPostUnpublish   = $router->all('/posts/:id/unpublish', $postUnpublish);
+    $view->urlPostPublish     = $router->post('/posts/:id/publish', $postUpdate);
+    $view->urlPostUnpublish   = $router->post('/posts/:id/unpublish', $postUpdate);
     $view->urlPostUpdatePOST  = $router->post('/posts/:id/update', $postUpdate);
     $view->urlPostUpdate      = $router->all('/posts/:id/update', $postEdit);
     $view->urlPostDelete      = $router->all('/posts/:id/delete', $postDelete);
-    $view->urlPostPublish     = $router->all('/posts/:id/publish', $postPublish);
-    $view->urlPostUnpublish   = $router->all('/posts/:id/unpublish', $postUnpublish);
     $view->urlPostRead        = $router->all('/posts/:id/read', $postRead);
     $view->urlPostList        = $router->all('/posts/list', $postList);
     $router->default($postList);

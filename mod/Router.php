@@ -11,6 +11,7 @@ class Router
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
     public function url($url) { $this->url = trim($url, '/'); }
+    public function method($method) { $this->method = $method; }
     public function get($path, $function) { return $this->run("GET", $path, $function); }
     public function post($path, $function) { return $this->run("POST", $path, $function); }
     public function all($path, $function) { return $this->run(null, $path, $function); }
@@ -28,8 +29,8 @@ class Router
             if ($this->continue and ($case["method"] == null or $this->method == $case["method"])) {
                 $args = ($case["path"] === null) ? [] : $this->match($case["path"]);
                 if ($args !== false) {
+                    //$view->message .= '<div class="neutral"><div class="fixer">'.($case["method"]===null?"ALL":$case["method"]).' /'.($case["path"]===null?"default":$case["path"]).'</div></div>';
                     $return = call_user_func_array($case["function"], $args);
-                    $view->message .= '<div class="neutral"><div class="fixer">'.($case["method"]===null?"ALL":$case["method"]).' /'.($case["path"]===null?"default":$case["path"]).'</div></div>';
                     if ($return === null) {
                         $this->continue = false;
                     }
