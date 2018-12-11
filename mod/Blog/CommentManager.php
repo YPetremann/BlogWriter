@@ -20,15 +20,15 @@ class CommentManager
         if (($perm & UserBlogI::OTHER) && $entry["author_id"] != $this->user->id) { $result = true; }
         return $result;
     }
-    private function sql_permission($perm, $cond)
+    private function sql_permission($perm)
     {
+        $cond = [];
         if ($perm & UserBlogI::PUBLIC) { array_push($cond, "visibility = 1"); }
         if ($perm & UserBlogI::PRIVATE) { array_push($cond, "visibility = 0"); }
         if ($perm & UserBlogI::SELF) { array_push($cond, "author_id = ".$this->user->id); }
         if ($perm & UserBlogI::OTHER) { array_push($cond, "author_id != ".$this->user->id); }
-        return $cond;
+        return empty($cond) ? " AND FALSE" : " AND (".join(" OR ", $cond).")";
     }
-    public function get_comments($id) {}
     public function create($id, $comment)
     {
         $id = (int) $id;
@@ -43,17 +43,11 @@ class CommentManager
         $answer = $query->execute([$id,$this->user->id,$comment]);
         return $answer;
     }
-    public function read($id) {}
-    public function update($id) {}
     public function delete($id)
     {
         $id = (int) $id;
 
-        $cond = [];
-        $cond = $this->sql_permission($this->user->comment_can_delete, $cond);
-        if (!empty($cond)) {
-            $cond = " AND (".join(" OR ", $cond).")";
-        }
+        $cond = $this->sql_permission($this->user->comment_can_delete);
         $query = $this->db->prepare('
             DELETE FROM comments
             WHERE id = :id'.$cond);
@@ -64,6 +58,7 @@ class CommentManager
     }
     public function list($id)
     {
+        $cond = $this->sql_permission($this->user->comment_can_read);
         $query = $this->db->prepare('
             SELECT
                 c.id id,
@@ -77,6 +72,7 @@ class CommentManager
             INNER JOIN users u
             ON c.author_id = u.id
             WHERE c.post_id = ?
+            '.$cond.'
             ORDER BY c.id DESC');
         $query->execute([$id]);
         $data = $query->fetchAll();
@@ -84,6 +80,8 @@ class CommentManager
             $entry["comment_can_delete"]=$this->permission($this->user->comment_can_delete, $entry);
             $entry["comment_can_report"]=$this->permission($this->user->comment_can_report, $entry);
             $entry["comment_can_unreport"]=$this->permission($this->user->comment_can_unreport, $entry);
+            $entry["comment_can_publish"]=$this->permission($this->user->comment_can_publish, $entry);
+            $entry["comment_can_unpublish"]=$this->permission($this->user->comment_can_unpublish, $entry);
         }
         $query->closeCursor();
         return $data;
@@ -92,9 +90,7 @@ class CommentManager
     {
         $id = (int) $id;
 
-        $cond = [];
-        $cond = $this->sql_permission($this->user->comment_can_report, $cond);
-        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+        $cond = $this->sql_permission($this->user->comment_can_report);
 
         $query = $this->db->prepare('
             UPDATE comments
@@ -109,9 +105,7 @@ class CommentManager
     {
         $id = (int) $id;
 
-        $cond = [];
-        $cond = $this->sql_permission($this->user->comment_can_unreport, $cond);
-        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+        $cond = $this->sql_permission($this->user->comment_can_unreport);
 
         $query = $this->db->prepare('
             UPDATE comments

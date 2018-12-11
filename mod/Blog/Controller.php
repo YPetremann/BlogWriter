@@ -42,11 +42,10 @@ class Controller
         return false;
     }
 
-    public function reportComment($post_id, $comment_id)
+    public function reportComment($comment_id)
     {
         global $view;
         try {
-            $post_id = (int) $post_id;
             $comment_id = (int) $comment_id;
 
             $affectedLines = (new CommentManager($this->user) )->report($comment_id);
@@ -61,11 +60,10 @@ class Controller
         return false;
     }
 
-    public function unreportComment($post_id, $comment_id)
+    public function unreportComment($comment_id)
     {
         global $view;
         try {
-            $post_id = (int) $post_id;
             $comment_id = (int) $comment_id;
 
             $affectedLines = (new CommentManager($this->user) )->unreport($comment_id);
@@ -253,13 +251,13 @@ class Controller
         return false;
     }
 
-    public function publishComment($post_id, $comment_id)
+    public function publishComment($comment_id)
     {
         global $view;
         try {
-            $post_id = (int) $post_id;
+            $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->publish($post_id);
+            $affectedLines = (new CommentManager($this->user) )->publish($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
@@ -272,13 +270,13 @@ class Controller
         return false;
     }
 
-    public function unpublishComment($post_id, $comment_id)
+    public function unpublishComment($comment_id)
     {
         global $view;
         try {
-            $post_id = (int) $post_id;
+            $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->unpublish($post_id);
+            $affectedLines = (new CommentManager($this->user) )->unpublish($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
