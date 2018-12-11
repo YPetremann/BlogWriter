@@ -7,7 +7,7 @@ $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 
 function url($url, $unique=false)
 {
-    $prefix = "/BlogWriter";
+    $prefix = "/oc-p4";
     $url = $prefix . $url;
     (!$unique) ?: $url .= "?v=".uniqid('', true);
     return $url;
