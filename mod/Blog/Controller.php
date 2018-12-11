@@ -3,7 +3,11 @@ namespace Blog;
 
 class Controller
 {
-    public function __construct($as) { $this->user = $as; }
+    public function __construct($as)
+    {
+        $this->user = $as;
+    }
+
     public function listPost()
     {
         global $view;
@@ -15,6 +19,7 @@ class Controller
             return false;
         }
     }
+
     public function createComment($id, $post)
     {
         global $view;
@@ -22,16 +27,21 @@ class Controller
             $id = (int) $id;
             $comment = nl2br(htmlspecialchars((string) $post['comment'] ?: ""));
 
-            if (empty($comment)) { throw new \Exception('Tous les champs ne sont pas remplis !'); }
+            if (empty($comment)) {
+                throw new \Exception('Tous les champs ne sont pas remplis !');
+            }
 
             $affectedLines = (new CommentManager($this->user) )->create($id, $comment);
 
-            if (!$affectedLines) { return new \Exception("Impossible d'ajouter le commentaire !"); }
+            if (!$affectedLines) {
+                throw new \Exception("Impossible d'ajouter le commentaire !");
+            }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
+
     public function reportComment($post_id, $comment_id)
     {
         global $view;
@@ -41,12 +51,14 @@ class Controller
 
             $affectedLines = (new CommentManager($this->user) )->report($comment_id);
 
-            if (!$affectedLines) { throw new \Exception("Vous ne pouvez signaler ce commentaire !"); }
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez signaler ce commentaire !");
+            }
             $view->message .= '<div class="success"><div class="fixer">Le commentaire à été signalé !</div></div>';
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
 
     public function unreportComment($post_id, $comment_id)
@@ -65,9 +77,10 @@ class Controller
             }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
+
     public function deleteComment($post_id, $comment_id)
     {
         global $view;
@@ -84,27 +97,29 @@ class Controller
             }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
+
     public function publishPost($post_id)
     {
         global $view;
         try {
             $post_id = (int) $post_id;
 
-            $affectedLines = (new PostManager($this->user) )->set_visibility($post_id, true);
+            $affectedLines = (new PostManager($this->user) )->publish($post_id);
 
             if (!$affectedLines) {
-                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+                throw new \Exception("Vous ne pouvez publier cet article !");
             } else {
-                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+                $view->message .= '<div class="success"><div class="fixer">L\'article à été publié !</div></div>';
             }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
+
     public function readPost($id)
     {
         global $view;
