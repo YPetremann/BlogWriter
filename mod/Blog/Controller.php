@@ -248,4 +248,42 @@ class Controller
         }
         return false;
     }
+
+    public function publishComment($post_id, $comment_id)
+    {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+
+            $affectedLines = (new CommentManager($this->user) )->publish($post_id);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+            }
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
+
+    public function unpublishComment($post_id, $comment_id)
+    {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+
+            $affectedLines = (new CommentManager($this->user) )->unpublish($post_id);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+            }
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
 }

@@ -113,11 +113,49 @@ class CommentManager
         $cond = $this->sql_permission($this->user->comment_can_unreport, $cond);
         if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
 
-        $query = $this->db->prepare('UPDATE comments SET reported = 0 WHERE reported = 1 AND id = :id'.$cond);
+        $query = $this->db->prepare('
+            UPDATE comments
+            SET reported = 0
+            WHERE reported = 1 AND id = :id'.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
         return $answer;
     }
-    public function moderate($id) {}
+    public function publish($id)
+    {
+        $id = (int) $id;
+
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->comment_can_publish);
+
+        // execute query
+        $query = $this->db->prepare('
+            UPDATE comments
+            SET visibility = 1
+            WHERE visibility = 0 AND id = ?'.$cond);
+        $query->execute([$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+
+        return $answer;
+    }
+    public function unpublish($id)
+    {
+        $id = (int) $id;
+
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->comment_can_unpublish);
+
+        // execute query
+        $query = $this->db->prepare('
+            UPDATE comments
+            SET visibility = 0
+            WHERE visibility = 1 AND id = ?'.$cond);
+        $query->execute([$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+
+        return $answer;
+    }
 }
