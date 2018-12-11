@@ -24,6 +24,8 @@ trait UserBlogT
     protected $comment_can_delete   = UserBlogI::NONE;
     protected $comment_can_report   = UserBlogI::NONE;
     protected $comment_can_unreport = UserBlogI::NONE;
+    protected $comment_can_publish   = UserBlogI::NONE;
+    protected $comment_can_unpublish = UserBlogI::NONE;
 
     public function get_post_can_create()      { return $this->post_can_create; }
     public function get_post_can_read()        { return $this->post_can_read; }
@@ -38,4 +40,6 @@ trait UserBlogT
     public function get_comment_can_delete()   { return $this->comment_can_delete; }
     public function get_comment_can_report()   { return $this->comment_can_report; }
     public function get_comment_can_unreport() { return $this->comment_can_unreport; }
+    public function get_comment_can_publish()   { return $this->comment_can_publish; }
+    public function get_comment_can_unpublish() { return $this->comment_can_unpublish; }
 }

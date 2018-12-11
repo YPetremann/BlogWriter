@@ -16,4 +16,6 @@ class Admin extends User
     protected $comment_can_delete   = self::ALL;
     protected $comment_can_report   = self::ALL;
     protected $comment_can_unreport = self::ALL;
+    protected $comment_can_publish   = self::ALL;
+    protected $comment_can_unpublish = self::ALL;
 }

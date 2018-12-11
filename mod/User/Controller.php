@@ -30,6 +30,7 @@ class Controller
     {
         global $view;
         $view->user = $_SESSION["user"] = new Guest();
+        $view->message .= '<div class="success"><div class="fixer">Déconnexion !</div></div>';
         return false;
     }
     public function remember() {}
