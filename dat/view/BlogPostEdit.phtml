@@ -11,30 +11,18 @@
 		},
 		image_advtab: true,
 		plugins: [
-			//'a11ychecker advcode advlist anchor autolink charmap code codesample colorpicker directionality',
-			//'fullpage fullscreen help hr image imagetools insertdatetime link linkchecker lists media mediaembed',
-			//'nonbreaking pagebreak powerpaste searchreplace spellchecker table template textcolor',
-			//'textpattern tinymcespellchecker toc visualblocks visualchars wordcount'
-			'save contextmenu wordwount'
+			'fullscreen hr image imagetools insertdatetime link lists media',
+			'advlist anchor autolink charmap code codesample colorpicker directionality',
+			'nonbreaking pagebreak searchreplace table template textcolor',
+			'textpattern tinymcespellchecker toc visualblocks visualchars wordcount',
+			'contextmenu wordwount'
 		],
 		toolbar: [
-			'save code | undo redo | styleselect | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | link image | removeformat'
+			'undo redo | styleselect | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | link image | removeformat'
 		],
-		templates: [{
-				title: 'Test template 1',
-				content: 'Test 1'
-			},
-			{
-				title: 'Test template 2',
-				content: 'Test 2'
-			}
-		],
+		menubar: 'edit insert view format table tools help',
 		content_css: [
-			'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-			'//www.tinymce.com/css/codepen.min.css'
-		],
-		content_style: [
-			'body{padding:10px; margin:auto;font-size:16px;font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif; line-height:1.3; letter-spacing: -0.03em;color:#222} h1,h2,h3,h4,h5,h6 {font-weight:400;margin-top:1.2em} h1 {} h2{} .tiny-table {width:100%; border-collapse: collapse;} .tiny-table td, th {border: 1px solid #555D66; padding:10px; text-align:left;font-size:16px;font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif; line-height:1.6;} .tiny-table th {background-color:#E2E4E7}'
+			'<?=url("/res/style.css");?>'
 		],
 		branding: false
 	});
@@ -50,7 +38,7 @@
 	<form action="" method="POST">
 	<article id="post" class="fixer <?=$post['visibility']?'info':'warning';?>">
 		<header class="multibar">
-			<span class="left"><input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>"></span>
+			<input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>">
 		</header>
 		<textarea name="content" placeholder="Test"><?= $post['content']; ?></textarea>
 		<footer class="multibar">
