@@ -8,39 +8,55 @@
 		<div><?= $post['content']; ?></div>
 		<footer class="multibar">
 			<span class="left">Publié le <?= $post['post_date']; ?></span>
-			<span class="right"></span>
+			<?php if(!$post['visibility']) { ?>
+				<span class="left"><a class="btn warning">Non visible</a></span>
+			<?php } ?>
+			<?php if($post['post_can_delete']) { ?>
+				<span class="right"><a class="btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a></span>
+			<?php } ?>
+			<?php if($post['post_can_publish']) { ?>
+				<?php if(!$post['visibility']) { ?>
+					<span class="right"><a class="btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a></span>
+				<?php } else {?>
+					<span class="right"><a class="btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a></span>
+				<?php } ?>
+			<?php } ?>
+			<?php if($post['post_can_update']) { ?>
+				<span class="right"><a class="btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a></span>
+			<?php } ?>
+			<span class="right"><a class="btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a></span>
 		</footer>
 	</article>
 	<section class="fixer" id="comments">
 		<h2>Commentaires</h2>
-		<form action="<?= url($view->urlCommentCreate($post['id'])); ?>" method="post">
+		<form action="<?= url($view->urlCommentCreate($post['id'])); ?>" method="post" class="grid">
 			<label for="author">Auteur</label>
 			<input type="text" disabled value="<?= $view->user->name; ?>" />
 			<label for="comment">Commentaire</label>
-			<textarea id="comment" name="comment" <?=$post['comment_can_create']?"":"disabled";?>></textarea>
+			<textarea id="comment" name="comment"></textarea>
 			<div class="line">
 				<input type="submit" />
 			</div>
 		</form>
 		<?php foreach ($post["comments"] as $comment) { ?>
-		<article>
-			<header class="multibar">
-				<span class="left"><?= $comment['author']; ?> </span>
-				<span>le <?= $comment['post_date']; ?></span>
-				<?php if($comment['comment_can_delete']) { ?>
-					<span class="right"><a class="btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a></span>
-				<?php } ?>
-				<?php if($comment["reported"]) { ?>
-					<span class="right"><a class="btn error" >signalé</a></span>
-					<?php if($comment['comment_can_unreport']) { ?>
-						<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
+			<article>
+				<header class="multibar">
+					<span class="left"><?= $comment['author']; ?> </span>
+					<span>le <?= $comment['post_date']; ?></span>
+					<?php if($comment['comment_can_delete']) { ?>
+						<span class="right"><a class="btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a></span>
 					<?php } ?>
-				<?php } elseif($comment['comment_can_report']){ ?>
-					<span class="right"><a class="btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a></span>
-				<?php } ?>
-			</header>
-			<div><?= $comment['content']; ?></div>
-		</article>
+					<?php if($comment["reported"]) { ?>
+						<span class="right"><a class="btn error">signalé</a></span>
+						<?php if($comment['comment_can_unreport']) { ?>
+							<span class="right"><a class="btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a></span>
+						<?php } ?>
+					<?php } elseif($comment['comment_can_report']){ ?>
+						<span class="right"><a class="btn warning" href="<?= url($view->urlCommentReport($post['id'],$comment['id'])); ?>">signaler</a></span>
+					<?php } ?>
+				</header>
+				<div><?= $comment['content']; ?></div>
+			</article>
 		<?php } ?>
 	</section>
 </main>
