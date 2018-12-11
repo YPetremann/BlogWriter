@@ -23,9 +23,15 @@ $errorPage = function () {
 };
 try {
     // User related functions
-    $userLogout      = function ()         { return (new User\Controller($_SESSION["user"]) )->logout(); };
-    $userLogin       = function ()         { return (new User\Controller($_SESSION["user"]) )->login($_POST); };
-    $userAsk         = function ()         { return (new User\Controller($_SESSION["user"]) )->ask($_POST); };
+    $userLogout      = function ()         {
+        return (new User\Controller($_SESSION["user"]) )->logout();
+    };
+    $userLogin       = function ()         {
+        return (new User\Controller($_SESSION["user"]) )->login($_POST);
+    };
+    $userAsk         = function ()         {
+        return (new User\Controller($_SESSION["user"]) )->ask($_POST);
+    };
 
     // Blog related functions
     $postCreate      = function ()         { return (new Blog\Controller($_SESSION["user"]) )->createPost($_POST); };

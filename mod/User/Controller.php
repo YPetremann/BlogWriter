@@ -8,6 +8,7 @@ class Controller
     public function ask()
     {
         global $view;
+        if($view->user->type != "Guest") return false;
         $view->content = include "dat/view/UserLogin.phtml";
     }
     public function login($post)
@@ -22,13 +23,14 @@ class Controller
             $view->message .= '<div class="success"><div class="fixer">Connexion en tant que '.$view->user->name.'</div></div>';
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-            return false;
         }
+        return false;
     }
     public function logout()
     {
         global $view;
         $view->user = $_SESSION["user"] = new Guest();
+        return false;
     }
     public function remember() {}
     public function password() {}

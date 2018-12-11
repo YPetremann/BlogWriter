@@ -30,6 +30,7 @@ trait UserBlogT
     public function get_post_can_update()      { return $this->post_can_update; }
     public function get_post_can_delete()      { return $this->post_can_delete; }
     public function get_post_can_publish()     { return $this->post_can_publish; }
+    public function get_post_can_unpublish()   { return $this->post_can_unpublish; }
 
     public function get_comment_can_create()   { return $this->comment_can_create; }
     public function get_comment_can_read()     { return $this->comment_can_read; }

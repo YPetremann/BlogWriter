@@ -89,5 +89,30 @@ class PostManager
     }
     public function publish($id)
     {
+        $id = (int) $id;
+
+        $cond = [];
+        $cond = $this->sql_permission($this->user->post_can_publish, $cond);
+        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+
+        $query = $this->db->prepare('UPDATE posts SET visibility = 1 WHERE visibility = 0 AND id = :id'.$cond);
+        $query->execute(["id"=>$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+        return $answer;
+    }
+    public function unpublish($id)
+    {
+        $id = (int) $id;
+
+        $cond = [];
+        $cond = $this->sql_permission($this->user->post_can_unpublish, $cond);
+        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+
+        $query = $this->db->prepare('UPDATE posts SET visibility = 0 WHERE visibility = 1 AND id = :id'.$cond);
+        $query->execute(["id"=>$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+        return $answer;
     }
 }

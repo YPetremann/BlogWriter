@@ -8,6 +8,7 @@ class Admin extends User
     protected $post_can_update      = self::ALL;
     protected $post_can_delete      = self::ALL;
     protected $post_can_publish     = self::ALL;
+    protected $post_can_unpublish   = self::ALL;
 
     protected $comment_can_create   = self::ALL;
     protected $comment_can_read     = self::ALL;
