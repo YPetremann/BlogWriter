@@ -135,4 +135,79 @@ class Controller
             return false;
         }
     }
+
+    public function createPost($post)
+    {
+        global $view;
+        try {
+            // preformating content
+            preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
+            $post["content"] = $content[1];
+            // verify empty content
+            if (empty($post["content"]) || empty($post["title"])) {
+                throw new \Exception('Tous les champs ne sont pas remplis !');
+            }
+            // verify content
+            $affectedLines = (new PostManager($this->user) )->create($post['title'], $post['content']);
+            if (!$affectedLines) {
+                throw new \Exception("Article non ajouté !");
+            }
+            $view->message .= '<div class="success"><div class="fixer">Article ajouté !</div></div>';
+            return $affectedLines;
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
+
+    public function updatePost($id, $post)
+    {
+        global $view;
+        try {
+            // preformating content
+            preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
+            $post["content"] = $content[1];
+            // verify empty content
+            if (empty($post["content"]) || empty($post["title"])) {
+                throw new \Exception('Tous les champs ne sont pas remplis !');
+            }
+            // verify content
+            $affectedLines = (new PostManager($this->user) )->update($id, $post['title'], $post['content']);
+            if (!$affectedLines) {
+                throw new \Exception("Article non mis à jour !");
+            }
+            $view->message .= '<div class="success"><div class="fixer">Article mis à jour !</div></div>';
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
+
+    public function editPost($id=null)
+    {
+        global $view;
+        try {
+            $id = (int) $id;
+            if ($id != 0) {
+                $post = (new PostManager($this->user) )->read($id);
+                if (!$post["post_can_update"]) {
+                    throw new \Exception("Vous ne pouvez éditer l'article !");
+                }
+            } else {
+                if (!$this->user->post_can_create) {
+                    throw new \Exception("Vous ne pouvez créer d'articles !");
+                }
+                $post = [
+                    'id'=>null,
+                    'post_date'=>null,
+                    'title'=>"",
+                    'content'=>"",
+                ];
+            }
+            $view->content = include "dat/view/BlogPostEdit.phtml";
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            return false;
+        }
+    }
 }

@@ -28,7 +28,14 @@ class PostManager
         return $cond;
     }
     public function get_comments($id) {}
-    public function create($data) {}
+    public function create(string $title, string $content) {
+        // execute query
+        $query = $this->db->prepare("
+            INSERT INTO posts(title, author_id, content)
+            VALUES (?, ?, ?)");
+        $answer = $query->execute([$title, $this->user->id, $content]);
+        return $answer;
+    }
     public function read($id)
     {
         $cond = [];
@@ -57,8 +64,19 @@ class PostManager
         $post["comment_can_create"] = $this->permission($this->user->comment_can_create, $post);
         return $post;
     }
-    public function update($id) {}
     public function delete($id) {}
+    public function update(int $id, string $title, string $content) {
+
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->post_can_update);
+        // execute query
+        $query = $this->db->prepare('UPDATE posts SET title = ?, content = ? WHERE id = ?'.$cond);
+        $query->execute([$title, $content, $id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+
+        return $answer;
+    }
     public function list()
     {
         $cond = [];
