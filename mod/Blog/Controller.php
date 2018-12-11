@@ -210,4 +210,42 @@ class Controller
             return false;
         }
     }
+
+    public function unpublishPost($post_id)
+    {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+
+            $affectedLines = (new PostManager($this->user) )->unpublish($post_id);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez dépublier cet article !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">L\'article à été dépublié !</div></div>';
+            }
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
+
+    public function deletePost($post_id)
+    {
+        global $view;
+        try {
+            $post_id = (int) $post_id;
+
+            $affectedLines = (new PostManager($this->user) )->delete($post_id);
+
+            if (!$affectedLines) {
+                throw new \Exception("Vous ne pouvez suprimer cet article !");
+            } else {
+                $view->message .= '<div class="success"><div class="fixer">L\'article à été suprimé !</div></div>';
+            }
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+        }
+        return false;
+    }
 }

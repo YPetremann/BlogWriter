@@ -19,13 +19,14 @@ class PostManager
         if (($perm & UserBlogI::OTHER) && $entry["author_id"] != $this->user->id) { $result = true; }
         return $result;
     }
-    private function sql_permission($perm, $cond)
+    private function sql_permission($perm)
     {
+        $cond = [];
         if ($perm & UserBlogI::PUBLIC) { array_push($cond, "visibility = 1"); }
         if ($perm & UserBlogI::PRIVATE) { array_push($cond, "visibility = 0"); }
         if ($perm & UserBlogI::SELF) { array_push($cond, "author_id = ".$this->user->id); }
         if ($perm & UserBlogI::OTHER) { array_push($cond, "author_id != ".$this->user->id); }
-        return $cond;
+        return empty($cond) ? " AND FALSE" : " AND (".join(" OR ", $cond).")";
     }
     public function get_comments($id) {}
     public function create(string $title, string $content) {
@@ -38,10 +39,12 @@ class PostManager
     }
     public function read($id)
     {
-        $cond = [];
         $id = (int) $id;
-        $cond = $this->sql_permission($this->user->post_can_read, $cond);
-        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->post_can_read);
+
+        // execute query
         $query = $this->db->prepare('
             SELECT
                 p.id id,
@@ -59,12 +62,17 @@ class PostManager
         $posts = $query->fetchAll();
         $query->closeCursor();
 
-        if (count($posts) != 1) { throw new \Exception("Article inexistant"); }
+        // verify if there is one post
+        if (count($posts) != 1) { throw new \Exception("Vous ne pouvez lire d'articles avec cet identifiant"); }
         $post = $posts[0];
+
+        // insert permission in post
         $post["comment_can_create"] = $this->permission($this->user->comment_can_create, $post);
+        $post["post_can_update"] = $this->permission($this->user->post_can_update, $post);
+        $post["post_can_publish"] = $this->permission($this->user->post_can_publish, $post);
+        $post["post_can_delete"] = $this->permission($this->user->post_can_delete, $post);
         return $post;
     }
-    public function delete($id) {}
     public function update(int $id, string $title, string $content) {
 
         // apply user permission to sql query
@@ -77,11 +85,24 @@ class PostManager
 
         return $answer;
     }
+    public function delete($id) {
+        $id = (int) $id;
+
+        $cond = $this->sql_permission($this->user->comment_can_delete);
+        $query = $this->db->prepare('
+            DELETE FROM posts
+            WHERE id = :id'.$cond);
+        $query->execute(["id"=>$id]);
+        $answer = $query->rowCount();
+        $query->closeCursor();
+        return $answer;
+    }
     public function list()
     {
-        $cond = [];
-        $cond = $this->sql_permission($this->user->post_can_read, $cond);
-        if (!empty($cond)) { $cond = 'WHERE '.join(' OR ', $cond); }
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->post_can_read);
+
+        // execute query
         $query = $this->db->query('
             SELECT
                 p.id id,
@@ -97,40 +118,48 @@ class PostManager
             '.$cond.'
             ORDER BY p.id DESC');
         $data = $query->fetchAll();
+
+        // insert permission in post
         foreach ($data as &$entry) {
             $entry["post_can_update"] = $this->permission($this->user->post_can_update, $entry);
             $entry["post_can_publish"] = $this->permission($this->user->post_can_publish, $entry);
             $entry["post_can_delete"] = $this->permission($this->user->post_can_delete, $entry);
         }
         $query->closeCursor();
+
         return $data;
     }
     public function publish($id)
     {
         $id = (int) $id;
 
-        $cond = [];
-        $cond = $this->sql_permission($this->user->post_can_publish, $cond);
-        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->post_can_publish);
 
-        $query = $this->db->prepare('UPDATE posts SET visibility = 1 WHERE visibility = 0 AND id = :id'.$cond);
-        $query->execute(["id"=>$id]);
+        // execute query
+        $query = $this->db->prepare('UPDATE posts SET visibility = 1 WHERE visibility = 0 AND id = ?'.$cond);
+        $query->execute([$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
+
         return $answer;
     }
     public function unpublish($id)
     {
         $id = (int) $id;
 
-        $cond = [];
-        $cond = $this->sql_permission($this->user->post_can_unpublish, $cond);
-        if (!empty($cond)) { $cond = " AND (".join(" OR ", $cond).")"; }
+        // apply user permission to sql query
+        $cond = $this->sql_permission($this->user->post_can_unpublish);
 
-        $query = $this->db->prepare('UPDATE posts SET visibility = 0 WHERE visibility = 1 AND id = :id'.$cond);
-        $query->execute(["id"=>$id]);
+        // execute query
+        $query = $this->db->prepare('
+            UPDATE posts
+            SET visibility = 0
+            WHERE visibility = 1 AND id = ?'.$cond);
+        $query->execute([$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
+
         return $answer;
     }
 }

@@ -37,7 +37,6 @@ try {
 
     $postRead        = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->readPost($post_id); };
     $postDelete      = function ($post_id) {
-        global $router; $router->url('/posts/'.$post_id.'/read');
         return (new Blog\Controller($_SESSION["user"]) )->deletePost($post_id);
     };
     $postPublish     = function ($post_id) {
