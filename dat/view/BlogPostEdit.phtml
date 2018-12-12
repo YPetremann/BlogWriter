@@ -22,7 +22,10 @@
 		],
 		menubar: 'edit insert view format table tools help',
 		content_css: [
-			'<?=url("/res/style.css");?>'
+			'<?=url("/res/style.css",true);?>'
+		],
+		content_syule: [
+			'body{background:none;}'
 		],
 		branding: false
 	});
@@ -44,7 +47,7 @@
 		<footer class="multibar">
 			<span class="left">Publié le <?= $post['post_date']; ?></span>
 			<?php if(!$post['visibility']) { ?>
-				<a class="left btn warning">Non visible</a>
+				<a class="left btn warning">En attente de publication</a>
 			<?php } ?>
 			<?php if($post['post_can_delete']) { ?>
 				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>

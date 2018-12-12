@@ -28,6 +28,13 @@ html > main {
   flex-shrink: 0;
   flex-basis: auto;
 }
+body {
+  background: url("alaska.jpg") fixed center;
+  background-size: cover;
+}
+body#tinymce {
+  background: none;
+}
 /* multi alignement bar */
 .multibar {
   display: flex;
@@ -87,9 +94,16 @@ body > footer {
 }
 article {
   border: 1px solid #c0c0c0;
+  background: #DEF;
   border-radius: 3px;
   padding: 10px;
-  margin: 20px;
+  margin: 20px 0;
+}
+@supports (backdrop-filter: blur(5px)) {
+  article {
+    backdrop-filter: blur(10px);
+    background: rgba(221, 238, 255, 0.75);
+  }
 }
 article > header {
   margin: 10px -10px;
@@ -121,18 +135,18 @@ fieldset {
 fieldset legend {
   padding: 0 10px;
 }
-form.grid {
+.formgrid {
   display: grid;
   grid-template-columns: 100px auto;
   grid-template-rows: auto;
   grid-auto-flow: row;
   grid-gap: 5px;
 }
-form.grid label {
+.formgrid label {
   grid-column: 0;
   text-align: right;
 }
-form.grid .line {
+.formgrid .line {
   grid-column: auto / span 2;
   text-align: right;
 }
@@ -148,10 +162,22 @@ form.grid .line {
   border: none;
 }
 .neutral {
-  background: #CCCCCC;
+  background: #DEF;
+}
+@supports (backdrop-filter: blur(5px)) {
+  .neutral {
+    backdrop-filter: blur(10px);
+    background: rgba(221, 238, 255, 0.75);
+  }
 }
 .error {
   background: #EE9999;
+}
+@supports (backdrop-filter: blur(5px)) {
+  .error {
+    backdrop-filter: blur(10px);
+    background: rgba(238, 153, 153, 0.75);
+  }
 }
 .error.btn {
   color: #550000;
@@ -159,17 +185,35 @@ form.grid .line {
 .warning {
   background: #EEEE99;
 }
+@supports (backdrop-filter: blur(5px)) {
+  .warning {
+    backdrop-filter: blur(10px);
+    background: rgba(238, 238, 153, 0.75);
+  }
+}
 .warning.btn {
   color: #555500;
 }
 .success {
   background: #99EE99;
 }
+@supports (backdrop-filter: blur(5px)) {
+  .success {
+    backdrop-filter: blur(10px);
+    background: rgba(153, 238, 153, 0.75);
+  }
+}
 .success.btn {
   color: #005500;
 }
 .info {
   background: #9999EE;
+}
+@supports (backdrop-filter: blur(5px)) {
+  .info {
+    backdrop-filter: blur(10px);
+    background: rgba(153, 153, 238, 0.75);
+  }
 }
 .info.btn {
   color: #000055;

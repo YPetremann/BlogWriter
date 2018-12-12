@@ -2,39 +2,42 @@
 <?php ob_start(); ?>
 <main>
 	<section class="fixer" id="login">
-		<fieldset class="h2">
-			<legend>S'identifier</legend>
-			<form action="<?= url($view->urlUserLoginPOST()); ?>" method="post" class="grid">
-				<label for="email">Email</label><input type="email" id="email" name="email" />
-				<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
-				<div class="line">
+		<form action="<?= url($view->urlUserLoginPOST()); ?>" method="post">
+			<article>
+				<header>S'identifier</header>
+				<div class="formgrid">
+					<label for="email">Email</label><input type="email" id="email" name="email" />
+					<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
+				</div>
+				<footer>
 					<input type="submit" value="S'identifier" />
+				</footer>
+			</article>
+		</form>
+		<form action="<?= url($view->urlUserCreatePOST()); ?>" method="post">
+			<article>
+				<header>Créer compte</header>
+				<div class="formgrid">
+					<label for="name">Pseudonyme</label><input type="name" id="name" name="name" />
+					<label for="email">Email</label><input type="email" id="email" name="email" />
+					<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
 				</div>
-			</form>
-		</fieldset>
-		<fieldset>
-			<legend>Créer compte</legend>
-			<form action="<?= url($view->urlUserCreatePOST()); ?>" method="post" class="grid">
-			<form action="" method="post">
-				<label for="name">Pseudonyme</label><input type="name" id="name" name="name" />
-				<label for="email">Email</label><input type="email" id="email" name="email" />
-				<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
-				<div class="line">
+				<footer>
 					<input type="submit" value="Créer compte" />
+				</footer>
+			</article>
+		</form>
+		<form action="<?= url($view->urlUserForgetPOST()); ?>" method="post">
+			<article style="display:none;">
+				<header>Mot de passe oublié</header>
+				<div class="formgrid">
+					<label for="email">Email</label><input type="email" id="email" name="email" />
 				</div>
-			</form>
-		</fieldset>
-		<fieldset style="display:none;">
-			<legend>Mot de passe oublié</legend>
-			<form action="<?= url($view->urlUserForgetPOST()); ?>" method="post" class="grid">
-			<form action="" method="post">
-				<label for="email">Email</label>
-				<input type="email" id="email" name="email" />
-				<div class="line">
+				<footer>
 					<input type="submit" value="Mot de pass oublié" />
-				</div>
-			</form>
-		</fieldset>
+				</footer>
+			</article>
+		</form>
 	</section>
 </main>
 <?php return ob_get_clean(); ?>

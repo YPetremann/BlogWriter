@@ -14,7 +14,7 @@
 		<footer class="multibar">
 			<span class="left">Publié le <?= $post['post_date']; ?></span>
 			<?php if(!$post['visibility']) { ?>
-				<a class="left btn warning">Non visible</a>
+				<a class="left btn warning">Caché</a>
 			<?php } ?>
 			<?php if($post['post_can_delete']) { ?>
 				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
@@ -34,17 +34,19 @@
 	</article>
 	<section class="fixer" id="comments">
 		<h2>Commentaires</h2>
-		<form action="<?= url($view->urlCommentCreate($post['id'])); ?>" method="post" class="grid">
-			<label for="author">Auteur</label>
-			<input type="text" disabled value="<?= $view->user->name; ?>" />
-			<label for="comment">Commentaire</label>
-			<textarea id="comment" name="comment"></textarea>
-			<div class="line">
-				<input type="submit" />
-			</div>
+		<form action="<?= url($view->urlCommentCreate($post['id'])); ?>" method="post">
+			<article>
+				<header class="multibar">
+					<span class="left"><?= $view->user->name; ?> </span>
+				</header>
+				<textarea id="comment" name="comment"></textarea>
+				<footer class="multibar">
+					<input class="right btn success" type="submit" value="Envoyer" />
+				</footer>
+			</article>
 		</form>
 		<?php foreach ($post["comments"] as $comment) { ?>
-			<article <?=$comment['visibility']?:'class="warning"';?>>
+			<article <?=$comment['visibility']?'':'class="warning"';?>>
 				<header class="multibar">
 					<span class="left"><?= $comment['author']; ?> </span>
 					<span class="right">le <?= $comment['post_date']; ?></span>
@@ -55,7 +57,7 @@
 						<a class="right btn error" href="<?= url($view->urlCommentDelete($post['id'],$comment['id'])); ?>">suprimer</a>
 					<?php } ?>
 					<?php if(!$comment['visibility']) { ?>
-						<a class="left btn warning">non visible</a>
+						<span class="left btn warning">non visible</span>
 						<?php if($comment['comment_can_publish']) { ?>
 							<a class="right btn warning" href="<?= url($view->urlCommentPublish($post['id'],$comment['id'])); ?>">Publier</a>
 						<?php } ?>
@@ -63,7 +65,7 @@
 						<a class="right btn warning" href="<?= url($view->urlCommentUnpublish($post['id'],$comment['id'])); ?>">Dépublier</a>
 					<?php } ?>
 					<?php if($comment["reported"]) { ?>
-						<a class="left btn error">signalé</a>
+						<span class="left btn error">Signalé</span>
 						<?php if($comment['comment_can_unreport']) { ?>
 							<a class="right btn warning" href="<?= url($view->urlCommentUnreport($post['id'],$comment['id'])); ?>">désignaler</a>
 						<?php } ?>
