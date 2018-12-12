@@ -7,8 +7,7 @@ $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 
 function url($url, $unique=false)
 {
-    $prefix = "/oc-p4";
-    $url = $prefix . $url;
+    $url = GlobalC::urlprefix . $url;
     (!$unique) ?: $url .= "?v=".uniqid('', true);
     return $url;
 }
