@@ -1,5 +1,5 @@
 <?php
 interface GlobalC
 {
-    const urlprefix = "/oc-p4";
+    const urlprefix = "/BlogWriter";
 }
