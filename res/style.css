@@ -1,4 +1,5 @@
 @import url("reset.css");
+@import url("fonts/CooperHewitt.css");
 /* General Classes */
 .hidden {
   /* Hide it, keep it */
@@ -31,6 +32,8 @@ html > main {
 body {
   background: url("alaska.jpg") fixed center;
   background-size: cover;
+  font-size: 16px;
+  font-family: "CooperHewittMedium";
 }
 body#tinymce {
   background: none;
@@ -38,6 +41,7 @@ body#tinymce {
 /* multi alignement bar */
 .multibar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 .multibar:before {
@@ -67,18 +71,25 @@ body > header h1 > a {
   color: inherit;
   text-decoration: none;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 body > header h1 > a p {
-  padding: 10px;
+  font-family: "CooperHewittHeavy";
+  padding: 10px 20px;
+  text-align: center;
 }
 body > header nav {
   display: flex;
   align-items: center;
+  margin: 10px;
 }
 body > header nav > ul {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 body > header nav > ul a {
@@ -127,6 +138,12 @@ article > :last-child {
   margin-bottom: -10px;
   padding-bottom: 10px;
 }
+article p {
+  font-size: 16px;
+  line-height: 1.2em;
+  padding: 0.33em 0;
+  text-align: justify;
+}
 fieldset {
   border-top: 1px solid silver;
   padding: 10px 0 10px 10px;
@@ -145,6 +162,13 @@ fieldset legend {
 .formgrid label {
   grid-column: 0;
   text-align: right;
+  padding: 5px;
+}
+.formgrid input[type="text"],
+.formgrid input[type="email"],
+.formgrid input[type="password"] {
+  border: 1px solid silver;
+  padding: 5px;
 }
 .formgrid .line {
   grid-column: auto / span 2;

@@ -5,10 +5,6 @@
 	tinymce.init({
 		selector: 'textarea',
 		language: 'fr_FR',
-		mobile: {
-			theme: 'beta-mobile',
-			plugins: ['autosave']
-		},
 		image_advtab: true,
 		plugins: [
 			'fullscreen hr image imagetools insertdatetime link lists media',
@@ -50,16 +46,16 @@
 				<a class="left btn warning">En attente de publication</a>
 			<?php } ?>
 			<?php if($post['post_can_delete']) { ?>
-				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
+				<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>"><i class="fas fa-trash-alt"></i></a>
 			<?php } ?>
 			<?php if($post['post_can_publish']) { ?>
 				<?php if(!$post['visibility']) { ?>
-					<input class="right btn" type="submit" formaction="<?= url($view->urlPostPublish($post['id'])); ?>" value="Publier"/>
+					<button type="submit" formaction="<?= url($view->urlPostPublish($post['id'])); ?>" class="right btn"><i class="fas fa-eye"></i></button>
 				<?php } else {?>
-					<input class="right btn" type="submit" formaction="<?= url($view->urlPostUnpublish($post['id'])); ?>" value="Dépublier"/>
+					<button type="submit" formaction="<?= url($view->urlPostUnpublish($post['id'])); ?>" class="right btn"><i class="fas fa-eye-slash"></i></button>
 				<?php } ?>
 			<?php } ?>
-			<input class="right btn success" type="submit" value="Enregistrer" />
+			<button type="submit" class="right btn success"><i class="fas fa-save"></i></button>
 		</footer>
 	</article>
 	</form>

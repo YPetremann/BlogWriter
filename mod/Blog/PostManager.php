@@ -108,6 +108,7 @@ class PostManager
                 p.id id,
                 p.title title,
                 p.content content,
+                LEFT(p.content,512) excerpt,
                 p.visibility visibility,
                 p.author_id author_id,
                 p.post_date post_date,
@@ -121,6 +122,7 @@ class PostManager
 
         // insert permission in post
         foreach ($data as &$entry) {
+            if(strlen($entry["excerpt"]) != strlen($entry["content"])) $entry["excerpt"] = substr($entry["excerpt"],0,strrpos($entry["excerpt"]," "))." ...";
             $entry["post_can_update"] = $this->permission($this->user->post_can_update, $entry);
             $entry["post_can_publish"] = $this->permission($this->user->post_can_publish, $entry);
             $entry["post_can_delete"] = $this->permission($this->user->post_can_delete, $entry);

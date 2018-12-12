@@ -5,7 +5,7 @@
 	<article class="fixer">
 		<footer class="multibar">
 			<?php if($view->user->post_can_create) { ?>
-				<a class="right btn success" href="<?= url($view->urlPostCreate()); ?>">Créer</a>
+				<a class="right btn success" href="<?= url($view->urlPostCreate()); ?>"><i class="fas fa-plus"></i></a>
 			<?php } ?>
 		</footer>
 	</article>
@@ -13,26 +13,26 @@
 	<?php foreach ($posts as $post) { ?>
 		<article class="fixer <?=$post['visibility']?:'warning';?>">
 			<header><?= $post['title']; ?></header>
-			<?= $post['content']; ?>
+			<?= $post['excerpt']; ?>
 			<footer class="multibar">
 				<span class="left">Publié le <?= $post['post_date']; ?></span>
 				<?php if(!$post['visibility']) { ?>
 					<a class="left btn warning">En attente de publication</a>
 				<?php } ?>
 				<?php if($post['post_can_delete']) { ?>
-					<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>">Suprimer</a>
+					<a class="right btn error" href="<?= url($view->urlPostDelete($post['id'])); ?>"><i class="fas fa-trash-alt"></i></a>
 				<?php } ?>
 				<?php if($post['post_can_publish']) { ?>
 					<?php if(!$post['visibility']) { ?>
-						<a class="right btn" href="<?= url($view->urlPostPublish($post['id'])); ?>">Publier</a>
+						<a class="right btn" href="<?= url($view->urlPostPublish($post['id'])); ?>"><i class="fas fa-eye"></i></a>
 					<?php } else {?>
-						<a class="right btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>">Dépublier</a>
+						<a class="right btn" href="<?= url($view->urlPostUnpublish($post['id'])); ?>"><i class="fas fa-eye-slash"></i>r</a>
 					<?php } ?>
 				<?php } ?>
 				<?php if($post['post_can_update']) { ?>
-					<a class="right btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>">Editer</a>
+					<a class="right btn" href="<?= url($view->urlPostUpdate($post['id'])); ?>"><i class="fas fa-edit"></i></a>
 				<?php } ?>
-				<a class="right btn" href="<?= url($view->urlPostRead($post['id'])); ?>">Lire plus...</a>
+				<a class="right btn" href="<?= url($view->urlPostRead($post['id'])); ?>"><i class="fas fa-ellipsis-h"></i></a>
 			</footer>
 		</article>
 	<?php } ?>

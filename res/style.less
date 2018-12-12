@@ -1,5 +1,6 @@
 // out: style.css
 @import url("reset.css");
+@import url("fonts/CooperHewitt.css");
 @import url("flex.less");
 /* General Classes */
 .hidden {
@@ -25,8 +26,6 @@ html {
 	#flex.apply();
 	height: 100%;
 
-
-
 	& > main {
 		flex-grow: 1;
 		flex-shrink: 0;
@@ -36,6 +35,8 @@ html {
 body {
 	background: url("alaska.jpg") fixed center;
 	background-size: cover;
+	font-size: 16px;
+	font-family: "CooperHewittMedium";
 }
 body#tinymce {
 	background: none;
@@ -43,6 +44,7 @@ body#tinymce {
 /* multi alignement bar */
 .multibar {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 
 	&:before {
@@ -78,20 +80,28 @@ body {
 			color: inherit;
 			text-decoration: none;
 			display: flex;
+
+			flex-wrap: wrap;
 			flex-direction: row;
 			align-items: center;
+			justify-content: center;
+			text-align: center;
 
 			p {
-				padding: 10px;
+				font-family: "CooperHewittHeavy";
+				padding: 10px 20px;
+				text-align:center;
 			}
 		}
 
 		nav {
 			display: flex;
 			align-items: center;
+			margin: 10px;
 
 			& > ul {
 				display: flex;
+				justify-content: center;
 				align-items: center;
 
 				a {
@@ -148,6 +158,12 @@ article {
 		margin-bottom: -10px;
 		padding-bottom: 10px;
 	}
+	p {
+		font-size:16px;
+		line-height: 1.2em;
+		padding:0.33em 0;
+		text-align: justify;
+	}
 }
 
 fieldset {
@@ -170,8 +186,14 @@ fieldset {
 	label {
 		grid-column: 0 / 1;
 		text-align: right;
+		padding:5px;
 	}
-
+	input[type="text"],
+	input[type="email"],
+	input[type="password"] {
+		border:1px solid silver;
+		padding:5px;
+	}
 	.line {
 		grid-column: auto / span 2;
 		text-align: right;
