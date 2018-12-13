@@ -29,7 +29,7 @@ class Router
             if ($this->continue and ($case["method"] == null or $this->method == $case["method"])) {
                 $args = ($case["path"] === null) ? [] : $this->match($case["path"]);
                 if ($args !== false) {
-                    //$view->message .= '<div class="neutral"><div class="fixer">'.($case["method"]===null?"ALL":$case["method"]).' /'.($case["path"]===null?"default":$case["path"]).'</div></div>';
+                    $view->message .= '<div class="neutral"><div class="fixer">'.($case["method"]===null?"ALL":$case["method"]).' /'.($case["path"]===null?"default":$case["path"]).'</div></div>';
                     $return = call_user_func_array($case["function"], $args);
                     if ($return === null) {
                         $this->continue = false;
@@ -40,6 +40,8 @@ class Router
     }
     public function match($path)
     {
+        $path = preg_replace('#:?\.\.\.#', '.*', $path);
+        $path = preg_replace('#:-([\w]+)#', '[^/]+', $path);
         $path = preg_replace('#:([\w]+)#', '([^/]+)', $path);
         $regex = "#^".$path."$#i";
         if (!preg_match($regex, $this->url, $matches)) {

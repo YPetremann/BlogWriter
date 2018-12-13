@@ -7,7 +7,7 @@ class Path
     {
         $path = $this->path;
         foreach ($args as $arg) {
-            $path = preg_replace('#:([\w]+)#', $arg, $path, 1);
+            $path = preg_replace('#:-?([.\w]+)#', $arg, $path, 1);
         }
         return $path;
     }
