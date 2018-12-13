@@ -2,7 +2,7 @@
 <?php ob_start(); ?>
 <main>
 	<section class="fixer" id="login">
-		<form action="<?= url($view->urlUserLoginPOST()); ?>" method="post">
+		<form action="<?= $view->urlUserLoginPOST(); ?>" method="post">
 			<article>
 				<header>S'identifier</header>
 				<div class="formgrid">
@@ -14,7 +14,7 @@
 				</footer>
 			</article>
 		</form>
-		<form action="<?= url($view->urlUserCreatePOST()); ?>" method="post">
+		<form action="<?= $view->urlUserCreatePOST(); ?>" method="post">
 			<article>
 				<header>Créer compte</header>
 				<div class="formgrid">
@@ -27,7 +27,7 @@
 				</footer>
 			</article>
 		</form>
-		<form action="<?= url($view->urlUserForgetPOST()); ?>" method="post">
+		<form action="<?= $view->urlUserForgetPOST(); ?>" method="post">
 			<article style="display:none;">
 				<header>Mot de passe oublié</header>
 				<div class="formgrid">

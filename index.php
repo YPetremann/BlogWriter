@@ -1,6 +1,5 @@
 <?php
 require('mod/ClassAutoload.php');
-require('mod/Functions.php');
 
 ClassAutoload::register();
 session_start();
@@ -10,7 +9,8 @@ $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 $router = new Router($_GET["url"]);
 $view = new View();
 $view->user = $_SESSION["user"];
-
+$view->url = new Path(":path");
+$view->uniqueurl = new Path(":path", true);
 $errorPage = function () {
     global $view;
     $view->content = include "dat/view/MainError.phtml";
