@@ -1,5 +1,5 @@
 <?php
-class DBManager implements DBC
+class DBManager implements DBS
 {
     private static $db = null;
     public static function get()

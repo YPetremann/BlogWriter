@@ -1,5 +1,5 @@
 <?php
-interface DBC
+interface DBS
 {
     const dbhost = "localhost";
     const dbname = "oc_yp_blogwriter";

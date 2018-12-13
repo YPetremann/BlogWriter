@@ -6,7 +6,7 @@ class ClassAutoload
         spl_autoload_register(function ($class) {
             $paths = ["mod\\"];
             switch (substr($class, -1)) {
-                case 'C':
+                case 'S':
                     array_unshift($paths, "cfg\\" );
                 case 'I':
                 case 'T':
