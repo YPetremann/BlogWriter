@@ -5,12 +5,12 @@ use \DBManager;
 
 class UserManager
 {
+    private $user;
     public function __construct($as)
     {
         $this->db = DBManager::get();
         $this->user = $as;
     }
-    public function add() {}
     public function subType($data)
     {
         switch ($data["type"]) {
@@ -44,5 +44,4 @@ class UserManager
         $answer = $query->execute([$name, $emailhash, $passwordhash]);
         return $this->login($emailhash, $passwordhash);
     }
-    public function disconnect() {}
 }

@@ -2,13 +2,21 @@
 
 namespace User;
 
+use \User\User;
+
 class Controller
 {
-    public function __construct($as) { $this->user = $as; }
+    private $user;
+    public function __construct(User $as)
+    {
+        $this->user = $as;
+    }
     public function ask()
     {
         global $view;
-        if($view->user->type != "Guest") return false;
+        if ($view->user->type != "Guest") {
+            return false;
+        }
         $view->content = include "dat/view/UserLogin.phtml";
     }
     public function login($post)
@@ -33,7 +41,8 @@ class Controller
         $view->message .= '<div class="success"><div class="fixer">Déconnexion !</div></div>';
         return false;
     }
-    public function create($post) {
+    public function create($post)
+    {
         global $view;
         try {
             $name = nl2br(htmlspecialchars((string) $post['name'] ?: ""));
@@ -51,7 +60,7 @@ class Controller
         }
         return false;
     }
-    public function remember($post) {
-
+    public function remember($post)
+    {
     }
 }

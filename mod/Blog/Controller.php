@@ -1,9 +1,12 @@
 <?php
 namespace Blog;
 
+use \User\User;
+
 class Controller
 {
-    public function __construct($as)
+    private $user;
+    public function __construct(UserBlogI $as)
     {
         $this->user = $as;
     }
@@ -32,7 +35,7 @@ class Controller
         }
     }
 
-    public function createComment($id, $post)
+    public function createComment(int $id, $post)
     {
         global $view;
         try {
@@ -54,7 +57,7 @@ class Controller
         return false;
     }
 
-    public function reportComment($comment_id)
+    public function reportComment(int $comment_id)
     {
         global $view;
         try {
@@ -72,7 +75,7 @@ class Controller
         return false;
     }
 
-    public function unreportComment($comment_id)
+    public function unreportComment(int $comment_id)
     {
         global $view;
         try {
@@ -91,7 +94,7 @@ class Controller
         return false;
     }
 
-    public function deleteComment($comment_id)
+    public function deleteComment(int $comment_id)
     {
         global $view;
         try {
@@ -110,7 +113,7 @@ class Controller
         return false;
     }
 
-    public function publishPost($post_id)
+    public function publishPost(int $post_id)
     {
         global $view;
         try {
@@ -129,7 +132,7 @@ class Controller
         return false;
     }
 
-    public function readPost($id)
+    public function readPost(int $id)
     {
         global $view;
         try {
@@ -141,7 +144,9 @@ class Controller
             $view->content = include "dat/view/BlogPost.phtml";
         } catch (\Exception $e) {
             $msg = $e->getMessage();
-            if($msg == "Can't access post.") $msg = "Vous ne pouvez lire l'article !";
+            if ($msg == "Can't access post.") {
+                $msg = "Vous ne pouvez lire l'article !";
+            }
             $view->message .= '<div class="error"><div class="fixer">'.$msg.'</div></div>';
             return false;
         }
@@ -153,7 +158,9 @@ class Controller
         try {
             // preformating content
             preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
-            if(isset($content[1])) $post["content"] = $content[1];
+            if (isset($content[1])) {
+                $post["content"] = $content[1];
+            }
             // verify empty content
             if (empty($post["content"]) || empty($post["title"])) {
                 throw new \Exception('Tous les champs ne sont pas remplis !');
@@ -171,13 +178,15 @@ class Controller
         return false;
     }
 
-    public function updatePost($id, $post)
+    public function updatePost(int $id, $post)
     {
         global $view;
         try {
             // preformating content
             preg_match('#<body>\s*(.*)\s*</body>#ms', $post['content'], $content);
-            if(isset($content[1])) $post["content"] = $content[1];
+            if (isset($content[1])) {
+                $post["content"] = $content[1];
+            }
             // verify empty content
             if (empty($post["content"]) || empty($post["title"])) {
                 throw new \Exception('Tous les champs ne sont pas remplis !');
@@ -222,13 +231,15 @@ class Controller
             $view->content = include "dat/view/BlogPostEdit.phtml";
         } catch (\Exception $e) {
             $msg = $e->getMessage();
-            if($msg == "Can't access post.") $msg = "Vous ne pouvez éditer l'article !";
+            if ($msg == "Can't access post.") {
+                $msg = "Vous ne pouvez éditer l'article !";
+            }
             $view->message .= '<div class="error"><div class="fixer">'.$msg.'</div></div>';
             return false;
         }
     }
 
-    public function unpublishPost($post_id)
+    public function unpublishPost(int $post_id)
     {
         global $view;
         try {
@@ -247,7 +258,7 @@ class Controller
         return false;
     }
 
-    public function deletePost($post_id)
+    public function deletePost(int $post_id)
     {
         global $view;
         try {
@@ -266,7 +277,7 @@ class Controller
         return false;
     }
 
-    public function publishComment($comment_id)
+    public function publishComment(int $comment_id)
     {
         global $view;
         try {
@@ -285,7 +296,7 @@ class Controller
         return false;
     }
 
-    public function unpublishComment($comment_id)
+    public function unpublishComment(int $comment_id)
     {
         global $view;
         try {

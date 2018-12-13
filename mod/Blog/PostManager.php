@@ -5,7 +5,7 @@ use \DBManager;
 
 class PostManager
 {
-    public function __construct($as)
+    public function __construct(UserBlogI $as)
     {
         $this->db = DBManager::get();
         $this->user = $as;
@@ -28,7 +28,6 @@ class PostManager
         if ($perm & UserBlogI::OTHER) { array_push($cond, "author_id != ".$this->user->id); }
         return empty($cond) ? " AND FALSE" : " AND (".join(" OR ", $cond).")";
     }
-    public function get_comments($id) {}
     public function create(string $title, string $content) {
         // execute query
         $query = $this->db->prepare("

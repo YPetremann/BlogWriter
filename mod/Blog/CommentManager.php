@@ -6,12 +6,12 @@ use \USer\User;
 
 class CommentManager
 {
-    public function __construct($as)
+    public function __construct(User $as)
     {
         $this->db = DBManager::get();
         $this->user = $as;
     }
-    private function permission($perm, $entry)
+    private function permission(int $perm, $entry)
     {
         $result = false;
         if (($perm & UserBlogI::PUBLIC) && $entry["visibility"] == 1) { $result = true; }
@@ -20,7 +20,7 @@ class CommentManager
         if (($perm & UserBlogI::OTHER) && $entry["author_id"] != $this->user->id) { $result = true; }
         return $result;
     }
-    private function sql_permission($perm)
+    private function sql_permission(int $perm)
     {
         $cond = [];
         if ($perm & UserBlogI::PUBLIC) { array_push($cond, "visibility = 1"); }
@@ -29,7 +29,7 @@ class CommentManager
         if ($perm & UserBlogI::OTHER) { array_push($cond, "author_id != ".$this->user->id); }
         return empty($cond) ? "FALSE" : "(".join(" OR ", $cond).")";
     }
-    public function create($id, $comment)
+    public function create(int $id, string $comment)
     {
         $id = (int) $id;
 
@@ -43,7 +43,7 @@ class CommentManager
         $answer = $query->execute([$id,$this->user->id,$comment]);
         return $answer;
     }
-    public function delete($id)
+    public function delete(int $id)
     {
         $id = (int) $id;
 
@@ -86,7 +86,7 @@ class CommentManager
         $query->closeCursor();
         return $data;
     }
-    public function report($id)
+    public function report(int $id)
     {
         $id = (int) $id;
 
@@ -101,7 +101,7 @@ class CommentManager
         $query->closeCursor();
         return $answer;
     }
-    public function unreport($id)
+    public function unreport(int $id)
     {
         $id = (int) $id;
 
@@ -116,7 +116,7 @@ class CommentManager
         $query->closeCursor();
         return $answer;
     }
-    public function publish($id)
+    public function publish(int $id)
     {
         $id = (int) $id;
 
@@ -134,7 +134,7 @@ class CommentManager
 
         return $answer;
     }
-    public function unpublish($id)
+    public function unpublish(int $id)
     {
         $id = (int) $id;
 

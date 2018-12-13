@@ -18,7 +18,7 @@ trait UserBlogT
     protected $post_can_delete       = UserBlogI::NONE;
     protected $post_can_publish      = UserBlogI::NONE;
 
-    protected $comment_can_create    = UserBlogI::ALL;
+    protected $comment_can_create    = UserBlogI::NONE;
     protected $comment_can_read      = UserBlogI::PUBLIC;
     protected $comment_can_update    = UserBlogI::NONE;
     protected $comment_can_delete    = UserBlogI::NONE;
