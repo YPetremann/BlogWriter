@@ -51,23 +51,23 @@ Vous développerez sur une architecture MVC orienté objet sans utiliser de fram
 ```puml {filename="users.png"}
 @startuml
 
-skinparam monochrome true
-skinparam shadowing false
-skinparam handwritten true
-skinparam defaultFontName Comic Sans MS
+	'skinparam monochrome true
+	skinparam shadowing false
+	skinparam handwritten true
+	skinparam defaultFontName Comic Sans MS
 
-skinparam linetype polyline
-skinparam packageBackgroundColor #DDDDDD
+	skinparam linetype polyline
+	skinparam packageBackgroundColor #DDDDDD
 
-left to right direction
+	left to right direction
 
-actor Visiteur
-actor Editeur
+	actor Visiteur
+	actor Editeur
 
-rectangle Blog #DDDDDD
+	rectangle Blog #DDEEDD
 
-Visiteur -- Blog
-Editeur -- Blog
+	Visiteur -- Blog
+	Editeur -- Blog
 
 @enduml
 ```
@@ -76,14 +76,14 @@ Editeur -- Blog
 
 ```puml {filename="interfaces.png"}
 @startuml
-	skinparam monochrome true
+	'skinparam monochrome true
 	skinparam shadowing false
 	skinparam handwritten true
 	skinparam defaultFontName Comic Sans MS
 
 	left to right direction
 	skinparam packageStyle rectangle
-	skinparam packageBackgroundColor #DDDDDD
+	skinparam packageBackgroundColor #DDEEDD
 
 	actor Visiteur
 	actor Editeur
@@ -102,12 +102,12 @@ Editeur -- Blog
 
 ```puml {filename="usage.png"}
 @startuml
-	skinparam monochrome true
+	'skinparam monochrome true
 	skinparam shadowing false
 	skinparam handwritten true
 	skinparam defaultFontName Comic Sans MS
 	skinparam linetype polyline
-	skinparam packageBackgroundColor #DDDDDD
+	skinparam packageBackgroundColor #DDEEDD
 	left to right direction
 	skinparam packageStyle rectangle
 	actor Visiteur
@@ -141,15 +141,18 @@ Editeur -- Blog
 ### Classes
 ```puml {filename="classes.png"}
 @startuml
-	skinparam monochrome true
+	'skinparam monochrome true
 	skinparam shadowing false
 	skinparam handwritten true
 	skinparam defaultFontName Comic Sans MS
 	set namespaceSeparator ::
 	skinparam packageStyle rectangle
-	skinparam packageBackgroundColor #DDDDDD
-	skinparam linetype ortho
+	'skinparam linetype ortho
+	skinparam packageBackgroundColor #DDEEDD
 
+	class     DBS
+	class     GlobalS
+	class     Path
 	class     DBManager
 	class     View
 	class     Router
@@ -166,81 +169,190 @@ Editeur -- Blog
 	class     User::Member
 	class     User::UserManager
 
-	User::User              <|-- User::Guest
-	User::User              <|-- User::Admin
-	User::User              <|-- User::Member
-	Blog::UserBlog         <|. User::User
+	GlobalS              <|-- Path : implements
+	Path                 "1" -- "1" View : use <
+	Path                 "1" -- "*" Router : create <
+	View                 "1" -- "1" User::Controller : use <
+	View                 "1" -- "1" Blog::Controller : use <
 	Router               "1" -- "1" Blog::Controller : use >
 	Router               "1" -- "1" User::Controller : use >
-	User::Controller     "1" -- "1" View : use >
-	Blog::Controller     "1" -- "1" View : use >
-	User::UserManager    "1" -- "1" DBManager : use >
+	DBManager            <|-- DBS : implements
+   User::UserManager   	"1" --- "1" DBManager : use >
+   Blog::CommentManager	"1" --- "1" DBManager : use >
+   Blog::PostManager   	"1" --- "1" DBManager : use >
+
+	User::User           <|-- User::Guest
+	User::Admin          -|> User::User
+	User::User           <|-- User::Member
+	Blog::UserBlog       <|. User::User
 	User::UserManager    "1" -- "*" User::User : manage >
 	User::Controller     "1" -- "1" User::UserManager : manage >
 	Blog::Controller     "1" -- "1" Blog::CommentManager : use >
 	Blog::Controller     "1" -- "1" Blog::PostManager : use >
 	Blog::CommentManager "1" -- "1" Blog::UserBlog : use >
 	Blog::PostManager    "1" -- "1" Blog::UserBlog : use >
-	Blog::CommentManager "1" -- "1" DBManager : use >
 	Blog::CommentManager "1" -- "*" Blog::Comment : manage >
-	Blog::PostManager    "1" -- "1" DBManager : use >
 	Blog::PostManager    "1" -- "*" Blog::Post : manage >
+	
 @enduml
 ```
+
 ```puml {filename="classes_detail.png"}
 @startuml
-	skinparam monochrome true
+	'skinparam monochrome true
 	skinparam shadowing false
 	skinparam handwritten true
 	skinparam defaultFontName Comic Sans MS
 	set namespaceSeparator ::
 	skinparam packageStyle rectangle
-	skinparam packageBackgroundColor #DDDDDD
-	skinparam linetype ortho
+	'skinparam linetype ortho
+	skinparam packageBackgroundColor #DDEEDD
 
+	class     GlobalS {
+		# {static} urlprefix: string
+		}
+	class     Path {
+		# path: string
+		+ __construct(path: string, unique: bool)
+		+ __invoke(... args: array)
+		}
+	class     DBS {
+		# {static} dbhost: string
+		# {static} dbname: string
+		# {static} dbuser: string
+		# {static} dbpass: string
+		}
 	class     DBManager {
 		#db
-		__construct(db)
+		{static} get()
 		}
 	class     View {
-		+ __get(name)
-		+ __set(name, value)
-		+ __isset(name)
-		+ __unset(name)
+		+ __get(name: string)
+		+ __set(name: string, value: mixed)
+		+ __isset(name: string)
+		+ __unset(name: string)
+		+ __call(name: string, args: array)
 		}
 	class     Router {
-		+ __construct(url)
-		+ get(path, function)
-		+ post(path, function)
-		+ all(path, function)
-		+ default(path, function)
-		+ run(method, path, function)
-		+ match(path)
+		- url: string
+		- method: string
+		- process: array
+		+ __construct(url: string)
+		+ url(url: string)
+		+ method(method: string)
+		+ get(path: string, function: callable)
+		+ post(path: string, function: callable)
+		+ all(path: string, function: callable)
+		+ default(function: callable)
+		- run(method, path, function: callable)
+		+ match(path: string)
 		}
-	class     Blog::Comment {
-		#id
-		#post_id
-		#author_id
-		#content
-		#post_date
-		#visibility
+	class     User::Controller {
+		- user: User
+		+ __construct(as: User)
+		+ ask()
+		+ login(post: array)
+		+ logout()
+		+ create(post: array)
+		+ remember(post: array)
 		}
-	class     Blog::CommentManager {
-		#db
-		+ __construct(user: User): bool
-		+ set_user(user: User): bool
-		.. CRUD ..
-		+ create(data: array): bool
-		+ read(id: int): Comment
-		+ update(id: int, data: array): bool
-		+ delete(id: int): bool
-		ddd
-		.. comment ..
-		+ list(): array[Comment]
-		+ report(id: int): bool
-		+ moderate(id: int, status: bool): bool
+	class     User::UserManager {
+		- user: User
+		+ __construct(as: User)
+		+ subType(data: array)
+		+ login(emailhash: string, passwordhash: string)
+		+ create(name: string, emailhash: string, passwordhash: string)
+		}
+	class     User::User {
+		# type: string
+		# id: int
+		# name: string
+		+ __construct(data: array)
+		+ __get(name: string)
+		}
+	class     User::Admin {
+		.. Post..
+		# post_can_create: ALL
+		# post_can_read: ALL
+		# post_can_update: ALL
+		# post_can_delete: ALL
+		# post_can_publish: ALL
+		# post_can_unpublish: ALL
+		.. Comment..
+		# comment_can_create: ALL
+		# comment_can_read: ALL
+		# comment_can_update: ALL
+		# comment_can_delete: ALL
+		# comment_can_report: ALL
+		# comment_can_unreport: ALL
+		# comment_can_publish: ALL
+		# comment_can_unpublish: ALL
+		}
+	class     User::Member {
+		.. Post..
+		# post_can_read: PUBLIC | SELF
+		# post_can_update: SELF
+		.. Comment..
+		# comment_can_create: PUBLIC
+		# comment_can_read: PUBLIC | SELF
+		# comment_can_update: SELF
+		# comment_can_delete: SELF
+		# comment_can_report: OTHER
+		}
+	class     User::Guest {
+		.. Post..
+		# post_can_read: PUBLIC | SELF
+		.. Comment..
+		# comment_can_create: PUBLIC
+		# comment_can_read: PUBLIC
+		# comment_can_report: OTHER
 		}
 	class     Blog::Controller {
+		# user: User
+		+ __construct(as: User)
+		.. Post..
+		+ listPost()
+		+ createPost(post: array)
+		+ readPost(id: int)
+		+ updatePost(id: int, post: array)
+		+ editPost(id: int)
+		+ publishPost(id: int)
+		+ unpublishPost(id: int)
+		+ deletePost(id: int)
+		.. Comment..
+		+ listComment()
+		+ createComment(id: int, post: array)
+		+ reportComment(id: int)
+		+ unreportComment(id: int)
+		+ publishComment(id: int)
+		+ unpublishComment(id: int)
+		+ deleteComment(id: int)
+		}
+	class     Blog::CommentManager {
+		# user: User
+		+ __construct(as: User)
+		- permission(perm: int, entry: array): bool
+		- sql_permission(perm: int): bool
+		+ create(id: int, comment: string)
+		+ delete(id: int)
+		+ list(id)
+		+ report(id: int)
+		+ unreport(id: int)
+		+ publish(id: int)
+		+ unpublish(id: int)
+		}
+	class     Blog::PostManager {
+		# user: User
+		+ __construct(as: User)
+		- permission(perm: int, entry: array): bool
+		- sql_permission(perm: int): bool
+		+ create(title: string, content: string)
+		+ read(id: int)
+		+ update(id: int, title: string, content: string)
+		+ delete(id: int)
+		+ list()
+		+ publish(id: int)
+		+ unpublish(id: int)
 		}
 	interface Blog::UserBlog {
 		{static} #NONE = 0
@@ -250,17 +362,43 @@ Editeur -- Blog
 		{static} #OTHER = 8
 		{static} #ALL = 15
 		.. Post..
-		# post_can_create: NONE
-		# post_can_read: PUBLIC
-		# post_can_update: SELF
-		# post_can_delete: SELF
-		# post_can_publish: NONE
+		# post_can_create       : NONE;
+      # post_can_read         : PUBLIC;
+      # post_can_update       : NONE;
+      # post_can_delete       : NONE;
+      # post_can_publish      : NONE;
 		.. Comment..
-		# comment_can_create: ALL
-		# comment_can_read: PUBLIC | SELF
-		# comment_can_update: SELF
-		# comment_can_delete: SELF
-		# comment_can_report: ALL
+		# comment_can_create    : NONE;
+      # comment_can_read      : PUBLIC;
+      # comment_can_update    : NONE;
+      # comment_can_delete    : NONE;
+      # comment_can_report    : NONE;
+      # comment_can_unreport  : NONE;
+      # comment_can_publish   : NONE;
+      # comment_can_unpublish : NONE;
+		+ get_post_can_create()
+      + get_post_can_read()
+      + get_post_can_update()
+      + get_post_can_delete()
+      + get_post_can_publish()
+      + get_post_can_unpublish()
+
+      + get_comment_can_create()
+      + get_comment_can_read()
+      + get_comment_can_update()
+      + get_comment_can_delete()
+      + get_comment_can_report()
+      + get_comment_can_unreport()
+      + get_comment_can_publish()
+      + get_comment_can_unpublish()
+		}
+	class     Blog::Comment {
+		#id
+		#post_id
+		#author_id
+		#content
+		#post_date
+		#visibility
 		}
 	class     Blog::Post {
 		#id
@@ -270,88 +408,29 @@ Editeur -- Blog
 		#post_date
 		#visibility
 		}
-	class     Blog::PostManager {
-		+ get_comments(id): Comment
-		.. CRUD ..
-		+ create(data: array): bool
-		+ read(id: int): Post
-		+ update(id: int): bool
-		+ delete(id: int, data: array): bool
-		.. LIST ..
-		+ list(): array[Post]
-		}
-	class     User::Controller
-	class     User::User {
-		#type
-		#id
-		#name
-		}
-	class     User::Guest {
-		.. Post..
-		# post_can_create: NONE
-		# post_can_read: PUBLIC
-		# post_can_update: NONE
-		# post_can_delete: NONE
-		# post_can_publish: NONE
-		.. Comment..
-		# comment_can_create: ALL
-		# comment_can_read: PUBLIC
-		# comment_can_update: NONE
-		# comment_can_delete: NONE
-		# comment_can_report: ALL
-		}
-	class     User::Admin {
-		.. Post..
-		# post_can_create: ALL
-		# post_can_read: ALL
-		# post_can_update: ALL
-		# post_can_delete: ALL
-		# post_can_publish: ALL
-		.. Comment..
-		# comment_can_create: ALL
-		# comment_can_read: ALL
-		# comment_can_update: ALL
-		# comment_can_delete: ALL
-		# comment_can_report: ALL
-		}
-	class     User::Member {
-		.. Post..
-		# post_can_create: NONE
-		# post_can_read: PUBLIC | SELF
-		# post_can_update: SELF
-		# post_can_delete: NONE
-		# post_can_publish: NONE
-		.. Comment..
-		# comment_can_create: ALL
-		# comment_can_read: PUBLIC | SELF
-		# comment_can_update: SELF
-		# comment_can_delete: SELF
-		# comment_can_report: ALL
-		}
-	class     User::UserManager {
-		+add(): User
-		+connect(): User
-		+disconnect(): User
-		}
 
-	User::User              <|-- User::Guest
-	User::User              <|-- User::Admin
-	User::User              <|-- User::Member
-	Blog::UserBlog         <|. User::User
+	GlobalS              <|-- Path : implements
+	Path                 "1" -- "1" View : use <
+	Path                 "1" -- "*" Router : create <
+	View                 "1" -- "1" User::Controller : use <
+	View                 "1" -- "1" Blog::Controller : use <
 	Router               "1" -- "1" Blog::Controller : use >
 	Router               "1" -- "1" User::Controller : use >
-	User::Controller     "1" -- "1" View : use >
-	Blog::Controller     "1" -- "1" View : use >
-	User::UserManager    "1" -- "1" DBManager : use >
+	DBManager            <|-- DBS : implements
+   User::UserManager   	"1" --- "1" DBManager : use >
+   Blog::CommentManager	"1" --- "1" DBManager : use >
+   Blog::PostManager   	"1" --- "1" DBManager : use >
+	User::User           <|-- User::Guest
+	User::Admin          -|> User::User
+	User::User           <|-- User::Member
+	Blog::UserBlog       <|. User::User
 	User::UserManager    "1" -- "*" User::User : manage >
 	User::Controller     "1" -- "1" User::UserManager : manage >
 	Blog::Controller     "1" -- "1" Blog::CommentManager : use >
 	Blog::Controller     "1" -- "1" Blog::PostManager : use >
 	Blog::CommentManager "1" -- "1" Blog::UserBlog : use >
 	Blog::PostManager    "1" -- "1" Blog::UserBlog : use >
-	Blog::CommentManager "1" -- "1" DBManager : use >
 	Blog::CommentManager "1" -- "*" Blog::Comment : manage >
-	Blog::PostManager    "1" -- "1" DBManager : use >
 	Blog::PostManager    "1" -- "*" Blog::Post : manage >
 @enduml
 ```
@@ -360,7 +439,7 @@ Editeur -- Blog
 
 ```puml {filename="db.png"}
 @startuml
-	skinparam monochrome true
+	'skinparam monochrome true
 	skinparam shadowing false
 	skinparam handwritten true
 	skinparam defaultFontName Comic Sans MS
@@ -380,8 +459,7 @@ Editeur -- Blog
 		name VARCHAR[32]
 		emailhash VARCHAR[255]
 		passwordhash VARCHAR[255]
-	}
-
+		}
 	Table(Comments) {
 		+primary_key(id) INTEGER
 		+post_id INT
@@ -389,8 +467,7 @@ Editeur -- Blog
 		+content TEXT
 		+post_date DATETIME
 		+visibility ENUM("hidden","public")
-	}
-
+		}
 	Table(Posts) {
 		+primary_key(id) INTEGER
 		+post_id INT
@@ -399,7 +476,7 @@ Editeur -- Blog
 		+content TEXT
 		+post_date DATETIME
 		+visibility ENUM("hidden","public")
-	}
+		}
 
 	Users "id" --> "author" Posts : ""
 	Users "id" --> "author" Comments : ""
@@ -411,7 +488,7 @@ Editeur -- Blog
 ### Structure
 Le projet utilise la hierarchie suivante
 
-- **cfg** : contient la configuration
+- **cfg** : contient les configuration
 - **mod** : contient les modules (partie exécutive)
   - **Router** : coordonne les actions
   - **Controller** : traite les actions

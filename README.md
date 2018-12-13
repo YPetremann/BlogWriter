@@ -88,6 +88,7 @@ Vous développerez sur une architecture MVC orienté objet sans utiliser de fram
   
 
 ![](/doc/img/classes.png)  
+  
 
 ![](/doc/img/classes_detail.png)  
   
@@ -103,7 +104,7 @@ Vous développerez sur une architecture MVC orienté objet sans utiliser de fram
   
 Le projet utilise la hierarchie suivante
   
-- **cfg** : contient la configuration
+- **cfg** : contient les configuration
 - **mod** : contient les modules (partie exécutive)
   - **Router** : coordonne les actions
   - **Controller** : traite les actions
