@@ -16,108 +16,51 @@ $errorPage = function () {
     $view->content = include "dat/view/MainError.phtml";
 };
 try {
-    // User related functions
-    $userLogout      = function ()         { return (new User\Controller($_SESSION["user"]) )->logout(); };
-    $userLogin       = function ()         { return (new User\Controller($_SESSION["user"]) )->login($_POST); };
-    $userCreate      = function ()         {
-        global $router; $router->url('/user/login');
-        return (new User\Controller($_SESSION["user"]) )->create($_POST);
-    };
-    $userRemeber     = function ()         {
-        global $router; $router->url('/user/login');
-        return (new User\Controller($_SESSION["user"]) )->remember($_POST);
-    };
-    $userAsk         = function ()         { return (new User\Controller($_SESSION["user"]) )->ask($_POST); };
+    $BlogC                 = new Blog\Controller($_SESSION["user"]);
+    $UserC                 = new User\Controller($_SESSION["user"]);
 
-    // Blog related functions
-    $postCreate      = function ()         {
-        $post_id = (new Blog\Controller($_SESSION["user"]) )->createPost($_POST);
-        global $router; $router->method('GET'); $router->url('/posts/'.$post_id.'/update');
-        return false;
-    };
-    $postUpdate      = function ($post_id) {
-        global $router; $router->method('GET'); $router->url('/posts/'.$post_id.'/update');
-        return (new Blog\Controller($_SESSION["user"]) )->updatePost($post_id,$_POST);
-    };
-    $postEdit        = function ($post_id = null) {
-        global $router; $router->url('/posts/'.$post_id.'/read');
-        return (new Blog\Controller($_SESSION["user"]) )->editPost($post_id);
-    };
+    // Manage user
+    $view->urlUserLoginPOST        = $router->post('/user/login',                      function()   {global $UserC; return $UserC->login($_POST);});
+    $view->urlUserCreatePOST       = $router->post('/user/create',                     function()   {global $UserC; return $UserC->create($_POST);});
+    $view->urlUserForgetPOST       = $router->post('/user/remember',                   function()   {global $UserC; return $UserC->remember($_POST);});
+    $view->urlUserLogin            = $view->urlUserLoginPOST;
+                                     $router->all ('/user/...',                        function()   {global $UserC; return $UserC->ask($_POST);});
+    $view->urlUserLogout           = $router->all ('/user/logout',                     function()   {global $UserC; return $UserC->logout();});
 
-    $postRead        = function ($post_id) { return (new Blog\Controller($_SESSION["user"]) )->readPost($post_id); };
-    $postDelete      = function ($post_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->deletePost($post_id);
-    };
-    $postPublish     = function ($post_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->publishPost($post_id);
-    };
-    $postUnpublish   = function ($post_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->unpublishPost($post_id);
-    };
-    $postList        = function ()         { return (new Blog\Controller($_SESSION["user"]) )->listPost(); };
+    // Manage comments in comment view
+    $view->urlCommentDelete        = $router->all ('/comment/:id/delete',              function($id){global $BlogC; return $BlogC->deleteComment($id);});
+    $view->urlCommentReport        = $router->all ('/comment/:id/report',              function($id){global $BlogC; return $BlogC->reportComment($id);});
+    $view->urlCommentUnreport      = $router->all ('/comment/:id/unreport',            function($id){global $BlogC; return $BlogC->unreportComment($id);});
+    $view->urlCommentPublish       = $router->all ('/comment/:id/publish',             function($id){global $BlogC; return $BlogC->publishComment($id);});
+    $view->urlCommentUnpublish     = $router->all ('/comment/:id/unpublish',           function($id){global $BlogC; return $BlogC->unpublishComment($id);});
+    $view->urlCommentList          = $router->all ('/comment/list',                    function()   {global $BlogC; return $BlogC->listComment();});
+                                     $router->all ('/comment/...',                     function()   {global $BlogC; return $BlogC->listComment();});
 
-    $commentCreate   = function ($post_id) {
-        global $router; $router->url('/posts/'.$post_id.'/read');
-        return (new Blog\Controller($_SESSION["user"]) )->createComment($post_id, $_POST);
-    };
-    $commentUpdate   = function ($post_id, $comment_id) {
-        global $router; $router->url('/posts/'.$post_id);
-        return (new Blog\Controller($_SESSION["user"]) )->updateComment($post_id, $comment_id);
-    };
-    $commentReport   = function ($comment_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->reportComment($comment_id);
-    };
-    $commentUnreport = function ($comment_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->unreportComment($comment_id);
-    };
-    $commentPublish     = function ($comment_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->publishComment($comment_id);
-    };
-    $commentUnpublish   = function ($comment_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->unpublishComment($comment_id);
-    };
+    // Manage comment in post view
+    $view->urlPostCommentCreate    = $router->post('/post/:id/comment/create',         function($id){global $BlogC; return $BlogC->createComment($id, $_POST);});
+    $view->urlPostCommentUpdate    = $router->all ('/post/:-id/comment/:id/update',    function($id){global $BlogC; return $BlogC->updateComment($id, $_POST);});
+    $view->urlPostCommentDelete    = $router->all ('/post/:-id/comment/:id/delete',    function($id){global $BlogC; return $BlogC->deleteComment($id);});
+    $view->urlPostCommentReport    = $router->all ('/post/:-id/comment/:id/report',    function($id){global $BlogC; return $BlogC->reportComment($id);});
+    $view->urlPostCommentUnreport  = $router->all ('/post/:-id/comment/:id/unreport',  function($id){global $BlogC; return $BlogC->unreportComment($id);});
+    $view->urlPostCommentPublish   = $router->all ('/post/:-id/comment/:id/publish',   function($id){global $BlogC; return $BlogC->publishComment($id);});
+    $view->urlPostCommentUnpublish = $router->all ('/post/:-id/comment/:id/unpublish', function($id){global $BlogC; return $BlogC->unpublishComment($id);});
 
-    $commentDelete   = function ($comment_id) {
-        return (new Blog\Controller($_SESSION["user"]) )->deleteComment($comment_id);
-    };
-
-    // User related url bindinds
-    $view->urlUserLoginPOST        = $router->post('/user/login', $userLogin);
-    $view->urlUserCreatePOST       = $router->post('/user/create', $userCreate);
-    $view->urlUserForgetPOST       = $router->post('/user/remember', $userRemeber);
-    $view->urlUserLogin            = $router->all('/user/login', $userAsk);
-    $view->urlUserLogout           = $router->all('/user/logout', $userLogout);
-
-    // Blog related url bindinds
-    $view->urlPostCommentCreate    = $router->post('/post/:id/comment/create', $commentCreate);
-    $view->urlPostCommentUpdate    = $router->all('/post/:-id/comment/:id/update', $commentUpdate);
-    $view->urlPostCommentDelete    = $router->all('/post/:-id/comment/:id/delete', $commentDelete);
-    $view->urlPostCommentReport    = $router->all('/post/:-id/comment/:id/report', $commentReport);
-    $view->urlPostCommentUnreport  = $router->all('/post/:-id/comment/:id/unreport', $commentUnreport);
-    $view->urlPostCommentPublish   = $router->all('/post/:-id/comment/:id/publish', $commentPublish);
-    $view->urlPostCommentUnpublish = $router->all('/post/:-id/comment/:id/unpublish', $commentUnpublish);
-    $view->urlCommentDelete        = $router->all('/comment/:id/delete', $commentDelete);
-    $view->urlCommentReport        = $router->all('/comment/:id/report', $commentReport);
-    $view->urlCommentUnreport      = $router->all('/comment/:id/unreport', $commentUnreport);
-    $view->urlCommentPublish       = $router->all('/comment/:id/publish', $commentPublish);
-    $view->urlCommentUnpublish     = $router->all('/comment/:id/unpublish', $commentUnpublish);
-    $commentList                   = function (){return (new Blog\Controller($_SESSION["user"]) )->listComment();};
-    $view->urlCommentList          = $router->all('/comment/list', $commentList);
-                                     $router->all('/comment/...', $commentList);
-
-    $view->urlPostCreatePOST       = $router->post('/post/create', $postCreate);
-    $view->urlPostCreate           = $router->all('/post/create', $postEdit);
-    $view->urlPostPublish          = $router->all('/post/:id/publish', $postPublish);
-    $view->urlPostUnpublish        = $router->all('/post/:id/unpublish', $postUnpublish);
-    $view->urlPostPublish          = $router->post('/post/:id/publish', $postUpdate);
-    $view->urlPostUnpublish        = $router->post('/post/:id/unpublish', $postUpdate);
-    $view->urlPostUpdatePOST       = $router->post('/post/:id/update', $postUpdate);
-    $view->urlPostUpdate           = $router->all('/post/:id/update', $postEdit);
-    $view->urlPostDelete           = $router->all('/post/:id/delete', $postDelete);
-    $view->urlPostRead             = $router->all('/post/:id/read', $postRead);
-                                     $router->all('/post/:id/...', $postRead);
-    $view->urlPostList             = $router->all('/post/list', $postList);
-    $router->default($postList);
+    // Manage post editing
+    $view->urlPostCreatePOST       = $router->post('/post/create',                     function()   {global $BlogC, $router; $id=$BlogC->createPost($_POST); $router->method('GET'); $router->url('/post/'.$id.'/update');return false;});
+    // Manage post
+    $view->urlPostCreate           = $router->all ('/post/create',                     function()   {global $BlogC, $router; $router->url('/post/list'); return $BlogC->editPost($post_id);});
+    $view->urlPostPublish          = $router->all ('/post/:id/publish',                function($id){global $BlogC; return $BlogC->publishPost($id);});
+    $view->urlPostUnpublish        = $router->all ('/post/:id/unpublish',              function($id){global $BlogC; return $BlogC->unpublishPost($id); });
+    $view->urlPostPublish          = $router->post('/post/:id/publish',                function($id){global $BlogC; return $BlogC->updatePost($id,$_POST);});
+    $view->urlPostUnpublish        = $router->post('/post/:id/unpublish',              function($id){global $BlogC; return $BlogC->updatePost($id,$_POST);});
+    $view->urlPostUpdatePOST       = $router->post('/post/:id/update',                 function($id){global $BlogC; return $BlogC->updatePost($id,$_POST);});
+    $view->urlPostUpdate           = $router->all ('/post/:id/update',                 function($id){global $BlogC; return $BlogC->editPost($id);});
+    $view->urlPostDelete           = $router->all ('/post/:id/delete',                 function($id){global $BlogC; return $BlogC->deletePost($id);});
+    $view->urlPostRead             = $router->all ('/post/:id/read',                   function($id){global $BlogC; return $BlogC->readPost($id);});
+                                     $router->all ('/post/:id/...',                    function($id){global $BlogC; return $BlogC->readPost($id);});
+    $view->urlPostList             = $router->all ('/post/list',                       function()   {global $BlogC; return $BlogC->listPost();});
+    //default view
+    $router->default(                                                                  function()   {global $BlogC; return $BlogC->listPost();});
     $router->default($errorPage);
 } catch (Exception $e) {
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
