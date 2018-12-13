@@ -63,7 +63,7 @@ class PostManager
         $query->closeCursor();
 
         // verify if there is one post
-        if (count($posts) != 1) { throw new \Exception("Vous ne pouvez lire d'articles avec cet identifiant"); }
+        if (count($posts) != 1) { throw new \Exception("Can't access post."); }
         $post = $posts[0];
 
         // insert permission in post

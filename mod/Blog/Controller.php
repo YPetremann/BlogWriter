@@ -31,6 +31,7 @@ class Controller
             return false;
         }
     }
+
     public function createComment($id, $post)
     {
         global $view;
@@ -139,7 +140,9 @@ class Controller
 
             $view->content = include "dat/view/BlogPost.phtml";
         } catch (\Exception $e) {
-            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            $msg = $e->getMessage();
+            if($msg == "Can't access post.") $msg = "Vous ne pouvez lire l'article !";
+            $view->message .= '<div class="error"><div class="fixer">'.$msg.'</div></div>';
             return false;
         }
     }
@@ -218,7 +221,9 @@ class Controller
             }
             $view->content = include "dat/view/BlogPostEdit.phtml";
         } catch (\Exception $e) {
-            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            $msg = $e->getMessage();
+            if($msg == "Can't access post.") $msg = "Vous ne pouvez éditer l'article !";
+            $view->message .= '<div class="error"><div class="fixer">'.$msg.'</div></div>';
             return false;
         }
     }
