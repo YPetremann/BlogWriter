@@ -7,6 +7,9 @@
 			<?php if($view->user->post_can_create) { ?>
 				<a class="right btn success" href="<?= url($view->urlPostCreate()); ?>"><i class="fas fa-plus"></i></a>
 			<?php } ?>
+			<?php if($view->user->comment_can_read & $view->user::ALL) { ?>
+				<a class="right btn warning" href="<?= url($view->urlCommentList()); ?>">Commentaires</a>
+			<?php } ?>
 		</footer>
 	</article>
 	<?php } ?>

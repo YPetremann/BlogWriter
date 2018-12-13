@@ -100,12 +100,20 @@ try {
 
     // Blog related url bindinds
     $view->urlCommentCreate   = $router->post('/posts/:id/comment/create', $commentCreate);
-    $view->urlCommentUpdate   = $router->all('/posts/:post_id/comment/:comment_id/update', $commentUpdate);
-    $view->urlCommentDelete   = $router->all('/posts/:post_id/comment/:comment_id/delete', $commentDelete);
-    $view->urlCommentReport   = $router->all('/posts/:post_id/comment/:comment_id/report', $commentReport);
-    $view->urlCommentUnreport = $router->all('/posts/:post_id/comment/:comment_id/unreport', $commentUnreport);
-    $view->urlCommentPublish   = $router->all('/posts/:post_id/comment/:comment_id/publish', $commentPublish);
-    $view->urlCommentUnpublish = $router->all('/posts/:post_id/comment/:comment_id/unpublish', $commentUnpublish);
+    $view->urlPostCommentUpdate    = $router->all('/post/:-id/comment/:id/update', $commentUpdate);
+    $view->urlPostCommentDelete    = $router->all('/post/:-id/comment/:id/delete', $commentDelete);
+    $view->urlPostCommentReport    = $router->all('/post/:-id/comment/:id/report', $commentReport);
+    $view->urlPostCommentUnreport  = $router->all('/post/:-id/comment/:id/unreport', $commentUnreport);
+    $view->urlPostCommentPublish   = $router->all('/post/:-id/comment/:id/publish', $commentPublish);
+    $view->urlPostCommentUnpublish = $router->all('/post/:-id/comment/:id/unpublish', $commentUnpublish);
+    $view->urlCommentDelete        = $router->all('/comment/:id/delete', $commentDelete);
+    $view->urlCommentReport        = $router->all('/comment/:id/report', $commentReport);
+    $view->urlCommentUnreport      = $router->all('/comment/:id/unreport', $commentUnreport);
+    $view->urlCommentPublish       = $router->all('/comment/:id/publish', $commentPublish);
+    $view->urlCommentUnpublish     = $router->all('/comment/:id/unpublish', $commentUnpublish);
+    $commentList                   = function (){return (new Blog\Controller($_SESSION["user"]) )->listComment();};
+    $view->urlCommentList          = $router->all('/comment/list', $commentList);
+                                     $router->all('/comment/...', $commentList);
 
     $view->urlPostCreatePOST  = $router->post('/posts/create', $postCreate);
     $view->urlPostCreate      = $router->all('/posts/create', $postEdit);

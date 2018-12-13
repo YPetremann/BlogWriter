@@ -20,6 +20,17 @@ class Controller
         }
     }
 
+    public function listComment()
+    {
+        global $view;
+        try {
+            $comments = (new CommentManager($this->user) )->list();
+            $view->content = include "dat/view/CommentList.phtml";
+        } catch (\Exception $e) {
+            $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
+            return false;
+        }
+    }
     public function createComment($id, $post)
     {
         global $view;

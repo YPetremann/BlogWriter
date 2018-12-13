@@ -27,7 +27,7 @@ class CommentManager
         if ($perm & UserBlogI::PRIVATE) { array_push($cond, "visibility = 0"); }
         if ($perm & UserBlogI::SELF) { array_push($cond, "author_id = ".$this->user->id); }
         if ($perm & UserBlogI::OTHER) { array_push($cond, "author_id != ".$this->user->id); }
-        return empty($cond) ? " AND FALSE" : " AND (".join(" OR ", $cond).")";
+        return empty($cond) ? "FALSE" : "(".join(" OR ", $cond).")";
     }
     public function create($id, $comment)
     {
@@ -50,15 +50,16 @@ class CommentManager
         $cond = $this->sql_permission($this->user->comment_can_delete);
         $query = $this->db->prepare('
             DELETE FROM comments
-            WHERE id = :id'.$cond);
+            WHERE id = :id AND '.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
         return $answer;
     }
-    public function list($id)
+    public function list($id = null)
     {
         $cond = $this->sql_permission($this->user->comment_can_read);
+        if($id != null) $cond .= ' AND c.post_id = ?';
         $query = $this->db->prepare('
             SELECT
                 c.id id,
@@ -71,9 +72,8 @@ class CommentManager
             FROM comments c
             INNER JOIN users u
             ON c.author_id = u.id
-            WHERE c.post_id = ?
-            '.$cond.'
-            ORDER BY c.id DESC');
+            WHERE '.$cond.'
+            ORDER BY c.visibility DESC, c.reported DESC, c.id DESC');
         $query->execute([$id]);
         $data = $query->fetchAll();
         foreach ($data as &$entry) {
@@ -95,7 +95,7 @@ class CommentManager
         $query = $this->db->prepare('
             UPDATE comments
             SET reported = 1
-            WHERE reported = 0 AND id = :id'.$cond);
+            WHERE reported = 0 AND id = :id AND '.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
@@ -110,7 +110,7 @@ class CommentManager
         $query = $this->db->prepare('
             UPDATE comments
             SET reported = 0
-            WHERE reported = 1 AND id = :id'.$cond);
+            WHERE reported = 1 AND id = :id AND '.$cond);
         $query->execute(["id"=>$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
@@ -127,7 +127,7 @@ class CommentManager
         $query = $this->db->prepare('
             UPDATE comments
             SET visibility = 1
-            WHERE visibility = 0 AND id = ?'.$cond);
+            WHERE visibility = 0 AND id = ? AND '.$cond);
         $query->execute([$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
@@ -145,7 +145,7 @@ class CommentManager
         $query = $this->db->prepare('
             UPDATE comments
             SET visibility = 0
-            WHERE visibility = 1 AND id = ?'.$cond);
+            WHERE visibility = 1 AND id = ? AND '.$cond);
         $query->execute([$id]);
         $answer = $query->rowCount();
         $query->closeCursor();
