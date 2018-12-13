@@ -90,11 +90,10 @@ class Controller
         return false;
     }
 
-    public function deleteComment($post_id, $comment_id)
+    public function deleteComment($comment_id)
     {
         global $view;
         try {
-            $post_id = (int) $post_id;
             $comment_id = (int) $comment_id;
 
             $affectedLines = (new CommentManager($this->user) )->delete($comment_id);
@@ -271,9 +270,9 @@ class Controller
             $affectedLines = (new CommentManager($this->user) )->publish($comment_id);
 
             if (!$affectedLines) {
-                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+                throw new \Exception("Vous ne pouvez publier ce commentaire !");
             } else {
-                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été publié !</div></div>';
             }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
@@ -290,9 +289,9 @@ class Controller
             $affectedLines = (new CommentManager($this->user) )->unpublish($comment_id);
 
             if (!$affectedLines) {
-                throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
+                throw new \Exception("Vous ne pouvez dépublier ce commentaire !");
             } else {
-                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été suprimé !</div></div>';
+                $view->message .= '<div class="success"><div class="fixer">Le commentaire à été dépublié !</div></div>';
             }
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
