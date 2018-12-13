@@ -1,16 +1,11 @@
 <?php
 require('mod/ClassAutoload.php');
+require('mod/Functions.php');
+
 ClassAutoload::register();
 session_start();
 
 $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
-
-function url($url, $unique=false)
-{
-    $url = GlobalC::urlprefix . $url;
-    (!$unique) ?: $url .= "?v=".uniqid('', true);
-    return $url;
-}
 
 $router = new Router($_GET["url"]);
 $view = new View();
