@@ -7,16 +7,21 @@ use \Blog\Model\CommentManager;
 class BlogController
 {
     private $user;
+    private $postManager;
+    private $commentManager;
+
     public function __construct(UserBlogI $as)
     {
         $this->user = $as;
+        $this->postManager = new PostManager($as);
+        $this->commentManager = new CommentManager($as);
     }
 
     public function listPost()
     {
         global $view;
         try {
-            $posts = (new PostManager($this->user) )->list();
+            $posts = $this->postManager->list();
             $view->content = include "dat/view/BlogList.phtml";
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
@@ -28,7 +33,7 @@ class BlogController
     {
         global $view;
         try {
-            $comments = (new CommentManager($this->user) )->list();
+            $comments = $this->commentManager->list();
             $view->content = include "dat/view/CommentList.phtml";
         } catch (\Exception $e) {
             $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
@@ -47,7 +52,7 @@ class BlogController
                 throw new \Exception('Tous les champs ne sont pas remplis !');
             }
 
-            $affectedLines = (new CommentManager($this->user) )->create($id, $comment);
+            $affectedLines = $this->commentManager->create($id, $comment);
 
             if (!$affectedLines) {
                 throw new \Exception("Impossible d'ajouter le commentaire !");
@@ -64,7 +69,7 @@ class BlogController
         try {
             $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->report($comment_id);
+            $affectedLines = $this->commentManager->report($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez signaler ce commentaire !");
@@ -82,7 +87,7 @@ class BlogController
         try {
             $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->unreport($comment_id);
+            $affectedLines = $this->commentManager->unreport($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez désignaler ce commentaire !");
@@ -101,7 +106,7 @@ class BlogController
         try {
             $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->delete($comment_id);
+            $affectedLines = $this->commentManager->delete($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez suprimer ce commentaire !");
@@ -120,7 +125,7 @@ class BlogController
         try {
             $post_id = (int) $post_id;
 
-            $affectedLines = (new PostManager($this->user) )->publish($post_id);
+            $affectedLines = $this->postManager->publish($post_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez publier cet article !");
@@ -139,8 +144,8 @@ class BlogController
         try {
             $id = (int) $id;
 
-            $post = (new PostManager($this->user) )->read($id);
-            $post['comments'] = (new CommentManager($this->user) )->list($id);
+            $post = $this->postManager->read($id);
+            $post['comments'] = $this->commentManager->list($id);
 
             $view->content = include "dat/view/BlogPost.phtml";
         } catch (\Exception $e) {
@@ -167,7 +172,7 @@ class BlogController
                 throw new \Exception('Tous les champs ne sont pas remplis !');
             }
             // verify content
-            $affectedLines = (new PostManager($this->user) )->create($post['title'], $post['content']);
+            $affectedLines = $this->postManager->create($post['title'], $post['content']);
             if (!$affectedLines) {
                 throw new \Exception("Article non ajouté !");
             }
@@ -193,7 +198,7 @@ class BlogController
                 throw new \Exception('Tous les champs ne sont pas remplis !');
             }
             // verify content
-            $affectedLines = (new PostManager($this->user) )->update($id, $post['title'], $post['content']);
+            $affectedLines = $this->postManager->update($id, $post['title'], $post['content']);
             if (!$affectedLines) {
                 throw new \Exception("Article non mis à jour !");
             }
@@ -210,7 +215,7 @@ class BlogController
         try {
             $id = (int) $id;
             if ($id != 0) {
-                $post = (new PostManager($this->user) )->read($id);
+                $post = $this->postManager->read($id);
                 if (!$post["post_can_update"]) {
                     throw new \Exception("Vous ne pouvez éditer l'article !");
                 }
@@ -246,7 +251,7 @@ class BlogController
         try {
             $post_id = (int) $post_id;
 
-            $affectedLines = (new PostManager($this->user) )->unpublish($post_id);
+            $affectedLines = $this->postManager->unpublish($post_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez dépublier cet article !");
@@ -265,7 +270,7 @@ class BlogController
         try {
             $post_id = (int) $post_id;
 
-            $affectedLines = (new PostManager($this->user) )->delete($post_id);
+            $affectedLines = $this->postManager->delete($post_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez suprimer cet article !");
@@ -284,7 +289,7 @@ class BlogController
         try {
             $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->publish($comment_id);
+            $affectedLines = $this->commentManager->publish($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez publier ce commentaire !");
@@ -303,7 +308,7 @@ class BlogController
         try {
             $comment_id = (int) $comment_id;
 
-            $affectedLines = (new CommentManager($this->user) )->unpublish($comment_id);
+            $affectedLines = $this->commentManager->unpublish($comment_id);
 
             if (!$affectedLines) {
                 throw new \Exception("Vous ne pouvez dépublier ce commentaire !");

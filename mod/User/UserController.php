@@ -11,9 +11,12 @@ use \User\Model\Member;
 class UserController
 {
     private $user;
+    private $userManager;
+
     public function __construct(UserUserI $as)
     {
         $this->user = $as;
+        $this->userManager = new UserManager($as);
     }
     public function ask()
     {
@@ -29,8 +32,8 @@ class UserController
         try {
             $emailhash = crypt($post["email"], "_J9..rasm");
             $passwordhash = crypt($post["email"]." ".$post["password"], "_J9..rasm");
-            $userManager = new UserManager($this->user);
-            $_SESSION["user"] = $view->user = $userManager->login($emailhash, $passwordhash);
+
+            $_SESSION["user"] = $view->user = $this->userManager->login($emailhash, $passwordhash);
 
             $view->message .= '<div class="success"><div class="fixer">Connexion en tant que '.$view->user->name.'</div></div>';
         } catch (\Exception $e) {
@@ -50,13 +53,16 @@ class UserController
         global $view;
         try {
             $name = nl2br(htmlspecialchars((string) $post['name'] ?: ""));
+
             if (!filter_var($post["email"], FILTER_VALIDATE_EMAIL) || empty($post["name"]) || empty($post["password"])) {
                 throw new \Exception("Informations invalides !");
             }
+
             $emailhash = crypt($post["email"], "_J9..rasm");
             $passwordhash = crypt($post["email"]." ".$post["password"], "_J9..rasm");
+
             $userManager = new UserManager($this->user);
-            $_SESSION["user"] = $view->user = $userManager->create($name, $emailhash, $passwordhash);
+            $_SESSION["user"] = $view->user = $this->userManager->create($name, $emailhash, $passwordhash);
 
             $view->message .= '<div class="success"><div class="fixer">Création du compte '.$view->user->name.'</div></div>';
         } catch (\Exception $e) {
