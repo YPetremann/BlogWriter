@@ -9,6 +9,22 @@ interface UserBlogI
     const SELF = 4;
     const OTHER = 8;
     const ALL = 15;
+
+    public function get_post_can_create();
+    public function get_post_can_read();
+    public function get_post_can_update();
+    public function get_post_can_delete();
+    public function get_post_can_publish();
+    public function get_post_can_unpublish();
+
+    public function get_comment_can_create();
+    public function get_comment_can_read();
+    public function get_comment_can_update();
+    public function get_comment_can_delete();
+    public function get_comment_can_report();
+    public function get_comment_can_unreport();
+    public function get_comment_can_publish();
+    public function get_comment_can_unpublish();
 }
 trait UserBlogT
 {
@@ -27,19 +43,19 @@ trait UserBlogT
     protected $comment_can_publish   = UserBlogI::NONE;
     protected $comment_can_unpublish = UserBlogI::NONE;
 
-    public function get_post_can_create()      { return $this->post_can_create; }
-    public function get_post_can_read()        { return $this->post_can_read; }
-    public function get_post_can_update()      { return $this->post_can_update; }
-    public function get_post_can_delete()      { return $this->post_can_delete; }
-    public function get_post_can_publish()     { return $this->post_can_publish; }
-    public function get_post_can_unpublish()   { return $this->post_can_unpublish; }
+    public function get_post_can_create()       { return $this->post_can_create; }
+    public function get_post_can_read()         { return $this->post_can_read; }
+    public function get_post_can_update()       { return $this->post_can_update; }
+    public function get_post_can_delete()       { return $this->post_can_delete; }
+    public function get_post_can_publish()      { return $this->post_can_publish; }
+    public function get_post_can_unpublish()    { return $this->post_can_unpublish; }
 
-    public function get_comment_can_create()   { return $this->comment_can_create; }
-    public function get_comment_can_read()     { return $this->comment_can_read; }
-    public function get_comment_can_update()   { return $this->comment_can_update; }
-    public function get_comment_can_delete()   { return $this->comment_can_delete; }
-    public function get_comment_can_report()   { return $this->comment_can_report; }
-    public function get_comment_can_unreport() { return $this->comment_can_unreport; }
+    public function get_comment_can_create()    { return $this->comment_can_create; }
+    public function get_comment_can_read()      { return $this->comment_can_read; }
+    public function get_comment_can_update()    { return $this->comment_can_update; }
+    public function get_comment_can_delete()    { return $this->comment_can_delete; }
+    public function get_comment_can_report()    { return $this->comment_can_report; }
+    public function get_comment_can_unreport()  { return $this->comment_can_unreport; }
     public function get_comment_can_publish()   { return $this->comment_can_publish; }
     public function get_comment_can_unpublish() { return $this->comment_can_unpublish; }
 }

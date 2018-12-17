@@ -3,6 +3,8 @@ namespace User;
 
 interface UserUserI
 {
+    public function get_user_can_login();
+    public function get_user_can_logout();
 }
 trait UserUserT
 {
