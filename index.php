@@ -4,20 +4,17 @@ require('mod/ClassAutoload.php');
 ClassAutoload::register();
 session_start();
 
-$_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
 use \User\UserController;
 use \Blog\BlogController;
 
 $router = new Router($_GET["url"]);
 $view = new View();
-$view->user = $_SESSION["user"];
-$view->url = new Path(":path");
-$view->uniqueurl = new Path(":path", true);
-$errorPage = function () {
-    global $view;
-    $view->content = include "dat/view/MainError.phtml";
-};
+
 try {
+    $view->user = $_SESSION["user"] = $_SESSION["user"] ?? new User\Model\Guest();
+    $view->url = new Path(":path");
+    $view->uniqueurl = new Path(":path", true);
+
     // Manage user
     $router->default(                                                                  function()   {global $UserC, $view; $UserC = new UserController($view->user); return false; });
     $view->urlUserLoginPOST        = $router->post('/user/login',                      function()   {global $UserC; return $UserC->login($_POST);});
@@ -49,7 +46,7 @@ try {
     // Manage post editing
     $view->urlPostCreatePOST       = $router->post('/post/create',                     function()   {global $BlogC, $router; $id=$BlogC->createPost($_POST); $router->method('GET'); $router->url('/post/'.$id.'/update');return false;});
     // Manage post
-    $view->urlPostCreate           = $router->all ('/post/create',                     function()   {global $BlogC, $router; $router->url('/post/list'); return $BlogC->editPost($post_id);});
+    $view->urlPostCreate           = $router->all ('/post/create',                     function()   {global $BlogC, $router; $router->url('/post/list'); return $BlogC->editPost(0);});
     $view->urlPostPublish          = $router->all ('/post/:id/publish',                function($id){global $BlogC; return $BlogC->publishPost($id);});
     $view->urlPostUnpublish        = $router->all ('/post/:id/unpublish',              function($id){global $BlogC; return $BlogC->unpublishPost($id); });
     $view->urlPostPublish          = $router->post('/post/:id/publish',                function($id){global $BlogC; return $BlogC->updatePost($id,$_POST);});
@@ -62,21 +59,17 @@ try {
     $view->urlPostList             = $router->all ('/post/list',                       function()   {global $BlogC; return $BlogC->listPost();});
     //default view
     $router->default(                                                                  function()   {global $BlogC; return $BlogC->listPost();});
-    $router->default($errorPage);
+    $router->default(                                                                  function()   {global $view;  $view->content = include "dat/view/MainError.phtml";});
+    $router->process();
+    $view->header = include "dat/view/header.phtml";
+    $view->footer = include "dat/view/footer.phtml";
 } catch (Exception $e) {
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-    $router->default($errorPage);
-}
-$router->process();
-$view->header = include "dat/view/header.phtml";
-$view->footer = include "dat/view/footer.phtml";
-/*
-
-catch(Error $e){
+    $router->default(function()   {global $view;  $view->content = include "dat/view/MainError.phtml";});
+    $router->process();
+} catch(Error $e){
     $view->message .= '<div class="error"><div class="fixer">'.$e->getMessage().'</div></div>';
-    $router->default($errorPage);
+    $router->default(function()   {global $view;  $view->content = include "dat/view/MainError.phtml";});
+    $router->process();
 }
-*/
-// general functions
-
 echo include "dat/view/main.phtml";
