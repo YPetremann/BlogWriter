@@ -30,6 +30,7 @@ class PostManager
         return empty($cond) ? " AND FALSE" : " AND (".join(" OR ", $cond).")";
     }
     public function create(string $title, string $content) {
+        if (!$this->user->post_can_create) { throw new \Exception("Vous ne pouvez poster d'article !"); }
         // execute query
         $query = $this->db->prepare("
             INSERT INTO posts(title, author_id, content)
