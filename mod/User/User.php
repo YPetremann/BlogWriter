@@ -1,12 +1,18 @@
 <?php
 namespace User;
 
-class User implements \Blog\UserBlogI
+use \User\UserUserI,
+    \Blog\UserBlogI;
+use \User\UserUserT;
+use \Blog\UserBlogT;
+class User implements UserUserI, UserBlogI
 {
+    use UserUserT;
+    use UserBlogT;
+
     protected $type;
     protected $id;
     protected $name;
-    use \Blog\UserBlogT;
 
     public function __construct($data=[])
     {

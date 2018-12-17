@@ -1,7 +1,8 @@
 <?php
 namespace Blog;
 
-use \User\User;
+use \Blog\Model\PostManager;
+use \Blog\Model\CommentManager;
 
 class Controller
 {

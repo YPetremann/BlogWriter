@@ -1,12 +1,17 @@
 <?php
-namespace User;
+namespace User\Model;
 
 use \DBManager;
+use \User\UserUserI;
+use \User\Admin;
+use \User\Member;
+use \User\Guest;
+use \Exception;
 
 class UserManager
 {
     private $user;
-    public function __construct($as)
+    public function __construct(UserUserI $as)
     {
         $this->db = DBManager::get();
         $this->user = $as;
@@ -26,7 +31,7 @@ class UserManager
         $query->execute([$emailhash,$passwordhash]);
         $users = $query->fetchAll();
         $query->closeCursor();
-        if (count($users) != 1) { throw new \Exception("Utilisateur non trouvé"); }
+        if (count($users) != 1) { throw new Exception("Utilisateur non trouvé"); }
         $user = $this->subtype($users[0]);
         return $user;
     }

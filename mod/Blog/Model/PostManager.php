@@ -1,7 +1,8 @@
 <?php
-namespace Blog;
+namespace Blog\Model;
 
 use \DBManager;
+use \Blog\UserBlogI;
 
 class PostManager
 {

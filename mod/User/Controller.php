@@ -3,6 +3,7 @@
 namespace User;
 
 use \User\User;
+use \User\Model\UserManager;
 
 class Controller
 {
