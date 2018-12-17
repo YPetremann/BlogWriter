@@ -10,9 +10,10 @@
 		<nav class="right">
 			<h2 class="hidden">Navigation</h2>
 			<ul>
-				<?php if($view->user->type == "Guest") { ?>
+				<?php if($view->user->user_can_login) { ?>
 					<li><a href="<?= $view->urlUserLogin(); ?>">Connexion</a> </li>
-				<?php } else {?>
+				<?php } ?>
+				<?php if($view->user->user_can_logout) { ?>
 					<li><a href="<?= $view->urlUserLogout(); ?>">Déconnexion</a> </li>
 				<?php } ?>
 			</ul>
