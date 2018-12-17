@@ -4,11 +4,14 @@ namespace User;
 
 use \User\User;
 use \User\Model\UserManager;
+use \User\Model\Admin;
+use \User\Model\Guest;
+use \User\Model\Member;
 
-class Controller
+class UserController
 {
     private $user;
-    public function __construct(User $as)
+    public function __construct(UserUserI $as)
     {
         $this->user = $as;
     }

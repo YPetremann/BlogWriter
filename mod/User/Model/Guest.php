@@ -1,5 +1,5 @@
 <?php
-namespace User;
+namespace User\Model;
 
 class Guest extends User
 {

@@ -5,6 +5,8 @@ ClassAutoload::register();
 session_start();
 
 $_SESSION["user"] = $_SESSION["user"] ?? new User\Guest();
+use \User\UserController;
+use \Blog\BlogController;
 
 $router = new Router($_GET["url"]);
 $view = new View();
@@ -17,7 +19,7 @@ $errorPage = function () {
 };
 try {
     // Manage user
-    $router->default(                                                                  function()   {global $UserC, $view; $UserC = new User\Controller($view->user); return false; });
+    $router->default(                                                                  function()   {global $UserC, $view; $UserC = new UserController($view->user); return false; });
     $view->urlUserLoginPOST        = $router->post('/user/login',                      function()   {global $UserC; return $UserC->login($_POST);});
     $view->urlUserCreatePOST       = $router->post('/user/create',                     function()   {global $UserC; return $UserC->create($_POST);});
     $view->urlUserForgetPOST       = $router->post('/user/remember',                   function()   {global $UserC; return $UserC->remember($_POST);});
@@ -25,7 +27,7 @@ try {
                                      $router->all ('/user/...',                        function()   {global $UserC; return $UserC->ask($_POST);});
     $view->urlUserLogout           = $router->all ('/user/logout',                     function()   {global $UserC; return $UserC->logout();});
 
-    $router->default(                                                                  function()   {global $BlogC, $view; $BlogC = new Blog\Controller($view->user); return false; });
+    $router->default(                                                                  function()   {global $BlogC, $view; $BlogC = new BlogController($view->user); return false; });
     // Manage comments in comment view
     $view->urlCommentDelete        = $router->all ('/comment/:id/delete',              function($id){global $BlogC; return $BlogC->deleteComment($id);});
     $view->urlCommentReport        = $router->all ('/comment/:id/report',              function($id){global $BlogC; return $BlogC->reportComment($id);});

@@ -4,7 +4,7 @@ namespace Blog;
 use \Blog\Model\PostManager;
 use \Blog\Model\CommentManager;
 
-class Controller
+class BlogController
 {
     private $user;
     public function __construct(UserBlogI $as)

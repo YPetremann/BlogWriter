@@ -3,9 +3,9 @@ namespace User\Model;
 
 use \DBManager;
 use \User\UserUserI;
-use \User\Admin;
-use \User\Member;
-use \User\Guest;
+use \User\Model\Admin;
+use \User\Model\Member;
+use \User\Model\Guest;
 use \Exception;
 
 class UserManager

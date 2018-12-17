@@ -1,5 +1,5 @@
 <?php
-namespace User;
+namespace User\Model;
 
 class Admin extends User
 {

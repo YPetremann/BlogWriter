@@ -1,5 +1,5 @@
 <?php
-namespace User;
+namespace User\Model;
 
 use \User\UserUserI,
     \Blog\UserBlogI;
