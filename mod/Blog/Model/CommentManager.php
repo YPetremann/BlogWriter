@@ -37,6 +37,16 @@ class CommentManager
         $post = $postManager->read($id);
         if (!$post['comment_can_create']) { throw new \Exception("Vous ne pouvez poster de commentaires ici !"); }
 
+        $query = $this->db->prepare('
+            SELECT COUNT(*) FROM comments WHERE
+                post_id = ? AND
+                author_id = ? AND
+                content = ?');
+        $answer = $query->execute([$id,$this->user->id,$comment]);
+        $count = $query->fetchColumn();
+        $query->closeCursor();
+        if ($count > 0) { throw new \Exception("Ce commentaire existe déjà !"); }
+
         $query = $this->db->prepare("
             INSERT INTO comments(post_id, author_id, content)
             VALUES (?, ?, ?)");

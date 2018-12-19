@@ -216,6 +216,7 @@ class BlogController
             $id = (int) $id;
             if ($id != 0) {
                 $post = $this->postManager->read($id);
+                $post["edit"]=true;
                 if (!$post["post_can_update"]) {
                     throw new \Exception("Vous ne pouvez éditer l'article !");
                 }
@@ -232,6 +233,7 @@ class BlogController
                     'post_can_delete'=>0,
                     'post_can_publish'=>0,
                     'post_can_unpublish'=>0,
+                    'edit'=>false
                 ];
             }
             $view->content = include "dat/view/BlogPostEdit.phtml";

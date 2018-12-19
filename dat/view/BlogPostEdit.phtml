@@ -36,7 +36,7 @@
 				<a class="left btn" href="<?= $view->urlPostList(); ?>">Retour</a>
 			</footer>
 		</article>
-		<form action="" method="POST">
+		<form action="<?= $post['edit']? $view->urlPostUpdate($post['id']) : $view->urlPostCreate() ; ?>" method="POST">
 		<article id="post" class="fixer <?=$post['visibility']?'info':'warning';?>">
 			<header class="multibar">
 				<input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>">

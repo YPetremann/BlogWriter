@@ -31,6 +31,16 @@ class PostManager
     }
     public function create(string $title, string $content) {
         if (!$this->user->post_can_create) { throw new \Exception("Vous ne pouvez poster d'article !"); }
+        $query = $this->db->prepare('
+            SELECT COUNT(*) FROM posts WHERE
+                title = ? AND
+                author_id = ? AND
+                content = ?');
+        $answer = $query->execute([$title, $this->user->id, $content]);
+        $count = $query->fetchColumn();
+        $query->closeCursor();
+        if ($count > 0) { throw new \Exception("Cet article existe déjà !"); }
+
         // execute query
         $query = $this->db->prepare("
             INSERT INTO posts(title, author_id, content)
