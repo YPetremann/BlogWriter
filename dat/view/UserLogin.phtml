@@ -1,43 +1,44 @@
 <?php $title = 'Mon blog'; ?>
 <?php ob_start(); ?>
-<main>
-	<section class="fixer" id="login">
-		<form action="<?= $view->urlUserLoginPOST(); ?>" method="post">
-			<article>
-				<header>S'identifier</header>
-				<div class="formgrid">
-					<label for="email">Email</label><input type="email" id="email" name="email" />
-					<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
-				</div>
-				<footer class="multibar">
-					<input class="right btn success" type="submit" value="S'identifier" />
-				</footer>
-			</article>
-		</form>
-		<form action="<?= $view->urlUserCreatePOST(); ?>" method="post">
-			<article>
-				<header>Créer compte</header>
-				<div class="formgrid">
-					<label for="name">Pseudonyme</label><input type="text" id="name" name="name" />
-					<label for="email">Email</label><input type="email" id="email" name="email" />
-					<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
-				</div>
-				<footer class="multibar">
-					<input class="right btn success" type="submit" value="Créer compte" />
-				</footer>
-			</article>
-		</form>
-		<form action="<?= $view->urlUserForgetPOST(); ?>" method="post">
-			<article style="display:none;">
-				<header>Mot de passe oublié</header>
-				<div class="formgrid">
-					<label for="email">Email</label><input type="email" id="email" name="email" />
-				</div>
-				<footer class="multibar">
-					<input class="right btn success" type="submit" value="Mot de pass oublié" />
-				</footer>
-			</article>
-		</form>
-	</section>
-</main>
+
+	<main>
+		<section class="fixer" id="login">
+			<form action="<?= $view->urlUserLoginPOST(); ?>" method="post">
+				<article>
+					<header>S'identifier</header>
+					<div class="formgrid">
+						<label for="email">Email</label><input type="email" id="email" name="email" />
+						<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
+					</div>
+					<footer class="multibar">
+						<input class="right btn success" type="submit" value="S'identifier" />
+					</footer>
+				</article>
+			</form>
+			<form action="<?= $view->urlUserCreatePOST(); ?>" method="post">
+				<article>
+					<header>Créer compte</header>
+					<div class="formgrid">
+						<label for="name">Pseudonyme</label><input type="text" id="name" name="name" />
+						<label for="email">Email</label><input type="email" id="email" name="email" />
+						<label for="password">Mot de passe</label><input type="password" id="password" name="password" />
+					</div>
+					<footer class="multibar">
+						<input class="right btn success" type="submit" value="Créer compte" />
+					</footer>
+				</article>
+			</form>
+			<form action="<?= $view->urlUserForgetPOST(); ?>" method="post">
+				<article style="display:none;">
+					<header>Mot de passe oublié</header>
+					<div class="formgrid">
+						<label for="email">Email</label><input type="email" id="email" name="email" />
+					</div>
+					<footer class="multibar">
+						<input class="right btn success" type="submit" value="Mot de pass oublié" />
+					</footer>
+				</article>
+			</form>
+		</section>
+	</main>
 <?php return ob_get_clean(); ?>

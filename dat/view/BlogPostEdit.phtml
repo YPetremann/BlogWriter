@@ -1,63 +1,65 @@
 <?php $title = $post['title']." - Billet Simple pour l'Alaska"; ?>
 <?php ob_start(); ?>
-<script src="<?=$view->url('/res/tinymce/tinymce.min.js');?>"></script>
-<script>
-	tinymce.init({
-		selector: 'textarea',
-		language: 'fr_FR',
-		image_advtab: true,
-		plugins: [
-			'fullscreen hr image imagetools insertdatetime link lists media',
-			'advlist anchor autolink charmap code codesample colorpicker directionality',
-			'nonbreaking pagebreak searchreplace table template textcolor',
-			'textpattern tinymcespellchecker toc visualblocks visualchars wordcount',
-			'contextmenu wordwount'
-		],
-		toolbar: [
-			'undo redo | styleselect | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | link image | removeformat'
-		],
-		menubar: 'edit insert view format table tools help',
-		content_css: [
-			'<?= $view->url("/res/style.css",true);?>'
-		],
-		content_syule: [
-			'body{background:none;}'
-		],
-		branding: false
-	});
-</script>
+
+	<script src="<?=$view->url('/res/tinymce/tinymce.min.js');?>"></script>
+	<script>
+		tinymce.init({
+			selector: 'textarea',
+			language: 'fr_FR',
+			image_advtab: true,
+			plugins: [
+				'fullscreen hr image imagetools insertdatetime link lists media',
+				'advlist anchor autolink charmap code codesample colorpicker directionality',
+				'nonbreaking pagebreak searchreplace table template textcolor',
+				'textpattern tinymcespellchecker toc visualblocks visualchars wordcount',
+				'contextmenu wordwount'
+			],
+			toolbar: [
+				'undo redo | styleselect | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | link image | removeformat'
+			],
+			menubar: 'edit insert view format table tools help',
+			content_css: [
+				'<?= $view->url("/res/style.css",true);?>'
+			],
+			content_syule: [
+				'body{background:none;}'
+			],
+			branding: false
+		});
+	</script>
 <?php $view->head .= ob_get_clean(); ?>
 <?php ob_start(); ?>
-<main>
-	<article class="fixer">
-		<footer class="multibar">
-			<a class="left btn" href="<?= $view->urlPostList(); ?>">Retour</a>
-		</footer>
-	</article>
-	<form action="" method="POST">
-	<article id="post" class="fixer <?=$post['visibility']?'info':'warning';?>">
-		<header class="multibar">
-			<input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>">
-		</header>
-		<textarea name="content" placeholder="Test"><?= $post['content']; ?></textarea>
-		<footer class="multibar">
-			<span class="left">Publié le <?= $post['post_date']; ?></span>
-			<?php if(!$post['visibility']) { ?>
+
+	<main>
+		<article class="fixer">
+			<footer class="multibar">
+				<a class="left btn" href="<?= $view->urlPostList(); ?>">Retour</a>
+			</footer>
+		</article>
+		<form action="" method="POST">
+		<article id="post" class="fixer <?=$post['visibility']?'info':'warning';?>">
+			<header class="multibar">
+				<input name="title" class="header" placeholder="Titre" value="<?= $post['title']; ?>">
+			</header>
+			<textarea name="content" placeholder="Test"><?= $post['content']; ?></textarea>
+			<footer class="multibar">
+				<span class="left">Publié le <?= $post['post_date']; ?></span>
+<?php if(!$post['visibility']) { ?>
 				<a class="left btn warning">En attente de publication</a>
-			<?php } ?>
-			<?php if($post['post_can_delete']) { ?>
+<?php } ?>
+<?php if($post['post_can_delete']) { ?>
 				<a class="right btn error" href="<?= $view->urlPostDelete($post['id']); ?>"><i class="fas fa-trash-alt"></i></a>
-			<?php } ?>
-			<?php if($post['post_can_publish']) { ?>
-				<?php if(!$post['visibility']) { ?>
-					<button type="submit" formaction="<?= $view->urlPostPublish($post['id']); ?>" class="right btn"><i class="fas fa-eye"></i></button>
-				<?php } else {?>
-					<button type="submit" formaction="<?= $view->urlPostUnpublish($post['id']); ?>" class="right btn"><i class="fas fa-eye-slash"></i></button>
-				<?php } ?>
-			<?php } ?>
-			<button type="submit" class="right btn success"><i class="fas fa-save"></i></button>
-		</footer>
-	</article>
-	</form>
-</main>
+<?php } ?>
+<?php if($post['post_can_publish']) { ?>
+<?php 	if(!$post['visibility']) { ?>
+				<button type="submit" formaction="<?= $view->urlPostPublish($post['id']); ?>" class="right btn"><i class="fas fa-eye"></i></button>
+<?php 	} else {?>
+				<button type="submit" formaction="<?= $view->urlPostUnpublish($post['id']); ?>" class="right btn"><i class="fas fa-eye-slash"></i></button>
+<?php 	} ?>
+<?php } ?>
+				<button type="submit" class="right btn success"><i class="fas fa-save"></i></button>
+			</footer>
+		</article>
+		</form>
+	</main>
 <?php return ob_get_clean(); ?>

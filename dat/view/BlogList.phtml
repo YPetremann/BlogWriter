@@ -1,43 +1,47 @@
 <?php $view->title = "Billet Simple pour l'Alaska"; ?>
 <?php ob_start(); ?>
-<main>
-	<?php if($view->user->post_can_create) { ?>
-	<article class="fixer">
-		<footer class="multibar">
-			<?php if($view->user->post_can_create) { ?>
+
+	<main>
+<?php if($view->user->post_can_create) { ?>
+		<article class="fixer">
+			<footer class="multibar">
+<?php 	if($view->user->post_can_create) { ?>
 				<a class="right btn success" href="<?= $view->urlPostCreate(); ?>"><i class="fas fa-plus"></i></a>
-			<?php } ?>
-			<?php if($view->user->comment_can_read & $view->user::ALL) { ?>
+<?php 	} ?>
+<?php 	if($view->user->comment_can_read & $view->user::ALL) { ?>
 				<a class="right btn warning" href="<?= $view->urlCommentList(); ?>">Commentaires</a>
-			<?php } ?>
-		</footer>
-	</article>
-	<?php } ?>
-	<?php foreach ($posts as $post) { ?>
+<?php 	} ?>
+			</footer>
+		</article>
+<?php } ?>
+<?php foreach ($posts as $post) { ?>
 		<article class="fixer <?=$post['visibility']?:'warning';?>">
-			<header><?= $post['title']; ?></header>
+			<header class="multibar">
+				<h2><?= $post['title']; ?></h2>
+			</header>
 			<?= $post['excerpt']; ?>
+
 			<footer class="multibar">
 				<span class="left">Publié le <?= $post['post_date']; ?></span>
-				<?php if(!$post['visibility']) { ?>
+<?php 	if(!$post['visibility']) { ?>
 					<a class="left btn warning">En attente de publication</a>
-				<?php } ?>
-				<?php if($post['post_can_delete']) { ?>
+<?php 	} ?>
+<?php 	if($post['post_can_delete']) { ?>
 					<a class="right btn error" href="<?= $view->urlPostDelete($post['id']); ?>"><i class="fas fa-trash-alt"></i></a>
-				<?php } ?>
-				<?php if($post['post_can_publish']) { ?>
-					<?php if(!$post['visibility']) { ?>
-						<a class="right btn" href="<?= $view->urlPostPublish($post['id']); ?>"><i class="fas fa-eye"></i></a>
-					<?php } else {?>
-						<a class="right btn" href="<?= $view->urlPostUnpublish($post['id']); ?>"><i class="fas fa-eye-slash"></i></a>
-					<?php } ?>
-				<?php } ?>
-				<?php if($post['post_can_update']) { ?>
+<?php 	} ?>
+<?php 	if($post['post_can_publish']) { ?>
+<?php 		if(!$post['visibility']) { ?>
+					<a class="right btn" href="<?= $view->urlPostPublish($post['id']); ?>"><i class="fas fa-eye"></i></a>
+<?php 		} else {?>
+					<a class="right btn" href="<?= $view->urlPostUnpublish($post['id']); ?>"><i class="fas fa-eye-slash"></i></a>
+<?php 		} ?>
+<?php 	} ?>
+<?php 	if($post['post_can_update']) { ?>
 					<a class="right btn" href="<?= $view->urlPostUpdate($post['id']); ?>"><i class="fas fa-edit"></i></a>
-				<?php } ?>
+<?php 	} ?>
 				<a class="right btn" href="<?= $view->urlPostRead($post['id']); ?>"><i class="fas fa-ellipsis-h"></i></a>
 			</footer>
 		</article>
-	<?php } ?>
-</main>
+<?php } ?>
+	</main>
 <?php return ob_get_clean(); ?>

@@ -1,23 +1,23 @@
 <?php ob_start(); ?>
-<header>
-	<div class="fixer multibar">
-		<h1 class="left">
-			<a href="<?= $view->urlPostList(); ?>">
-				<img src="<?= $view->url('/res/logo.png');?>" height="48px" alt="Logo" />
-				<p>Billet Simple pour l'alaska</p>
-			</a>
-		</h1>
-		<nav class="right">
-			<h2 class="hidden">Navigation</h2>
-			<ul>
-				<?php if($view->user->user_can_login) { ?>
-					<li><a href="<?= $view->urlUserLogin(); ?>">Connexion</a> </li>
-				<?php } ?>
-				<?php if($view->user->user_can_logout) { ?>
-					<li><a href="<?= $view->urlUserLogout(); ?>">Déconnexion</a> </li>
-				<?php } ?>
-			</ul>
-		</nav>
-	</div>
-</header>
+	<header>
+		<div class="fixer multibar">
+			<h1 class="left">
+				<a href="<?= $view->urlPostList(); ?>">
+					<img src="<?= $view->url('/res/logo.png');?>" height="48" alt="Logo" />
+					<span>Billet Simple pour l'alaska</span>
+				</a>
+			</h1>
+			<nav class="right">
+				<h2 class="hidden">Navigation</h2>
+				<ul>
+<?php if($view->user->user_can_login) { ?>
+					<li><a href="<?= $view->urlUserLogin(); ?>">Connexion</a></li>
+<?php } ?>
+<?php if($view->user->user_can_logout) { ?>
+					<li><a href="<?= $view->urlUserLogout(); ?>">Déconnexion</a></li>
+<?php } ?>
+				</ul>
+			</nav>
+		</div>
+	</header>
 <?php return ob_get_clean(); ?>

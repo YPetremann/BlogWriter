@@ -77,7 +77,7 @@ body > header h1 > a {
   justify-content: center;
   text-align: center;
 }
-body > header h1 > a p {
+body > header h1 > a span {
   font-family: "CooperHewittHeavy";
   padding: 10px 20px;
   text-align: center;
@@ -253,4 +253,7 @@ header input {
   border: 1px solid #c0c0c0;
   background: #ffffff;
   padding: 10px;
+  font-size: 1.17em;
+  font-weight: bold;
+  text-align: center;
 }

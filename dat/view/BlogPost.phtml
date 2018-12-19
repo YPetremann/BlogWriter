@@ -1,50 +1,51 @@
 <?php $title = $post['title']." - Billet Simple pour l'Alaska"; ?>
 <?php ob_start(); ?>
-<main>
-	<article class="fixer">
-		<footer class="multibar">
-			<a class="left btn" href="<?= $view->urlPostList(); ?>">Retour</a>
-		</footer>
-	</article>
-	<article id="post" class="fixer <?=$post['visibility']?:'warning';?>">
-		<header class="multibar">
-			<span class="left"><?= $post['title']; ?></span>
-		</header>
-		<div><?= $post['content']; ?></div>
-		<footer class="multibar">
-			<span class="left">Publié le <?= $post['post_date']; ?></span>
-			<?php if(!$post['visibility']) { ?>
+
+	<main>
+		<article class="fixer">
+			<footer class="multibar">
+				<a class="left btn" href="<?= $view->urlPostList(); ?>">Retour</a>
+			</footer>
+		</article>
+		<article id="post" class="fixer <?=$post['visibility']?:'warning';?>">
+			<header class="multibar">
+				<h2><?= $post['title']; ?></h2>
+			</header>
+			<div><?= $post['content']; ?></div>
+			<footer class="multibar">
+				<span class="left">Publié le <?= $post['post_date']; ?></span>
+<?php if(!$post['visibility']) { ?>
 				<a class="left btn warning">En attente de publication</a>
-			<?php } ?>
-			<?php if($post['post_can_delete']) { ?>
+<?php } ?>
+<?php if($post['post_can_delete']) { ?>
 				<a class="right btn error" href="<?= $view->urlPostDelete($post['id']); ?>"><i class="fas fa-trash-alt"></i></a>
-			<?php } ?>
-			<?php if($post['post_can_publish']) { ?>
-				<?php if(!$post['visibility']) { ?>
-					<a class="right btn" href="<?= $view->urlPostPublish($post['id']); ?>"><i class="fas fa-eye"></i></a>
-				<?php } else {?>
-					<a class="right btn" href="<?= $view->urlPostUnpublish($post['id']); ?>"><i class="fas fa-eye-slash"></i></a>
-				<?php } ?>
-			<?php } ?>
-			<?php if($post['post_can_update']) { ?>
+<?php } ?>
+<?php if($post['post_can_publish']) { ?>
+<?php 	if(!$post['visibility']) { ?>
+				<a class="right btn" href="<?= $view->urlPostPublish($post['id']); ?>"><i class="fas fa-eye"></i></a>
+<?php 	} else {?>
+				<a class="right btn" href="<?= $view->urlPostUnpublish($post['id']); ?>"><i class="fas fa-eye-slash"></i></a>
+<?php 	} ?>
+<?php } ?>
+<?php if($post['post_can_update']) { ?>
 				<a class="right btn" href="<?= $view->urlPostUpdate($post['id']); ?>"><i class="fas fa-edit"></i></a>
-			<?php } ?>
-		</footer>
-	</article>
-	<section class="fixer" id="comments">
-		<h2>Commentaires</h2>
-		<form action="<?= $view->urlPostCommentCreate($post['id']); ?>" method="post">
-			<article>
-				<header class="multibar">
-					<span class="left"><?= $view->user->name; ?></span>
-				</header>
-				<textarea id="comment" name="comment"></textarea>
-				<footer class="multibar">
-					<input class="right btn success" type="submit" value="Envoyer" />
-				</footer>
-			</article>
-		</form>
-		<?php foreach ($post["comments"] as $comment) { ?>
+<?php } ?>
+			</footer>
+		</article>
+		<section class="fixer" id="comments">
+			<h2>Commentaires</h2>
+			<form action="<?= $view->urlPostCommentCreate($post['id']); ?>" method="post">
+				<article>
+					<header class="multibar">
+						<span class="left"><?= $view->user->name; ?></span>
+					</header>
+					<textarea id="comment" name="comment"></textarea>
+					<footer class="multibar">
+						<input class="right btn success" type="submit" value="Envoyer" />
+					</footer>
+				</article>
+			</form>
+<?php foreach ($post["comments"] as $comment) { ?>
 			<article <?=$comment['visibility']?'':'class="warning"';?>>
 				<header class="multibar">
 					<span class="left"><?= $comment['author']; ?> </span>
@@ -52,28 +53,28 @@
 				</header>
 				<div><?= $comment['content']; ?></div>
 				<footer class="multibar">
-					<?php if($comment['comment_can_delete']) { ?>
-						<a class="right btn error" href="<?= $view->urlPostCommentDelete($post['id'],$comment['id']); ?>"><i class="fas fa-trash-alt"></i></a>
-					<?php } ?>
-					<?php if(!$comment['visibility']) { ?>
-						<span class="left btn warning">non visible</span>
-						<?php if($comment['comment_can_publish']) { ?>
-							<a class="right btn warning" href="<?= $view->urlPostCommentPublish($post['id'],$comment['id']); ?>"><i class="fas fa-eye"></i></a>
-						<?php } ?>
-					<?php } elseif($comment['comment_can_unpublish']){ ?>
-						<a class="right btn warning" href="<?= $view->urlPostCommentUnpublish($post['id'],$comment['id']); ?>"><i class="fas fa-eye-slash"></i></a>
-					<?php } ?>
-					<?php if($comment["reported"]) { ?>
-						<span class="left btn error">Signalé</span>
-						<?php if($comment['comment_can_unreport']) { ?>
-							<a class="right btn warning" href="<?= $view->urlPostCommentUnreport($post['id'],$comment['id']); ?>"><i class="fas fa-bell-slash"></i></a>
-						<?php } ?>
-					<?php } elseif($comment['comment_can_report']){ ?>
-						<a class="right btn warning" href="<?= $view->urlPostCommentReport($post['id'],$comment['id']); ?>"><i class="fas fa-bell"></i></a>
-					<?php } ?>
+<?php 	if($comment['comment_can_delete']) { ?>
+					<a class="right btn error" href="<?= $view->urlPostCommentDelete($post['id'],$comment['id']); ?>"><i class="fas fa-trash-alt"></i></a>
+<?php 	} ?>
+<?php 	if(!$comment['visibility']) { ?>
+					<span class="left btn warning">non visible</span>
+<?php 		if($comment['comment_can_publish']) { ?>
+					<a class="right btn warning" href="<?= $view->urlPostCommentPublish($post['id'],$comment['id']); ?>"><i class="fas fa-eye"></i></a>
+<?php 		} ?>
+<?php 	} elseif($comment['comment_can_unpublish']){ ?>
+					<a class="right btn warning" href="<?= $view->urlPostCommentUnpublish($post['id'],$comment['id']); ?>"><i class="fas fa-eye-slash"></i></a>
+<?php 	} ?>
+<?php 	if($comment["reported"]) { ?>
+					<span class="left btn error">Signalé</span>
+<?php 		if($comment['comment_can_unreport']) { ?>
+					<a class="right btn warning" href="<?= $view->urlPostCommentUnreport($post['id'],$comment['id']); ?>"><i class="fas fa-bell-slash"></i></a>
+<?php 		} ?>
+<?php 	} elseif($comment['comment_can_report']){ ?>
+					<a class="right btn warning" href="<?= $view->urlPostCommentReport($post['id'],$comment['id']); ?>"><i class="fas fa-bell"></i></a>
+<?php 	} ?>
 				</footer>
 			</article>
-		<?php } ?>
-	</section>
-</main>
+<?php } ?>
+		</section>
+	</main>
 <?php return ob_get_clean(); ?>
